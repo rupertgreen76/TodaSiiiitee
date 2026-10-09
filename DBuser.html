@@ -7,6 +7,12 @@
 
 
 <head>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-sync.js"></script>
+<script>TODA.requireRole("member");</script>
+
 
 
 
@@ -2942,7 +2948,7 @@ opacity:0;
 
  
 
-<button class="active"> 
+<button class="active" onclick="location.href='DBuser.html'"> 
 
 ⌂ Dashboard 
 
@@ -2952,9 +2958,9 @@ opacity:0;
 
  
 
-<button> 
+<button onclick="location.href='bookride.html'"> 
 
-🛺"C:\Users\ASUS\OneDrive\Documents\Toda\bookride.html"
+🛺 Book Ride
 
 </button> 
 
@@ -2992,7 +2998,7 @@ opacity:0;
 
  
 
-<button> 
+<button onclick="location.href='rating.html'"> 
 
 ⭐ Feedback 
 
@@ -4074,28 +4080,33 @@ Rating:
 
  
 
-<script> 
-
- 
-
- 
-
-function ride(){ 
-
- 
-
-document.getElementById("msg").innerHTML= 
-
-"✅ Ride request successfully submitted!"; 
-
- 
-
-} 
-
- 
-
- 
-
+<script>
+function ride() {
+    const inputs = document.querySelectorAll(".panel input");
+    const pickup = inputs[0].value.trim();
+    const destination = inputs[1].value.trim();
+    const pax = document.querySelector(".panel select").value;
+    const msg = document.getElementById("msg");
+    if (!pickup || !destination) {
+        msg.innerHTML = "Please enter pickup and destination.";
+        return;
+    }
+    const session = TODA.session() || {};
+    TODA.append("todaRides", {
+        id: Date.now(),
+        passenger: session.name || "Guest",
+        email: session.email || "",
+        pickup: pickup,
+        destination: destination,
+        passengers: pax,
+        status: "Pending",
+        createdAt: new Date().toISOString()
+    }).then(function () {
+        msg.innerHTML = "✅ Ride request successfully submitted!";
+    }, function () {
+        msg.innerHTML = "Could not submit the request. Please try again.";
+    });
+}
 </script> 
 
  

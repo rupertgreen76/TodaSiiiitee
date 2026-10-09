@@ -2,6 +2,12 @@
 <html>
 
 <head>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-sync.js"></script>
+
 
 <title>TODA System</title>
 
@@ -624,21 +630,17 @@ Transport Operations and Driver Association System
 
 <label>Email</label>
 
-<input type="text" placeholder="Email">
+<input id="loginEmail" type="text" placeholder="Email">
 
 
 
 <label>Password</label>
 
-<input type="password" placeholder="Password">
+<input id="loginPass" type="password" placeholder="Password">
 
 
 
-<button>
-
-LOGIN
-
-</button>
+<button onclick="memberLogin()"> LOGIN </button>
 
 
 
@@ -692,7 +694,7 @@ Register Driver Member
 Full Name
 </label>
 
-<input>
+<input id="suName">
 
 
 
@@ -700,7 +702,7 @@ Full Name
 Phone Number
 </label>
 
-<input>
+<input id="suPhone">
 
 
 
@@ -708,7 +710,7 @@ Phone Number
 Email
 </label>
 
-<input>
+<input id="suEmail">
 
 
 
@@ -716,14 +718,10 @@ Email
 Password
 </label>
 
-<input type="password">
+<input id="suPass" type="password">
 
 
-<button>
-
-REGISTER
-
-</button>
+<button onclick="registerMember()"> REGISTER </button>
 
 
 
@@ -770,7 +768,7 @@ Username
 </label>
 
 
-<input id="adminUser" type="text" placeholder="AdminToda">
+<input id="adminUser" type="text" placeholder="Username">
 
 
 
@@ -779,7 +777,7 @@ Password
 </label>
 
 
-<input id="adminPass" type="password" placeholder="admin 123">
+<input id="adminPass" type="password" placeholder="Password">
 
 
 
@@ -821,62 +819,77 @@ Back
 
 
 <script>
-
-
-function showPage(page){
-
-
-document.querySelectorAll(".page")
-.forEach(x=>x.classList.remove("active"));
-
-
-document.getElementById(page)
-.classList.add("active");
-
-
+function showPage(page) {
+    document.querySelectorAll(".page").forEach(function (x) {
+        x.classList.remove("active");
+    });
+    document.getElementById(page).classList.add("active");
 }
-
-
-
-
-function adminLogin(){
-
-
-let user=
-document.getElementById("adminUser").value;
-
-
-let pass=
-document.getElementById("adminPass").value;
-
-
-
-if(user==="AdminToda" && pass==="admin 123"){
-
-
-alert("Admin Login Successful!");
-
-
-// replace this with dashboard page later
-
-showPage("login");
-
-
+function adminLogin() {
+    const user = document.getElementById("adminUser").value;
+    const pass = document.getElementById("adminPass").value;
+    if (user === "AdminToda" && pass === "admin 123") {
+        TODA.setSession("admin", "Administrator", "");
+        location.href = "DashboardTODA.html";
+    } else {
+        alert("Invalid Admin Account!");
+    }
 }
-
-
-else{
-
-
-alert("Invalid Admin Account!");
-
+function needFirebase() {
+    if (!TODA.ready || !TODA.auth) {
+        alert("Firebase is not configured yet. Fill in firebase-config.js first.");
+        return true;
+    }
+    return false;
 }
-
-
+function authMessage(error) {
+    const map = {
+        "auth/invalid-credential": "Wrong email or password.",
+        "auth/invalid-email": "Invalid email address.",
+        "auth/email-already-in-use": "This email is already registered.",
+        "auth/weak-password": "Password must be at least 6 characters.",
+        "auth/user-not-found": "No account found for this email.",
+        "auth/wrong-password": "Wrong email or password."
+    };
+    return map[error.code] || error.message;
 }
-
-
-
+function memberLogin() {
+    if (needFirebase()) return;
+    const email = document.getElementById("loginEmail").value.trim();
+    const pass = document.getElementById("loginPass").value;
+    if (!email || !pass) {
+        alert("Please enter your email and password.");
+        return;
+    }
+    TODA.auth.signInWithEmailAndPassword(email, pass).then(function (cred) {
+        const name = cred.user.displayName || email.split("@")[0];
+        TODA.setSession("member", name, email);
+        location.href = "DBuser.html";
+    }, function (error) {
+        alert(authMessage(error));
+    });
+}
+function registerMember() {
+    if (needFirebase()) return;
+    const name = document.getElementById("suName").value.trim();
+    const phone = document.getElementById("suPhone").value.trim();
+    const email = document.getElementById("suEmail").value.trim();
+    const pass = document.getElementById("suPass").value;
+    if (!name || !phone || !email || !pass) {
+        alert("Please fill in all fields.");
+        return;
+    }
+    TODA.auth.createUserWithEmailAndPassword(email, pass).then(function (cred) {
+        return cred.user.updateProfile({ displayName: name }).then(function () {
+            return TODA.addDriver({ name: name, contact: phone, email: email });
+        });
+    }).then(function (driver) {
+        alert("Registered! Your TODA number is " + driver.todaNumber + ". An administrator must activate your account.");
+        showPage("login");
+    }, function (error) {
+        alert(authMessage(error));
+    });
+}
 </script>
 
 

@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-sync.js"></script>
+<script>TODA.requireRole("admin");</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -1804,31 +1810,31 @@ tbody tr:hover{
     <ul class="menu">
 
         <li>
-            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\DashboardTODA.html">
+            <a href="DashboardTODA.html">
                 ⌂ Dashboard
             </a>
         </li>
 
         <li>
-            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\DBmanagement.html">
+            <a href="DBmanagement.html">
                 👤 Driver Management
             </a>
         </li>
 
         <li>
-            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\Queueing.html" class="active">
+            <a href="Queueing.html" class="active">
                 🚦 Digital Queueing
             </a>
         </li>
 
         <li>
-            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\driver_verification.html">
+            <a href="driver_verification.html">
                 ▦ QR Driver Verification
             </a>
         </li>
 
         <li>
-            <a href="announcement.html">
+            <a href="Announcement.html">
                 📢 Announcement
             </a>
         </li>
@@ -1840,7 +1846,7 @@ tbody tr:hover{
         </li>
 
         <li>
-            <a href="settings.html">
+            <a href="setting.html">
                 ⚙ Settings
             </a>
         </li>
@@ -2235,7 +2241,7 @@ tbody tr:hover{
                     <input
                         type="text"
                         id="driverID"
-                        placeholder="Example: DRV-025"
+                        placeholder="Example: TODA-001"
                         required
                     >
 
@@ -2356,93 +2362,7 @@ tbody tr:hover{
    SAMPLE DIGITAL QUEUE DATA
 ================================================== */
 
-let queue = [
-
-    {
-        id: 1,
-        queueNumber: 1,
-        driverID: "DRV-001",
-        driverName: "Juan Dela Cruz",
-        plateNumber: "123 ABC",
-        terminal: "Main TODA Terminal",
-        joinedTime: "2026-08-28T07:05:00",
-        status: "Serving",
-        completedTime: null
-    },
-
-    {
-        id: 2,
-        queueNumber: 2,
-        driverID: "DRV-014",
-        driverName: "Mark Santos",
-        plateNumber: "456 DEF",
-        terminal: "Main TODA Terminal",
-        joinedTime: "2026-08-28T07:12:00",
-        status: "Waiting",
-        completedTime: null
-    },
-
-    {
-        id: 3,
-        queueNumber: 3,
-        driverID: "DRV-021",
-        driverName: "Pedro Reyes",
-        plateNumber: "789 GHI",
-        terminal: "Main TODA Terminal",
-        joinedTime: "2026-08-28T07:18:00",
-        status: "Waiting",
-        completedTime: null
-    },
-
-    {
-        id: 4,
-        queueNumber: 4,
-        driverID: "DRV-008",
-        driverName: "Carlo Mendoza",
-        plateNumber: "321 JKL",
-        terminal: "Main TODA Terminal",
-        joinedTime: "2026-08-28T07:25:00",
-        status: "Waiting",
-        completedTime: null
-    },
-
-    {
-        id: 5,
-        queueNumber: 5,
-        driverID: "DRV-016",
-        driverName: "Jose Garcia",
-        plateNumber: "654 MNO",
-        terminal: "Main TODA Terminal",
-        joinedTime: "2026-08-28T07:31:00",
-        status: "Waiting",
-        completedTime: null
-    },
-
-    {
-        id: 6,
-        queueNumber: 6,
-        driverID: "DRV-032",
-        driverName: "Ramon Flores",
-        plateNumber: "987 PQR",
-        terminal: "Main TODA Terminal",
-        joinedTime: "2026-08-28T07:38:00",
-        status: "Waiting",
-        completedTime: null
-    },
-
-    {
-        id: 7,
-        queueNumber: 7,
-        driverID: "DRV-019",
-        driverName: "Miguel Torres",
-        plateNumber: "741 STU",
-        terminal: "Main TODA Terminal",
-        joinedTime: "2026-08-28T07:45:00",
-        status: "Waiting",
-        completedTime: null
-    }
-
-];
+let queue = [];
 
 
 
@@ -3544,6 +3464,22 @@ function closeDriverModal() {
    ADD DRIVER
 ================================================== */
 
+function findRegisteredDriver(code) {
+    let list = [];
+    try {
+        list = JSON.parse(localStorage.getItem("todaDrivers")) || [];
+    } catch (e) {}
+    return list.find(function (d) {
+        return (d.todaNumber || "").toLowerCase() === code.toLowerCase();
+    });
+}
+document.getElementById("driverID").addEventListener("input", function () {
+    const found = findRegisteredDriver(this.value.trim());
+    if (found) {
+        document.getElementById("driverName").value = found.name;
+        document.getElementById("plateNumber").value = found.plate;
+    }
+});
 document.getElementById(
     "driverForm"
 )
@@ -3568,7 +3504,7 @@ document.getElementById(
 
 
 
-        const driverName =
+        let driverName =
 
             document.getElementById(
                 "driverName"
@@ -3578,7 +3514,7 @@ document.getElementById(
 
 
 
-        const plateNumber =
+        let plateNumber =
 
             document.getElementById(
                 "plateNumber"
@@ -3593,6 +3529,21 @@ document.getElementById(
             document.getElementById(
                 "terminal"
             ).value;
+        const registered = findRegisteredDriver(driverID);
+        if (!registered) {
+            alert("Driver is not registered. Add the driver in Driver Management first.");
+            return;
+        }
+        if (registered.status !== "Active") {
+            alert("Only Active drivers can join the queue.");
+            return;
+        }
+        if (registered.licenseExpiry && new Date(registered.licenseExpiry + "T23:59:59") < new Date()) {
+            alert("This driver's license is expired.");
+            return;
+        }
+        driverName = registered.name;
+        plateNumber = registered.plate;
 
 
 
@@ -3682,6 +3633,7 @@ document.getElementById(
 
 
         const newDriver = {
+            driverRecordID: registered.id,
 
 
             id:

@@ -2,6 +2,12 @@
 <html>
 
 <head>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-sync.js"></script>
+<script>TODA.requireRole("member");</script>
+
 
 <title>TODA User Book Ride</title>
 
@@ -481,12 +487,12 @@ grid-template-columns:1fr;
 <div class="menu">
 
 
-<button>
+<button onclick="location.href='DBuser.html'">
 ⌂ Dashboard
 </button>
 
 
-<button class="active">
+<button class="active" onclick="location.href='bookride.html'">
 🛺 Book Ride
 </button>
 
@@ -506,7 +512,7 @@ grid-template-columns:1fr;
 </button>
 
 
-<button>
+<button onclick="location.href='rating.html'">
 ⭐ Rating
 </button>
 
@@ -638,7 +644,7 @@ Number of Passenger
 </label>
 
 
-<select>
+<select id="paxCount">
 
 <option>
 1 Passenger
@@ -667,7 +673,7 @@ Ride Type
 </label>
 
 
-<select>
+<select id="rideType">
 
 <option>
 Regular Ride
@@ -705,7 +711,7 @@ Special Ride
 </h2>
 
 
-<select>
+<select id="payMethod">
 
 <option>
 Cash
@@ -810,97 +816,44 @@ Confirm Ride
 
 
 <script>
-
-
-function calculateFare(){
-
-
-let km=
-
-Number(document.getElementById("distance").value);
-
-
-let fare=20;
-
-
-if(km>0){
-
-fare=20+(km*5);
-
+function calculateFare() {
+    const km = Number(document.getElementById("distance").value);
+    let fare = 20;
+    if (km > 0) {
+        fare = 20 + km * 5;
+    }
+    document.getElementById("fare").innerHTML = "Estimated Fare: ₱" + fare;
+    return fare;
 }
-
-
-document.getElementById("fare").innerHTML=
-
-"Estimated Fare: ₱"+fare;
-
-
+function bookRide() {
+    const pickup = document.getElementById("pickup").value.trim();
+    const destination = document.getElementById("destination").value.trim();
+    const message = document.getElementById("message");
+    if (pickup === "" || destination === "") {
+        alert("Please complete ride information");
+        return;
+    }
+    const session = TODA.session() || {};
+    TODA.append("todaRides", {
+        id: Date.now(),
+        passenger: session.name || "Guest",
+        email: session.email || "",
+        pickup: pickup,
+        destination: destination,
+        passengers: document.getElementById("paxCount").value,
+        rideType: document.getElementById("rideType").value,
+        payment: document.getElementById("payMethod").value,
+        distanceKm: Number(document.getElementById("distance").value) || 0,
+        fare: calculateFare(),
+        status: "Pending",
+        createdAt: new Date().toISOString()
+    }).then(function () {
+        message.style.display = "block";
+        message.innerHTML = "✅ Ride Request Submitted<br><br>📍 From: " + pickup.replace(/</g, "&lt;") + "<br>🏁 To: " + destination.replace(/</g, "&lt;") + "<br><br>Waiting for TODA driver assignment...";
+    }, function () {
+        alert("Could not submit the request. Please try again.");
+    });
 }
-
-
-
-
-
-function bookRide(){
-
-
-let pickup=
-
-document.getElementById("pickup").value;
-
-
-let destination=
-
-document.getElementById("destination").value;
-
-
-
-let message=
-
-document.getElementById("message");
-
-
-
-if(pickup=="" || destination==""){
-
-
-alert("Please complete ride information");
-
-
-return;
-
-}
-
-
-
-message.style.display="block";
-
-
-message.innerHTML=
-
-`
-✅ Ride Request Submitted
-
-<br><br>
-
-📍 From:
-${pickup}
-
-<br>
-
-🏁 To:
-${destination}
-
-<br><br>
-
-Waiting for TODA driver assignment...
-
-`;
-
-}
-
-
-
 </script>
 
 

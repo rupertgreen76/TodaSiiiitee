@@ -2,6 +2,12 @@
 <html lang="en">
 
 <head>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-sync.js"></script>
+<script>TODA.requireRole("admin");</script>
+
 
     <meta charset="UTF-8">
 
@@ -2981,19 +2987,19 @@ tbody tr:hover{
     <ul class="menu">
 
         <li>
-            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\DashboardTODA.html">
+            <a href="DashboardTODA.html">
                 ⌂ Dashboard
             </a>
         </li>
 
         <li>
-            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\DBmanagement.html">
+            <a href="DBmanagement.html">
                 👤 Driver Management
             </a>
         </li>
 
         <li>
-            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\Queueing.html">
+            <a href="Queueing.html">
                 🚦 Digital Queueing
             </a>
         </li>
@@ -3001,13 +3007,13 @@ tbody tr:hover{
       
 
         <li>
-            <a href="qr_verification.html" class="active">
+            <a href="driver_verification.html" class="active">
                 ▦ QR Driver Verification
             </a>
         </li>
 
         <li>
-            <a href="announcement.html">
+            <a href="Announcement.html">
                 📢 Announcement
             </a>
         </li>
@@ -3019,13 +3025,13 @@ tbody tr:hover{
         </li>
 
         <li>
-            <a href="lost_found.html">
+            <a href="LostnFound.html">
           
             </a>
         </li>
 
         <li>
-            <a href="settings.html">
+            <a href="setting.html">
                 ⚙ Settings
             </a>
         </li>
@@ -3918,258 +3924,26 @@ tbody tr:hover{
    DRIVER DATABASE
 ========================================================= */
 
-let drivers = [
-
-
-    {
-
-        id: 1,
-
-        driverID:
-            "DRV-001",
-
-        name:
-            "Juan Dela Cruz",
-
-        plate:
-            "123 ABC",
-
-        license:
-            "N01-23-456789",
-
-        toda:
-            "Main TODA",
-
-        expiry:
-            "2027-01-15",
-
-        status:
-            "Active",
-
-        verificationCode:
-            "TODA-DRV-001-X91K"
-
-    },
-
-
-    {
-
-        id: 2,
-
-        driverID:
-            "DRV-002",
-
-        name:
-            "Pedro Santos",
-
-        plate:
-            "456 DEF",
-
-        license:
-            "N02-45-678901",
-
-        toda:
-            "Main TODA",
-
-        expiry:
-            "2026-12-20",
-
-        status:
-            "Active",
-
-        verificationCode:
-            "TODA-DRV-002-M82L"
-
-    },
-
-
-    {
-
-        id: 3,
-
-        driverID:
-            "DRV-003",
-
-        name:
-            "Ramon Garcia",
-
-        plate:
-            "789 GHI",
-
-        license:
-            "N03-67-890123",
-
-        toda:
-            "Main TODA",
-
-        expiry:
-            "2026-11-10",
-
-        status:
-            "Active",
-
-        verificationCode:
-            "TODA-DRV-003-P73C"
-
-    },
-
-
-    {
-
-        id: 4,
-
-        driverID:
-            "DRV-004",
-
-        name:
-            "Mark Reyes",
-
-        plate:
-            "321 JKL",
-
-        license:
-            "N04-89-012345",
-
-        toda:
-            "Main TODA",
-
-        expiry:
-            "2026-10-22",
-
-        status:
-            "Suspended",
-
-        verificationCode:
-            "TODA-DRV-004-Q54N"
-
-    },
-
-
-    {
-
-        id: 5,
-
-        driverID:
-            "DRV-005",
-
-        name:
-            "Jose Mendoza",
-
-        plate:
-            "654 MNO",
-
-        license:
-            "N05-12-345678",
-
-        toda:
-            "Main TODA",
-
-        expiry:
-            "2027-02-14",
-
-        status:
-            "Active",
-
-        verificationCode:
-            "TODA-DRV-005-W22F"
-
-    },
-
-
-    {
-
-        id: 6,
-
-        driverID:
-            "DRV-006",
-
-        name:
-            "Carlo Flores",
-
-        plate:
-            "987 PQR",
-
-        license:
-            "N06-34-567890",
-
-        toda:
-            "Main TODA",
-
-        expiry:
-            "2026-07-30",
-
-        status:
-            "Expired",
-
-        verificationCode:
-            "TODA-DRV-006-R18B"
-
-    },
-
-
-    {
-
-        id: 7,
-
-        driverID:
-            "DRV-007",
-
-        name:
-            "Miguel Torres",
-
-        plate:
-            "741 STU",
-
-        license:
-            "N07-56-789012",
-
-        toda:
-            "Main TODA",
-
-        expiry:
-            "2027-03-05",
-
-        status:
-            "Active",
-
-        verificationCode:
-            "TODA-DRV-007-Z61A"
-
-    },
-
-
-    {
-
-        id: 8,
-
-        driverID:
-            "DRV-008",
-
-        name:
-            "Daniel Cruz",
-
-        plate:
-            "852 VWX",
-
-        license:
-            "N08-78-901234",
-
-        toda:
-            "Main TODA",
-
-        expiry:
-            "2027-04-12",
-
-        status:
-            "Active",
-
-        verificationCode:
-            "TODA-DRV-008-H43D"
-
-    }
-
-
-];
+function loadDrivers() {
+    let saved = [];
+    try {
+        saved = JSON.parse(localStorage.getItem("todaDrivers")) || [];
+    } catch (e) {}
+    return saved.map(function (d) {
+        return {
+            id: d.id,
+            driverID: d.todaNumber || "",
+            name: d.name,
+            plate: d.plate,
+            license: d.license,
+            toda: "Main TODA",
+            expiry: d.licenseExpiry,
+            status: d.status,
+            verificationCode: d.qrCode || ""
+        };
+    });
+}
+let drivers = loadDrivers();
 
 
 

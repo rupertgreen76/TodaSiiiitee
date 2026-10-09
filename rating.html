@@ -2,6 +2,12 @@
 <html>
 
 <head>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-sync.js"></script>
+<script>TODA.requireRole("member");</script>
+
 
 <title>TODA User Rating</title>
 
@@ -519,12 +525,12 @@ grid-template-columns:1fr;
 <div class="menu">
 
 
-<button>
+<button onclick="location.href='DBuser.html'">
 ⌂ Dashboard
 </button>
 
 
-<button>
+<button onclick="location.href='bookride.html'">
 🛺 Book Ride
 </button>
 
@@ -544,7 +550,7 @@ grid-template-columns:1fr;
 </button>
 
 
-<button class="active">
+<button class="active" onclick="location.href='rating.html'">
 ⭐ Rating
 </button>
 
@@ -825,45 +831,46 @@ Submit Rating
 
 
 <script>
-
-
-let options=document.querySelectorAll(".option");
-
-
-options.forEach(option=>{
-
-
-option.onclick=function(){
-
-
-this.parentElement
-.querySelectorAll(".option")
-.forEach(x=>x.classList.remove("selected"));
-
-
-this.classList.add("selected");
-
-
-}
-
-
+document.querySelectorAll(".option").forEach(function (option) {
+    option.onclick = function () {
+        this.parentElement.querySelectorAll(".option").forEach(function (x) {
+            x.classList.remove("selected");
+        });
+        this.classList.add("selected");
+    };
 });
-
-
-
-
-
-function submitRating(){
-
-
-document.getElementById("message")
-.style.display="block";
-
-
+function submitRating() {
+    const answers = {};
+    let complete = true;
+    document.querySelectorAll(".panel").forEach(function (panel) {
+        const title = panel.querySelector("h2").textContent.trim();
+        const chosen = panel.querySelector(".option.selected");
+        if (panel.querySelector(".rating-box")) {
+            if (!chosen) {
+                complete = false;
+            } else {
+                answers[title] = chosen.textContent.trim();
+            }
+        }
+    });
+    if (!complete) {
+        alert("Please answer all rating questions.");
+        return;
+    }
+    const session = TODA.session() || {};
+    TODA.append("todaRatings", {
+        id: Date.now(),
+        passenger: session.name || "Guest",
+        email: session.email || "",
+        answers: answers,
+        feedback: document.querySelector("textarea").value.trim(),
+        createdAt: new Date().toISOString()
+    }).then(function () {
+        document.getElementById("message").style.display = "block";
+    }, function () {
+        alert("Could not submit your rating. Please try again.");
+    });
 }
-
-
-
 </script>
 
 

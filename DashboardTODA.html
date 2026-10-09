@@ -2,6 +2,12 @@
 <html lang="en">
 
 <head>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-sync.js"></script>
+<script>TODA.requireRole("admin");</script>
+
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2230,7 +2236,7 @@ body{
 <div class="menu">
 
 
-<a href="dashboard.html">
+<a href="DashboardTODA.html">
 
 <button class="active">
 
@@ -2241,7 +2247,7 @@ body{
 </a>
 
 
-<a href="C:\Users\ASUS\OneDrive\Documents\Toda\DBmanagement.html">
+<a href="DBmanagement.html">
 
 <button>
 
@@ -2252,7 +2258,7 @@ body{
 </a>
 
 
-<a href="C:\Users\ASUS\OneDrive\Documents\Toda\Queueing.html">
+<a href="Queueing.html">
 
 <button>
 
@@ -2266,7 +2272,7 @@ body{
 
 
 
-<a href="C:\Users\ASUS\OneDrive\Documents\Toda\driver_verification.html">
+<a href="driver_verification.html">
 
 <button>
 
@@ -2277,7 +2283,7 @@ body{
 </a>
 
 
-<a href="announcement.html">
+<a href="Announcement.html">
 
 <button>
 
@@ -2290,7 +2296,7 @@ body{
 <button>💹 Financial Dashboard</button>
 </a>
 
-<a href="settings.html">
+<a href="setting.html">
 
 <button>
 
@@ -2356,7 +2362,7 @@ Transport Operations and Driver Association Management System
 
 
 <a
-href="drivers.html"
+href="DBmanagement.html"
 class="register"
 >
 
@@ -2640,7 +2646,7 @@ Trip Activity Overview
 </h2>
 
 <a
-href="trip.html"
+href="#"
 class="view-link"
 >
 
@@ -2825,7 +2831,7 @@ Active Drivers
 </h2>
 
 <a
-href="drivers.html"
+href="DBmanagement.html"
 class="view-link"
 >
 
@@ -3130,7 +3136,7 @@ QR Verification
 </h2>
 
 <a
-href="qr_verification.html"
+href="driver_verification.html"
 class="view-link"
 >
 
@@ -3193,7 +3199,7 @@ Latest Announcements
 </h2>
 
 <a
-href="announcement.html"
+href="Announcement.html"
 class="view-link"
 >
 
@@ -3234,7 +3240,7 @@ Quick Actions
 
 
 <a
-href="drivers.html"
+href="DBmanagement.html"
 class="quick-action"
 >
 
@@ -3254,7 +3260,7 @@ Register Driver
 
 
 <a
-href="queue.html"
+href="Queueing.html"
 class="quick-action"
 >
 
@@ -3274,7 +3280,7 @@ Manage Queue
 
 
 <a
-href="qr_verification.html"
+href="driver_verification.html"
 class="quick-action"
 >
 
@@ -3294,7 +3300,7 @@ Verify Driver
 
 
 <a
-href="announcement.html"
+href="Announcement.html"
 class="quick-action"
 >
 
@@ -3349,7 +3355,7 @@ localStorage.getItem(
 let queue =
 JSON.parse(
 localStorage.getItem(
-"todaQueue"
+"todaDigitalQueue"
 )
 )
 
@@ -4047,7 +4053,7 @@ queue =
 
 JSON.parse(
 localStorage.getItem(
-"todaQueue"
+"todaDigitalQueue"
 )
 )
 

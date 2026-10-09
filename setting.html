@@ -2,6 +2,12 @@
 <html>
 
 <head>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-sync.js"></script>
+<script>TODA.requireRole("admin");</script>
+
 
 <title>TODA System Settings</title>
 
@@ -1305,6 +1311,37 @@ alert("Report Exported!");
 </script>
 
 
+<script>
+function downloadFile(name, text, type) {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([text], { type: type }));
+    a.download = name;
+    a.click();
+}
+function backup() {
+    const keys = ["todaDrivers", "todaDigitalQueue", "todaAnnouncements", "todaFinancialTransactions", "todaVerificationCount", "todaRides", "todaRatings"];
+    const data = {};
+    keys.forEach(function (k) {
+        const raw = localStorage.getItem(k);
+        data[k] = raw === null ? null : JSON.parse(raw);
+    });
+    downloadFile("TODA_Backup.json", JSON.stringify(data, null, 2), "application/json");
+    alert("Backup Created!");
+}
+function exportReport() {
+    let list = [];
+    try {
+        list = JSON.parse(localStorage.getItem("todaDrivers")) || [];
+    } catch (e) {}
+    const rows = ["TODA Number,Name,Plate,Status,License Expiry"].concat(list.map(function (d) {
+        return [d.todaNumber, d.name, d.plate, d.status, d.licenseExpiry].map(function (v) {
+            return '"' + String(v === undefined ? "" : v).replace(/"/g, '""') + '"';
+        }).join(",");
+    }));
+    downloadFile("TODA_Drivers_Report.csv", rows.join("\n"), "text/csv");
+    alert("Report Exported!");
+}
+</script>
 </body>
 
 </html>
