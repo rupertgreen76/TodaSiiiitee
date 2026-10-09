@@ -10,7 +10,7 @@
 <script>TODA.requireRole("member");</script>
 
 
-<title>TODA User Book Ride</title>
+<title>TODA User Fare Calculator</title>
 
 <style>
 
@@ -493,12 +493,12 @@ grid-template-columns:1fr;
 </button>
 
 
-<button class="active" onclick="location.href='bookride.html'">
+<button onclick="location.href='bookride.html'">
 🛺 Book Ride
 </button>
 
 
-<button onclick="location.href='fare.html'">
+<button class="active" onclick="location.href='fare.html'">
 💰 Fare Calculator
 </button>
 
@@ -542,285 +542,43 @@ grid-template-columns:1fr;
 <!-- MAIN -->
 
 <div class="main">
-
-
-
 <div class="header">
-
-
 <div>
-
-<h1>
-🛺 Book TODA Ride
-</h1>
-
-<p>
-Binangonan Rizal Passenger System
-</p>
-
-
+<h1>💰 Fare Calculator</h1>
+<p>Check your fare before you ride</p>
 </div>
-
-
-
-<div class="profile">
-
-👤 Juan Dela Cruz
-
+<div class="profile">👤</div>
 </div>
-
-
-</div>
-
-
-
-
-
-
 <div class="panel">
-
-
-<h2>
-📍 Ride Information
-</h2>
-
-
-<div class="grid">
-
-
-<div>
-
-<label>
-Pickup Location
-</label>
-
-<input id="pickup"
-placeholder="Example: Mambog">
-
-
-</div>
-
-
-
-<div>
-
-<label>
-Destination
-</label>
-
-<input id="destination"
-placeholder="Example: Tayuman">
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="panel">
-
-
-<h2>
-👥 Passenger Details
-</h2>
-
-
-<div class="grid">
-
-
-<div>
-
-<label>
-Number of Passenger
-</label>
-
-
-<select id="paxCount">
-
-<option>
-1 Passenger
-</option>
-
-<option>
-2 Passengers
-</option>
-
-<option>
-3 Passengers
-</option>
-
-</select>
-
-
-</div>
-
-
-
-
-<div>
-
-<label>
-Ride Type
-</label>
-
-
-<select id="rideType">
-
-<option>
-Regular Ride
-</option>
-
-<option>
-Special Ride
-</option>
-
-
-</select>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-<div class="panel">
-
-
-<h2>
-💳 Payment Method
-</h2>
-
-
-<select id="payMethod"><option>Cash - pay the rider directly</option></select>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="panel">
-<h2>💰 Fare Estimate</h2>
+<h2>🧮 Check Your Fare</h2>
 <label>Drop-off Range</label>
-<select id="dropRange" onchange="calculateFare()"></select>
+<select id="dropRange" onchange="showFare()"></select>
 <div class="fare">
-<p>The fare depends on how far the drop-off is.</p>
+<h1 id="fare">₱20</h1>
 <p>Pay the rider in cash.</p>
-<h1 id="fare">Estimated Fare: ₱20</h1>
 </div>
 </div>
-
-
-
-
-
-
-
 <div class="panel">
-
-
-<button class="btn"
-onclick="bookRide()">
-
-Confirm Ride
-
-</button>
-
-
-<p class="message" id="message">
-
-</p>
-
-
+<h2>📋 Fare Rates</h2>
+<div id="rateList"></div>
 </div>
-
-
-
-
-
 </div>
-
-
-
-
-
-
-
 <script>
-function fillRanges() {
-    const sel = document.getElementById("dropRange");
-    sel.innerHTML = "";
-    Object.keys(TODA_RATES.fares).forEach(function (key) {
-        const opt = document.createElement("option");
-        opt.value = key;
-        opt.textContent = TODA_RATES.ranges[key] + " - ₱" + TODA_RATES.fares[key];
-        sel.appendChild(opt);
-    });
-    calculateFare();
+const sel = document.getElementById("dropRange");
+const list = document.getElementById("rateList");
+Object.keys(TODA_RATES.fares).forEach(function (key) {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = TODA_RATES.ranges[key];
+    sel.appendChild(opt);
+    const p = document.createElement("p");
+    p.innerHTML = TODA_RATES.ranges[key] + ": <b>₱" + TODA_RATES.fares[key] + "</b>";
+    list.appendChild(p);
+});
+function showFare() {
+    document.getElementById("fare").textContent = "₱" + TODA_RATES.fares[sel.value];
 }
-function calculateFare() {
-    const fare = TODA_RATES.fares[document.getElementById("dropRange").value];
-    document.getElementById("fare").innerHTML = "Estimated Fare: ₱" + fare;
-    return fare;
-}
-function bookRide() {
-    const pickup = document.getElementById("pickup").value.trim();
-    const destination = document.getElementById("destination").value.trim();
-    const message = document.getElementById("message");
-    if (pickup === "" || destination === "") {
-        alert("Please complete ride information");
-        return;
-    }
-    const session = TODA.session() || {};
-    TODA.append("todaRides", {
-        id: Date.now(),
-        passenger: session.name || "Guest",
-        email: session.email || "",
-        pickup: pickup,
-        destination: destination,
-        passengers: document.getElementById("paxCount").value,
-        rideType: document.getElementById("rideType").value,
-        payment: "Cash to rider",
-        dropoffRange: document.getElementById("dropRange").value,
-        fare: calculateFare(),
-        status: "Pending",
-        createdAt: new Date().toISOString()
-    }).then(function () {
-        message.style.display = "block";
-        message.innerHTML = "✅ Ride Request Submitted<br><br>📍 From: " + pickup.replace(/</g, "&lt;") + "<br>🏁 To: " + destination.replace(/</g, "&lt;") + "<br>💰 Fare: ₱" + calculateFare() + " (pay the rider in cash)<br><br>Waiting for TODA driver assignment...";
-    }, function () {
-        alert("Could not submit the request. Please try again.");
-    });
-}
-fillRanges();
+showFare();
 </script>
-
-
-
 </body>
-
 </html>

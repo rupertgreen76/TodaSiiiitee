@@ -2968,7 +2968,7 @@ opacity:0;
 
  
 
-<button> 
+<button onclick="location.href='fare.html'"> 
 
 💰 Fare Calculator 
 
@@ -2978,7 +2978,7 @@ opacity:0;
 
  
 
-<button> 
+<button onclick="location.href='fuel.html'"> 
 
 ⛽ Fuel Price 
 
@@ -2988,7 +2988,7 @@ opacity:0;
 
  
 
-<button> 
+<button onclick="location.href='payment.html'"> 
 
 💳 Payment 
 
@@ -3008,7 +3008,7 @@ opacity:0;
 
  
 
-<button> 
+<button onclick="location.href='profile.html'"> 
 
 👤 Profile 
 
@@ -3162,7 +3162,7 @@ Mambog
 
 <h3> 
 
-Distance 
+Drop-off Range 
 
 </h3> 
 
@@ -3170,7 +3170,7 @@ Distance
 
 <h1> 
 
-10 KM 
+Near 
 
 </h1> 
 
@@ -3198,7 +3198,7 @@ Estimated Fare
 
 <h1> 
 
-₱70 
+₱20 
 
 </h1> 
 
@@ -3218,7 +3218,7 @@ Estimated Fare
 
 <h3> 
 
-Fuel Status 
+Fuel Price 
 
 </h3> 
 
@@ -3226,7 +3226,7 @@ Fuel Status
 
 <h1> 
 
-Updated 
+₱90/L 
 
 </h1> 
 
@@ -3360,112 +3360,13 @@ Request Ride
 
  
 
-<div class="panel"> 
-
- 
-
- 
-
-<h2> 
-
-💰 Fare Calculator 
-
-</h2> 
-
- 
-
- 
-
-<p> 
-
-Route: 
-
-<b> 
-
-Mambog → Tayuman 
-
-</b> 
-
-</p> 
-
- 
-
- 
-
-<br> 
-
- 
-
- 
-
-<p> 
-
-Distance: 
-
-<b> 
-
-10 KM 
-
-</b> 
-
-</p> 
-
- 
-
- 
-
-<p> 
-
-Minimum Fare: 
-
-<b> 
-
-₱20 
-
-</b> 
-
-</p> 
-
- 
-
- 
-
-<p> 
-
-Additional: 
-
-<b> 
-
-₱5/km 
-
-</b> 
-
-</p> 
-
- 
-
- 
-
-<br> 
-
- 
-
- 
-
-<h2 style="color:#00e58b"> 
-
- 
-
-Estimated Fare: ₱70 
-
- 
-
-</h2> 
-
- 
-
- 
-
+<div class="panel">
+<h2>💰 Fare Guide</h2>
+<br>
+<p>Near drop-off: <b>₱20</b></p>
+<p>Far drop-off: <b>₱25</b></p>
+<br>
+<p>Pay the rider in cash after the ride.</p>
 </div> 
 
  
@@ -3494,142 +3395,14 @@ Estimated Fare: ₱70
 
  
 
-<h2> 
-
-⛽ Fuel Price Monitor 
-
-</h2> 
-
- 
-
- 
-
-<div class="fuel-container"> 
-
- 
-
- 
-
- 
-
-<div class="fuel-card"> 
-
- 
-
-<h3> 
-
-🔥 Premium Gasoline 
-
-</h3> 
-
- 
-
-<h1> 
-
-₱68.50/L 
-
-</h1> 
-
- 
-
-<p class="up"> 
-
-▲ Updated Price 
-
-</p> 
-
- 
-
-</div> 
-
- 
-
- 
-
- 
-
- 
-
-<div class="fuel-card"> 
-
- 
-
-<h3> 
-
-⛽ Unleaded Gasoline 
-
-</h3> 
-
- 
-
-<h1> 
-
-₱65.75/L 
-
-</h1> 
-
- 
-
-<p class="up"> 
-
-▲ Updated Price 
-
-</p> 
-
- 
-
-</div> 
-
- 
-
- 
-
- 
-
- 
-
-<div class="fuel-card"> 
-
- 
-
-<h3> 
-
-🚛 Diesel 
-
-</h3> 
-
- 
-
-<h1> 
-
-₱62.20/L 
-
-</h1> 
-
- 
-
-<p class="down"> 
-
-▼ Updated Price 
-
-</p> 
-
- 
-
-</div> 
-
- 
-
- 
-
- 
-
-</div> 
-
- 
-
- 
-
+<h2>⛽ Fuel Price</h2>
+<div class="fuel-container">
+<div class="fuel-card">
+<h3>⛽ Fuel</h3>
+<h1>₱90/L</h1>
+<p>Price per liter</p>
+</div>
+</div>
 </div> 
 
  
@@ -3778,55 +3551,8 @@ Driver Arriving
 
  
 
-<h2> 
-
-💳 Payment Option 
-
-</h2> 
-
- 
-
- 
-
-<select> 
-
- 
-
-<option> 
-
-Cash 
-
-</option> 
-
- 
-
- 
-
-<option> 
-
-GCash 
-
-</option> 
-
- 
-
- 
-
-</select> 
-
- 
-
- 
-
-<button class="btn"> 
-
- 
-
-Save Payment 
-
- 
-
-</button> 
+<h2>💳 Payment</h2>
+<p>Pay your fare in cash directly to the rider after the ride.</p> 
 
  
 
@@ -3884,11 +3610,7 @@ Mambog → Tayuman
 
  
 
-<span class="price"> 
-
-₱70 
-
-</span> 
+<span class="price">₱20 - ₱25</span> 
 
  
 
@@ -3912,11 +3634,7 @@ Mambog → Binangonan Proper
 
  
 
-<span class="price"> 
-
-₱45 
-
-</span> 
+<span class="price">₱20 - ₱25</span> 
 
  
 
