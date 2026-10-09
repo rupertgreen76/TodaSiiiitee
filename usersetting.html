@@ -2,6 +2,7 @@
 <html>
 
 <head>
+<meta charset="UTF-8">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -10,7 +11,7 @@
 <script>TODA.requireRole("member");</script>
 
 
-<title>TODA User Profile</title>
+<title>TODA User Settings</title>
 
 <style>
 
@@ -518,12 +519,12 @@ grid-template-columns:1fr;
 </button>
 
 
-<button class="active" onclick="location.href='profile.html'">
+<button onclick="location.href='profile.html'">
 👤 Profile
 </button>
 
 
-<button onclick="location.href='usersetting.html'">
+<button class="active" onclick="location.href='usersetting.html'">
 ⚙ Settings
 </button>
 
@@ -540,46 +541,43 @@ grid-template-columns:1fr;
 
 
 <!-- MAIN -->
-
 <div class="main">
 <div class="header">
 <div>
-<h1>👤 My Profile</h1>
-<p>Your account details</p>
+<h1>⚙ Settings</h1>
+<p>Your account and app information</p>
 </div>
 <div class="profile">👤</div>
 </div>
+
 <div class="panel">
 <h2>👤 Account</h2>
 <br>
-<p>Name: <b id="pName">-</b></p>
-<p>Email: <b id="pEmail">-</b></p>
-</div>
-<div class="panel">
-<h2>🛺 TODA Membership</h2>
+<p>Name: <b id="sName">-</b></p>
+<p>Email: <b id="sEmail">-</b></p>
 <br>
-<p>TODA Number: <b id="pToda">-</b></p>
-<p>Plate Number: <b id="pPlate">-</b></p>
-<p>Contact: <b id="pContact">-</b></p>
-<p>Status: <b id="pStatus">-</b></p>
+<button id="logoutBtn" style="padding:12px 22px;border:none;border-radius:12px;background:#00a86b;color:white;font-weight:600;cursor:pointer;">Logout</button>
+</div>
+
+<div class="panel">
+<h2>💰 Current TODA Rates</h2>
+<br>
+<p>Near drop-off (short ride): <b id="rNear">-</b></p>
+<p>Far drop-off (longer ride): <b id="rFar">-</b></p>
+<p>Fuel price per liter: <b id="rFuel">-</b></p>
 </div>
 </div>
+
 <script>
 const session = TODA.session() || {};
-document.getElementById("pName").textContent = session.name || "-";
-document.getElementById("pEmail").textContent = session.email || "-";
-let list = [];
-try {
-    list = JSON.parse(localStorage.getItem("todaDrivers")) || [];
-} catch (e) {}
-const me = list.find(function (d) {
-    return d.email && session.email && d.email.toLowerCase() === session.email.toLowerCase();
-});
-if (me) {
-    document.getElementById("pToda").textContent = me.todaNumber || "-";
-    document.getElementById("pPlate").textContent = me.plate || "-";
-    document.getElementById("pContact").textContent = me.contact || "-";
-    document.getElementById("pStatus").textContent = me.status || "-";
+document.getElementById("sName").textContent = session.name || "-";
+document.getElementById("sEmail").textContent = session.email || "-";
+document.getElementById("logoutBtn").onclick = function () { TODA.logout(); };
+const rates = window.TODA_RATES;
+if (rates) {
+    document.getElementById("rNear").textContent = "\u20B1" + rates.fares.near;
+    document.getElementById("rFar").textContent = "\u20B1" + rates.fares.far;
+    document.getElementById("rFuel").textContent = "\u20B1" + rates.fuelPerLiter;
 }
 </script>
 </body>
