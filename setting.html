@@ -2,6 +2,7 @@
 <html>
 
 <head>
+<meta charset="UTF-8">
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
@@ -546,33 +547,13 @@ background:#ddd;
 
 
 <ul class="menu">
-
-
-<li>
-⌂ Dashboard
-</li>
-
-
-<li>
-👤 Driver Management
-</li>
-
-
-<li>
-🚦 Queue Management
-</li>
-
-
-<li>
-📢 Announcement
-</li>
-
-
-<li class="active">
-⚙ Settings
-</li>
-
-
+<li onclick="location.href='DashboardTODA.html'">⌂ Dashboard</li>
+<li onclick="location.href='DBmanagement.html'">👤 Driver Management</li>
+<li onclick="location.href='Queueing.html'">🚦 Queue Management</li>
+<li onclick="location.href='driver_verification.html'">▦ QR Driver Verification</li>
+<li onclick="location.href='Announcement.html'">📢 Announcement</li>
+<li onclick="location.href='financial_dashboard.html'">💹 Financial Dashboard</li>
+<li class="active" onclick="location.href='setting.html'">⚙ Settings</li>
 </ul>
 
 
