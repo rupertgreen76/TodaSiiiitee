@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>TODA User Rating</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+
+body{
+
+background:#050b12;
+color:white;
+overflow-x:hidden;
+
+}
+
+
+
+/* HYDROGEN BACKGROUND */
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+width:700px;
+height:700px;
+
+left:50%;
+top:-300px;
+
+transform:translateX(-50%);
+
+background:
+
+radial-gradient(
+circle,
+rgba(0,255,150,.25),
+transparent 65%
+);
+
+filter:blur(40px);
+
+animation:hydrogenMove 8s infinite alternate;
+
+z-index:-2;
+
+}
+
+
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+inset:0;
+
+background-image:
+
+linear-gradient(
+rgba(0,255,150,.05) 1px,
+transparent 1px
+),
+
+linear-gradient(
+90deg,
+rgba(0,255,150,.05) 1px,
+transparent 1px
+);
+
+
+background-size:50px 50px;
+
+animation:gridMove 15s linear infinite;
+
+z-index:-3;
+
+}
+
+
+
+@keyframes hydrogenMove{
+
+from{
+
+transform:translateX(-50%) translateY(0);
+
+}
+
+to{
+
+transform:translateX(-50%) translateY(80px);
+
+}
+
+}
+
+
+
+@keyframes gridMove{
+
+from{
+
+background-position:0 0;
+
+}
+
+to{
+
+background-position:100px 100px;
+
+}
+
+}
+
+
+
+
+
+/* SIDEBAR */
+
+
+.sidebar{
+
+position:fixed;
+
+width:250px;
+
+height:100vh;
+
+background:#07111b;
+
+padding:25px;
+
+border-right:
+
+1px solid rgba(0,255,150,.2);
+
+}
+
+
+
+.logo{
+
+font-size:25px;
+
+font-weight:bold;
+
+margin-bottom:40px;
+
+}
+
+
+.logo span{
+
+color:#00e58b;
+
+}
+
+
+
+
+.menu button{
+
+
+width:100%;
+
+padding:15px;
+
+margin:8px 0;
+
+border:none;
+
+border-radius:15px;
+
+background:none;
+
+color:#aaa;
+
+cursor:pointer;
+
+text-align:left;
+
+transition:.3s;
+
+
+}
+
+
+
+.menu button:hover,
+.menu .active{
+
+
+background:#00a86b;
+
+color:white;
+
+transform:translateX(8px);
+
+
+}
+
+
+
+
+
+/* MAIN */
+
+
+.main{
+
+margin-left:250px;
+
+padding:30px;
+
+}
+
+
+
+
+.header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+
+.header h1{
+
+font-size:35px;
+
+}
+
+
+
+.header p{
+
+color:#8995a3;
+
+}
+
+
+
+
+.profile{
+
+background:#111b26;
+
+padding:15px 25px;
+
+border-radius:30px;
+
+animation:floating 4s infinite;
+
+}
+
+
+
+@keyframes floating{
+
+50%{
+
+transform:translateY(-8px);
+
+}
+
+}
+
+
+
+
+
+
+
+/* PANEL SAME AS DASHBOARD */
+
+
+.panel{
+
+background:#09131d;
+
+padding:25px;
+
+border-radius:25px;
+
+margin-top:25px;
+
+border:1px solid rgba(0,229,139,.15);
+
+transition:.35s;
+
+overflow:hidden;
+
+}
+
+
+
+.panel:hover{
+
+transform:translateY(-10px) scale(1.02);
+
+box-shadow:
+
+0 20px 50px rgba(0,229,139,.3);
+
+}
+
+
+
+
+/* RATING OPTIONS */
+
+
+.rating-box{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:15px;
+
+}
+
+
+
+.option{
+
+
+background:#111b26;
+
+padding:20px;
+
+border-radius:20px;
+
+text-align:center;
+
+cursor:pointer;
+
+transition:.3s;
+
+border:1px solid transparent;
+
+}
+
+
+
+.option:hover{
+
+transform:translateY(-8px);
+
+border-color:#00e58b;
+
+box-shadow:
+
+0 0 25px rgba(0,229,139,.3);
+
+}
+
+
+
+.option.selected{
+
+background:#00a86b;
+
+color:white;
+
+}
+
+
+
+
+textarea{
+
+
+width:100%;
+
+height:120px;
+
+background:#111b26;
+
+color:white;
+
+border:none;
+
+border-radius:15px;
+
+padding:15px;
+
+resize:none;
+
+
+}
+
+
+
+.btn{
+
+
+background:#00a86b;
+
+color:white;
+
+padding:15px 30px;
+
+border:none;
+
+border-radius:25px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+transition:.3s;
+
+
+}
+
+
+
+.btn:hover{
+
+background:#00e58b;
+
+transform:translateY(-5px);
+
+box-shadow:
+
+0 0 30px rgba(0,229,139,.6);
+
+}
+
+
+
+
+.message{
+
+display:none;
+
+margin-top:20px;
+
+color:#00e58b;
+
+font-size:18px;
+
+}
+
+
+
+@media(max-width:900px){
+
+.sidebar{
+
+position:relative;
+
+width:100%;
+
+height:auto;
+
+}
+
+
+.main{
+
+margin-left:0;
+
+}
+
+
+.rating-box{
+
+grid-template-columns:1fr;
+
+}
+
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+
+<div class="logo">
+
+🛺 TODA <span>USER</span>
+
+</div>
+
+
+<div class="menu">
+
+
+<button>
+⌂ Dashboard
+</button>
+
+
+<button>
+🛺 Book Ride
+</button>
+
+
+<button>
+💰 Fare Calculator
+</button>
+
+
+<button>
+⛽ Fuel Price
+</button>
+
+
+<button>
+💳 Payment
+</button>
+
+
+<button class="active">
+⭐ Rating
+</button>
+
+
+<button>
+👤 Profile
+</button>
+
+
+<button>
+⚙ Settings
+</button>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+
+
+<div class="header">
+
+
+<div>
+
+<h1>
+⭐ Ride Experience Rating
+</h1>
+
+<p>
+Rate your TODA ride experience
+</p>
+
+</div>
+
+
+
+<div class="profile">
+
+👤 Juan Dela Cruz
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="panel">
+
+<h2>
+🛡 Safety Rating
+</h2>
+
+<br>
+
+
+<div class="rating-box">
+
+
+<div class="option">
+🟢 Very Safe
+</div>
+
+
+<div class="option">
+✅ Safe
+</div>
+
+
+<div class="option">
+🟡 Normal
+</div>
+
+
+<div class="option">
+🔴 Unsafe
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="panel">
+
+
+<h2>
+😎 Ride Comfort
+</h2>
+
+<br>
+
+
+<div class="rating-box">
+
+
+<div class="option">
+😎 Chill Ride
+</div>
+
+
+<div class="option">
+😊 Comfortable
+</div>
+
+
+<div class="option">
+🙂 Normal
+</div>
+
+
+<div class="option">
+😟 Uncomfortable
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="panel">
+
+
+<h2>
+🚦 Driving Style
+</h2>
+
+<br>
+
+
+<div class="rating-box">
+
+
+<div class="option">
+🚗 Smooth Driving
+</div>
+
+
+<div class="option">
+🙂 Normal Driving
+</div>
+
+
+<div class="option">
+⚡ Extreme Driving
+</div>
+
+
+<div class="option">
+⚠️ Risky Driving
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="panel">
+
+
+<h2>
+🤝 Driver Behavior
+</h2>
+
+
+<br>
+
+
+<div class="rating-box">
+
+
+<div class="option">
+👍 Friendly
+</div>
+
+
+<div class="option">
+🤝 Respectful
+</div>
+
+
+<div class="option">
+🙂 Okay
+</div>
+
+
+<div class="option">
+⚠️ Needs Improvement
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="panel">
+
+
+<h2>
+📝 Feedback
+</h2>
+
+
+<br>
+
+
+<textarea placeholder="Tell us about your ride experience..."></textarea>
+
+
+<br><br>
+
+
+<button class="btn" onclick="submitRating()">
+
+Submit Rating
+
+</button>
+
+
+<p class="message" id="message">
+
+✅ Thank you for your feedback!
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+let options=document.querySelectorAll(".option");
+
+
+options.forEach(option=>{
+
+
+option.onclick=function(){
+
+
+this.parentElement
+.querySelectorAll(".option")
+.forEach(x=>x.classList.remove("selected"));
+
+
+this.classList.add("selected");
+
+
+}
+
+
+});
+
+
+
+
+
+function submitRating(){
+
+
+document.getElementById("message")
+.style.display="block";
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

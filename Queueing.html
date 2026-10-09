@@ -1,0 +1,4662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TODA System | Digital Queueing</title>
+
+    <style>
+
+        /* ==================================================
+           GENERAL
+        ================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        :root {
+            --background: #050c12;
+            --sidebar: #07131d;
+            --card: #111e29;
+            --card-dark: #0b1721;
+            --table-bg: #08141e;
+
+            --green: #06b879;
+            --green-light: #00e694;
+
+            --white: #ffffff;
+            --gray: #8fa5b7;
+
+            --red: #ff616b;
+            --yellow: #f6ca4f;
+            --blue: #59a8ff;
+            --orange: #ff9f43;
+
+            --border: #20313c;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+
+        /* ==================================================
+           SIDEBAR
+        ================================================== */
+
+        .sidebar {
+            width: 230px;
+            height: 100vh;
+
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            background: var(--sidebar);
+
+            border-right: 1px solid #122532;
+
+            padding: 28px 22px;
+
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+
+            line-height: 1.3;
+
+            margin-bottom: 45px;
+        }
+
+        .logo-green {
+            color: var(--green-light);
+        }
+
+
+        /* ==================================================
+           SIDEBAR MENU
+        ================================================== */
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 10px;
+        }
+
+        .menu a {
+            display: block;
+
+            text-decoration: none;
+
+            color: #aac0d0;
+
+            padding: 13px 14px;
+
+            border-radius: 14px;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .menu a:hover {
+            background: #0c1c27;
+            color: white;
+        }
+
+        .menu a.active {
+            background: var(--green);
+            color: white;
+            font-weight: bold;
+        }
+
+
+        /* ==================================================
+           MAIN CONTENT
+        ================================================== */
+
+        .main-content {
+            margin-left: 230px;
+
+            min-height: 100vh;
+
+            padding: 28px;
+        }
+
+
+        /* ==================================================
+           TOP BAR
+        ================================================== */
+
+        .top-bar {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: flex-start;
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 34px;
+
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: var(--gray);
+        }
+
+
+        /* ==================================================
+           ADMIN PROFILE
+        ================================================== */
+
+        .admin-profile {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            min-width: 190px;
+
+            background: var(--card);
+
+            padding: 11px 18px;
+
+            border-radius: 30px;
+        }
+
+        .admin-avatar {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 50%;
+
+            border: 2px solid var(--green-light);
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+        .admin-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .online {
+            font-size: 11px;
+
+            color: var(--green-light);
+
+            margin-top: 4px;
+        }
+
+
+        /* ==================================================
+           STATISTICS CARDS
+        ================================================== */
+
+        .statistics {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--card);
+
+            border-radius: 20px;
+
+            padding: 24px;
+
+            min-height: 145px;
+        }
+
+        .stat-title {
+            color: #adc1d0;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        .stat-number {
+            font-size: 38px;
+
+            font-weight: bold;
+
+            margin-top: 20px;
+            margin-bottom: 5px;
+        }
+
+        .stat-description {
+            font-size: 14px;
+
+            color: #c9d5dd;
+        }
+
+        .green-number {
+            color: var(--green-light);
+        }
+
+        .yellow-number {
+            color: var(--yellow);
+        }
+
+        .blue-number {
+            color: var(--blue);
+        }
+
+
+        /* ==================================================
+           CURRENT SERVING SECTION
+        ================================================== */
+
+        .queue-overview {
+            display: grid;
+
+            grid-template-columns: 1.2fr 2fr;
+
+            gap: 18px;
+
+            margin-bottom: 30px;
+        }
+
+        .now-serving {
+            background: linear-gradient(
+                135deg,
+                #063f31,
+                #0b6e50
+            );
+
+            border-radius: 20px;
+
+            padding: 28px;
+
+            min-height: 235px;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .now-serving::after {
+            content: "🛺";
+
+            position: absolute;
+
+            right: 20px;
+            bottom: -10px;
+
+            font-size: 100px;
+
+            opacity: 0.08;
+        }
+
+        .now-label {
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #b9f4df;
+        }
+
+        .queue-number {
+            font-size: 52px;
+
+            font-weight: bold;
+
+            margin-top: 18px;
+
+            color: white;
+        }
+
+        .serving-driver {
+            font-size: 22px;
+
+            font-weight: bold;
+
+            margin-top: 8px;
+        }
+
+        .serving-plate {
+            color: #b9f4df;
+
+            margin-top: 5px;
+        }
+
+        .no-serving {
+            margin-top: 35px;
+
+            color: #d7f8ec;
+
+            font-size: 16px;
+        }
+
+
+        /* ==================================================
+           QUEUE CONTROL
+        ================================================== */
+
+        .queue-control {
+            background: var(--card);
+
+            border-radius: 20px;
+
+            padding: 25px;
+        }
+
+        .queue-control h2 {
+            margin-bottom: 8px;
+        }
+
+        .queue-control p {
+            color: var(--gray);
+
+            margin-bottom: 25px;
+        }
+
+        .control-buttons {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 12px;
+        }
+
+        .control-btn {
+            border: none;
+
+            border-radius: 14px;
+
+            padding: 15px 16px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .call-next {
+            background: var(--green);
+
+            color: white;
+        }
+
+        .complete-btn {
+            background: #164d7b;
+
+            color: #cbe8ff;
+        }
+
+        .clear-btn {
+            background: #4b2025;
+
+            color: #ffb0b5;
+        }
+
+
+        /* ==================================================
+           QUEUE HEADER
+        ================================================== */
+
+        .queue-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
+        }
+
+        .queue-header h2 {
+            font-size: 25px;
+        }
+
+        .add-button {
+            border: none;
+
+            background: var(--green);
+
+            color: white;
+
+            padding: 14px 20px;
+
+            border-radius: 15px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+        .add-button:hover {
+            background: #0acb89;
+        }
+
+
+        /* ==================================================
+           SEARCH FILTER
+        ================================================== */
+
+        .filter-container {
+            display: grid;
+
+            grid-template-columns: 1fr 200px;
+
+            gap: 12px;
+
+            padding: 14px;
+
+            background: var(--card);
+
+            border-radius: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .search-box,
+        .filter-select {
+            background: #0b1924;
+
+            border: 1px solid #1d3240;
+
+            color: white;
+
+            border-radius: 11px;
+
+            padding: 13px 14px;
+
+            outline: none;
+        }
+
+        .search-box::placeholder {
+            color: #718697;
+        }
+
+
+        /* ==================================================
+           TABLE
+        ================================================== */
+
+        .table-container {
+            background: var(--table-bg);
+
+            padding: 22px;
+
+            border-radius: 20px;
+
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 1000px;
+        }
+
+        thead {
+            background: var(--green);
+        }
+
+        th {
+            padding: 16px;
+
+            text-align: left;
+
+            font-size: 14px;
+        }
+
+        td {
+            padding: 17px 16px;
+
+            border-bottom: 1px solid var(--border);
+
+            font-size: 14px;
+
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #0b1923;
+        }
+
+        .queue-no {
+            font-size: 16px;
+
+            font-weight: bold;
+
+            color: var(--green-light);
+        }
+
+        .driver-name {
+            font-weight: bold;
+        }
+
+        .driver-id {
+            color: var(--gray);
+
+            font-size: 12px;
+
+            margin-top: 4px;
+        }
+
+
+        /* ==================================================
+           STATUS
+        ================================================== */
+
+        .status {
+            display: inline-block;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .waiting-status {
+            background: #493e14;
+
+            color: #ffdc65;
+        }
+
+        .serving-status {
+            background: #075d43;
+
+            color: #00eca0;
+        }
+
+        .completed-status {
+            background: #18394f;
+
+            color: #9cd4ff;
+        }
+
+
+        /* ==================================================
+           ACTION BUTTONS
+        ================================================== */
+
+        .action-buttons {
+            display: flex;
+
+            gap: 6px;
+
+            flex-wrap: wrap;
+        }
+
+        .serve-button,
+        .back-button,
+        .remove-button {
+
+            border: none;
+
+            padding: 8px 11px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .serve-button {
+            background: #075d43;
+
+            color: #00eca0;
+        }
+
+        .back-button {
+            background: #473d18;
+
+            color: #ffd863;
+        }
+
+        .remove-button {
+            background: #4b2025;
+
+            color: #ff9ca3;
+        }
+
+
+        /* ==================================================
+           MODAL
+        ================================================== */
+
+        .modal {
+            width: 100%;
+            height: 100%;
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            z-index: 1000;
+
+            background: rgba(0, 0, 0, 0.75);
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 620px;
+
+            max-width: 95%;
+
+            background: #0b1721;
+
+            border: 1px solid #203541;
+
+            border-radius: 20px;
+
+            padding: 25px;
+        }
+
+        .modal-title {
+            margin-bottom: 5px;
+        }
+
+        .modal-subtitle {
+            color: var(--gray);
+
+            font-size: 14px;
+
+            margin-bottom: 22px;
+        }
+
+
+        /* ==================================================
+           FORM
+        ================================================== */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: #b8cad6;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+
+            background: #0f1e29;
+
+            border: 1px solid #273c48;
+
+            border-radius: 11px;
+
+            color: white;
+
+            padding: 12px;
+
+            outline: none;
+        }
+
+        .modal-buttons {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+        .cancel-button,
+        .save-button {
+
+            border: none;
+
+            border-radius: 11px;
+
+            padding: 12px 18px;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .cancel-button {
+            background: #1d303c;
+        }
+
+        .save-button {
+            background: var(--green);
+        }
+
+
+        /* ==================================================
+           EMPTY QUEUE
+        ================================================== */
+
+        .empty-row {
+            text-align: center;
+
+            color: #7890a0;
+
+            padding: 35px;
+        }
+
+
+        /* ==================================================
+           RESPONSIVE
+        ================================================== */
+
+        @media(max-width: 1100px) {
+
+            .statistics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .queue-overview {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width: 768px) {
+
+            .sidebar {
+                position: static;
+
+                width: 100%;
+
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .statistics {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-container {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .top-bar {
+                flex-direction: column;
+            }
+
+            .control-buttons {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    
+
+/* =========================================================
+   PREMIUM AURORA + GREEN HYDROGEN DESIGN
+========================================================= */
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+.main-content{
+    position:relative;
+    z-index:5;
+}
+
+.sidebar{
+    z-index:50;
+    background:rgba(7,19,29,.95);
+    border-right:1px solid rgba(109,255,206,.08);
+}
+
+/* =========================================================
+   FULL BACKGROUND
+========================================================= */
+
+.animated-bg{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    z-index:0;
+    pointer-events:none;
+    background:
+        linear-gradient(
+            180deg,
+            #02070b 0%,
+            #06111a 40%,
+            #071019 72%,
+            #050b12 100%
+        );
+}
+
+#particleCanvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+.aurora-borealis{
+    position:absolute;
+    inset:-8% -15% 37% -15%;
+    pointer-events:none;
+    opacity:.9;
+    mix-blend-mode:screen;
+}
+
+.aurora-haze{
+    position:absolute;
+    inset:0;
+    opacity:.34;
+    background:
+        radial-gradient(ellipse at 28% 18%,rgba(76,255,200,.12),rgba(76,255,200,.045) 28%,transparent 60%),
+        radial-gradient(ellipse at 58% 10%,rgba(86,208,255,.10),rgba(86,208,255,.035) 30%,transparent 62%),
+        radial-gradient(ellipse at 82% 25%,rgba(151,119,255,.07),rgba(151,119,255,.025) 28%,transparent 58%);
+    animation:auroraHazeShift 15s ease-in-out infinite alternate;
+}
+
+.aurora-ribbon{
+    position:absolute;
+    left:50%;
+    height:165px;
+    border-radius:48% 52% 42% 58% / 58% 46% 54% 42%;
+    border:1px solid rgba(145,255,223,.055);
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(130,255,238,.02) 8%,
+            rgba(102,255,199,.08) 18%,
+            rgba(0,230,148,.18) 31%,
+            rgba(90,255,202,.13) 43%,
+            rgba(91,189,255,.11) 58%,
+            rgba(154,132,255,.085) 72%,
+            rgba(88,255,224,.055) 84%,
+            transparent 100%
+        );
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+.ribbon-1{
+    top:3%;
+    width:94%;
+    height:190px;
+    transform:translateX(-50%) rotate(-8deg) skewX(-10deg);
+    animation:auroraRibbon1 18s ease-in-out infinite alternate;
+}
+
+.ribbon-2{
+    top:14%;
+    width:76%;
+    opacity:.75;
+    transform:translateX(-50%) rotate(6deg) skewX(10deg);
+    animation:auroraRibbon2 15s ease-in-out infinite alternate;
+}
+
+.ribbon-3{
+    top:25%;
+    width:69%;
+    height:138px;
+    opacity:.54;
+    transform:translateX(-50%) rotate(-3deg) skewX(-8deg);
+    animation:auroraRibbon3 20s ease-in-out infinite alternate;
+}
+
+.aurora-curtain{
+    position:absolute;
+    top:0;
+    left:50%;
+    width:72%;
+    height:64%;
+    transform:translateX(-50%);
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 20px,
+            rgba(96,255,214,.065) 23px,
+            rgba(89,168,255,.055) 27px,
+            transparent 44px
+        );
+    opacity:.12;
+    border-radius:0 0 45% 45%;
+    animation:auroraCurtain 21s linear infinite;
+}
+
+.bg-grid{
+    position:absolute;
+    inset:-30%;
+    opacity:.09;
+    background-image:
+        linear-gradient(rgba(0,230,148,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,230,148,.035) 1px,transparent 1px);
+    background-size:62px 62px;
+    transform:perspective(760px) rotateX(64deg) translateY(-8%);
+    transform-origin:center;
+    animation:gridDrift 20s linear infinite;
+}
+
+/* =========================================================
+   LOWER GREEN HYDROGEN / PLASMA
+========================================================= */
+
+.lower-vignette{
+    position:fixed;
+    left:230px;
+    right:0;
+    bottom:0;
+    height:34vh;
+    z-index:1;
+    pointer-events:none;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,230,148,.035),
+            rgba(0,230,148,.012) 34%,
+            transparent 78%
+        );
+}
+
+.hydrogen-bottom{
+    position:fixed;
+    left:230px;
+    right:0;
+    bottom:0;
+    height:42vh;
+    min-height:265px;
+    z-index:2;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+#hydrogenCanvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+.hydrogen-bottom::before{
+    content:"";
+    position:absolute;
+    left:-5%;
+    right:-5%;
+    bottom:-34%;
+    height:72%;
+    border-radius:50% 50% 0 0;
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(0,255,160,.13) 0%,
+            rgba(0,230,148,.07) 28%,
+            rgba(0,184,121,.025) 50%,
+            transparent 74%
+        );
+    animation:hydrogenBreath 5.5s ease-in-out infinite alternate;
+}
+
+.plasma-wave{
+    position:absolute;
+    left:-8%;
+    width:116%;
+    border-radius:50%;
+    border-top:1px solid rgba(95,255,198,.18);
+    transform-origin:center bottom;
+}
+
+.wave-a{
+    bottom:18px;
+    height:130px;
+    animation:plasmaWaveA 6s ease-in-out infinite alternate;
+}
+
+.wave-b{
+    bottom:-12px;
+    height:190px;
+    opacity:.62;
+    animation:plasmaWaveB 8s ease-in-out infinite alternate;
+}
+
+.wave-c{
+    bottom:-48px;
+    height:260px;
+    opacity:.34;
+    animation:plasmaWaveC 10s ease-in-out infinite alternate;
+}
+
+.h-atom{
+    position:absolute;
+    width:112px;
+    height:112px;
+    bottom:30px;
+    opacity:.27;
+    animation:atomFloat 7s ease-in-out infinite alternate;
+}
+
+.h-atom.left{left:4%}
+
+.h-atom.right{
+    right:5%;
+    width:88px;
+    height:88px;
+    bottom:60px;
+    opacity:.19;
+    animation-delay:-2.5s;
+}
+
+.h-nucleus{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:8px;
+    height:8px;
+    margin:-4px;
+    border-radius:50%;
+    background:#00f59b;
+    box-shadow:
+        0 0 10px rgba(0,245,155,.55),
+        0 0 24px rgba(0,230,148,.20);
+}
+
+.h-orbit{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:96px;
+    height:35px;
+    margin-left:-48px;
+    margin-top:-17.5px;
+    border:1px solid rgba(95,255,198,.22);
+    border-radius:50%;
+}
+
+.h-orbit.o1{animation:orbit1 6s linear infinite}
+.h-orbit.o2{transform:rotate(60deg);animation:orbit2 7.5s linear infinite reverse}
+.h-orbit.o3{transform:rotate(120deg);animation:orbit3 9s linear infinite}
+
+.h-electron{
+    position:absolute;
+    left:50%;
+    top:-3px;
+    width:5px;
+    height:5px;
+    margin-left:-2.5px;
+    border-radius:50%;
+    background:#b8ffe0;
+    box-shadow:0 0 8px rgba(184,255,224,.55);
+}
+
+.energy-horizon{
+    position:absolute;
+    left:6%;
+    right:6%;
+    bottom:12px;
+    height:1px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,230,148,.11),
+            rgba(126,255,210,.48),
+            rgba(0,230,148,.13),
+            transparent
+        );
+    background-size:220% 100%;
+    animation:horizonFlow 4.5s linear infinite;
+}
+
+.h-ion{
+    position:absolute;
+    bottom:-10px;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:rgba(146,255,214,.72);
+    box-shadow:0 0 8px rgba(0,230,148,.24);
+    animation:ionRise var(--ion-duration) linear var(--ion-delay) infinite;
+}
+
+/* =========================================================
+   CURSOR / INTERACTIVE DOTS
+========================================================= */
+
+.cursor-ring{
+    position:fixed;
+    width:34px;
+    height:34px;
+    border:1px solid rgba(0,230,148,.52);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9999;
+    transform:translate(-50%,-50%);
+    opacity:0;
+    transition:
+        width .18s ease,
+        height .18s ease,
+        border-color .18s ease,
+        opacity .18s ease;
+    box-shadow:
+        0 0 0 5px rgba(0,230,148,.025),
+        0 0 20px rgba(0,230,148,.09);
+}
+
+.cursor-ring.active{
+    width:52px;
+    height:52px;
+    border-color:rgba(89,168,255,.75);
+}
+
+.cursor-trail-dot{
+    position:fixed;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9998;
+    background:rgba(0,230,148,.62);
+    box-shadow:0 0 9px rgba(0,230,148,.34);
+    transform:translate(-50%,-50%);
+    animation:trailFade .52s ease-out forwards;
+}
+
+.mouse-spotlight{
+    position:fixed;
+    inset:0;
+    z-index:3;
+    pointer-events:none;
+    background:
+        radial-gradient(
+            300px circle at var(--mouse-x,50%) var(--mouse-y,50%),
+            rgba(0,230,148,.032),
+            transparent 72%
+        );
+    mix-blend-mode:screen;
+}
+
+/* =========================================================
+   PREMIUM QUEUE SURFACES
+========================================================= */
+
+.stat-card,
+.queue-control,
+.filter-container,
+.table-container,
+.admin-profile,
+.modal-content,
+.now-serving{
+    border:1px solid rgba(125,167,190,.08);
+    box-shadow:
+        0 16px 38px rgba(0,0,0,.17),
+        inset 0 1px 0 rgba(255,255,255,.018);
+}
+
+.stat-card,
+.queue-control,
+.filter-container,
+.table-container,
+.modal-content{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,30,41,.95),
+            rgba(7,17,27,.95)
+        );
+}
+
+.stat-card,
+.queue-control,
+.filter-container,
+.table-container,
+.now-serving{
+    position:relative;
+    overflow:hidden;
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+.stat-card::before,
+.queue-control::before,
+.filter-container::before,
+.table-container::before,
+.now-serving::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    padding:1px;
+    background:
+        linear-gradient(
+            120deg,
+            transparent 0%,
+            rgba(0,230,148,.15) 24%,
+            rgba(89,168,255,.09) 47%,
+            transparent 73%
+        );
+    background-size:220% 220%;
+    animation:borderFlow 7s linear infinite;
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    pointer-events:none;
+}
+
+.stat-card:hover,
+.queue-control:hover,
+.filter-container:hover,
+.now-serving:hover{
+    transform:translateY(-3px);
+    border-color:rgba(0,230,148,.14);
+    box-shadow:
+        0 22px 48px rgba(0,0,0,.21),
+        0 0 0 1px rgba(0,230,148,.03);
+}
+
+/* queue serving premium glow */
+.now-serving{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(6,63,49,.97),
+            rgba(11,110,80,.90)
+        );
+}
+
+.now-serving::after{
+    animation:tricycleFloat 4.5s ease-in-out infinite alternate;
+}
+
+.queue-number{
+    text-shadow:0 0 20px rgba(0,230,148,.14);
+    animation:numberEntrance .7s cubic-bezier(.2,.8,.2,1) both;
+}
+
+/* =========================================================
+   PREMIUM TITLE / LOGO
+========================================================= */
+
+.page-title h1{
+    position:relative;
+    display:inline-block;
+    background:
+        linear-gradient(
+            90deg,
+            #fff 0%,
+            #d7fff0 18%,
+            #00e694 38%,
+            #7edbff 57%,
+            #fff 77%,
+            #fff 100%
+        );
+    background-size:240% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:premiumTitleFlow 6s linear infinite;
+}
+
+.page-title h1::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-8px;
+    width:82px;
+    height:3px;
+    border-radius:20px;
+    background:
+        linear-gradient(
+            90deg,
+            var(--green-light),
+            var(--blue),
+            transparent
+        );
+    background-size:200% 100%;
+    animation:titleLineFlow 4s linear infinite;
+}
+
+.logo-green{
+    display:inline-block;
+    background:linear-gradient(90deg,#00e694,#9bffda,#00e694);
+    background-size:200% 100%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent !important;
+    animation:logoFlow 4s linear infinite;
+}
+
+.menu a.active{
+    position:relative;
+    box-shadow:
+        0 8px 24px rgba(6,184,121,.14),
+        inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.menu a.active::after{
+    content:"";
+    position:absolute;
+    right:10px;
+    top:50%;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:#c2ffe6;
+    transform:translateY(-50%);
+    box-shadow:0 0 12px rgba(194,255,230,.5);
+    animation:navPulse 1.7s ease-in-out infinite;
+}
+
+/* =========================================================
+   TABLE / STATUS / BUTTONS
+========================================================= */
+
+tbody tr{
+    transition:
+        background .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+tbody tr:hover{
+    transform:translateX(4px);
+    box-shadow:inset 3px 0 0 rgba(0,230,148,.55);
+}
+
+.status{
+    position:relative;
+    overflow:hidden;
+}
+
+.status::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    transform:translateX(-130%);
+    background:
+        linear-gradient(
+            100deg,
+            transparent 25%,
+            rgba(255,255,255,.12) 50%,
+            transparent 75%
+        );
+    animation:badgeSheen 5s ease-in-out infinite;
+}
+
+.control-btn,
+.add-button,
+.serve-button,
+.back-button,
+.remove-button,
+.cancel-button,
+.save-button{
+    position:relative;
+    overflow:hidden;
+    transition:
+        transform .18s ease,
+        filter .18s ease,
+        box-shadow .18s ease;
+}
+
+.control-btn:hover,
+.add-button:hover,
+.serve-button:hover,
+.back-button:hover,
+.remove-button:hover,
+.cancel-button:hover,
+.save-button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.05);
+}
+
+.call-next:hover,
+.add-button:hover,
+.save-button:hover{
+    box-shadow:
+        0 10px 25px rgba(6,184,121,.18),
+        0 0 20px rgba(0,230,148,.07);
+}
+
+.effect-ripple{
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%) scale(0);
+    background:rgba(255,255,255,.20);
+    animation:rippleBurst .65s ease-out forwards;
+}
+
+/* =========================================================
+   STAT NUMBER + MODAL + REVEAL
+========================================================= */
+
+.stat-number{
+    animation:numberEntrance .7s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.modal.show .modal-content{
+    animation:modalPop .32s cubic-bezier(.2,.9,.25,1.12);
+}
+
+.fx-reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:
+        opacity .65s ease,
+        transform .65s ease;
+}
+
+.fx-reveal.fx-visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* =========================================================
+   KEYFRAMES
+========================================================= */
+
+@keyframes auroraHazeShift{
+    from{transform:translate3d(-1%,0,0) scale(1)}
+    to{transform:translate3d(1.2%,18px,0) scale(1.05)}
+}
+
+@keyframes auroraRibbon1{
+    from{transform:translateX(-50%) translateY(0) rotate(-9deg) skewX(-10deg) scaleX(1)}
+    to{transform:translateX(-50%) translateY(34px) rotate(-12deg) skewX(-6deg) scaleX(.98)}
+}
+
+@keyframes auroraRibbon2{
+    from{transform:translateX(-50%) translateY(0) rotate(7deg) skewX(10deg)}
+    to{transform:translateX(-50%) translateY(24px) rotate(10deg) skewX(14deg) scaleX(1.04)}
+}
+
+@keyframes auroraRibbon3{
+    from{transform:translateX(-50%) rotate(-2deg) skewX(-7deg)}
+    to{transform:translateX(-50%) translateY(28px) rotate(-6deg) skewX(-9deg) scaleX(.95)}
+}
+
+@keyframes auroraCurtain{
+    from{background-position:0 0;transform:translateX(-50%) translateY(-6px)}
+    to{background-position:320px 0;transform:translateX(-50%) translateY(25px)}
+}
+
+@keyframes gridDrift{
+    from{background-position:0 0,0 0}
+    to{background-position:0 124px,124px 0}
+}
+
+@keyframes hydrogenBreath{
+    from{transform:scaleX(1.02) scaleY(.92);opacity:.60}
+    to{transform:scaleX(1.16) scaleY(1.06);opacity:1}
+}
+
+@keyframes plasmaWaveA{
+    from{transform:translateY(0) scaleX(1)}
+    to{transform:translateY(-12px) scaleX(1.03)}
+}
+
+@keyframes plasmaWaveB{
+    from{transform:translateY(0) scaleX(.96)}
+    to{transform:translateY(-18px) scaleX(1.07)}
+}
+
+@keyframes plasmaWaveC{
+    from{transform:translateY(6px) scaleX(1.02)}
+    to{transform:translateY(-10px) scaleX(.94)}
+}
+
+@keyframes atomFloat{
+    from{transform:translateY(0) rotate(-3deg)}
+    to{transform:translateY(-14px) rotate(4deg)}
+}
+
+@keyframes orbit1{
+    from{transform:rotate(0deg)}
+    to{transform:rotate(360deg)}
+}
+
+@keyframes orbit2{
+    from{transform:rotate(60deg)}
+    to{transform:rotate(420deg)}
+}
+
+@keyframes orbit3{
+    from{transform:rotate(120deg)}
+    to{transform:rotate(480deg)}
+}
+
+@keyframes horizonFlow{
+    from{background-position:0% 50%}
+    to{background-position:220% 50%}
+}
+
+@keyframes ionRise{
+    0%{transform:translate3d(0,0,0) scale(.7);opacity:0}
+    12%{opacity:.7}
+    60%{transform:translate3d(var(--ion-drift),-135px,0) scale(1)}
+    100%{transform:translate3d(0,-270px,0) scale(.4);opacity:0}
+}
+
+@keyframes borderFlow{
+    from{background-position:0% 50%}
+    to{background-position:200% 50%}
+}
+
+@keyframes premiumTitleFlow{
+    from{background-position:0% 50%}
+    to{background-position:240% 50%}
+}
+
+@keyframes titleLineFlow{
+    from{background-position:0 50%}
+    to{background-position:200% 50%}
+}
+
+@keyframes logoFlow{
+    from{background-position:0 50%}
+    to{background-position:200% 50%}
+}
+
+@keyframes navPulse{
+    0%,100%{opacity:.35;transform:translateY(-50%) scale(.8)}
+    50%{opacity:1;transform:translateY(-50%) scale(1.35)}
+}
+
+@keyframes badgeSheen{
+    0%,72%{transform:translateX(-130%)}
+    88%,100%{transform:translateX(130%)}
+}
+
+@keyframes numberEntrance{
+    from{opacity:0;transform:translateY(10px) scale(.96)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@keyframes tricycleFloat{
+    from{transform:translateY(0) rotate(-2deg)}
+    to{transform:translateY(-10px) rotate(2deg)}
+}
+
+@keyframes trailFade{
+    from{opacity:.65;transform:translate(-50%,-50%) scale(1)}
+    to{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+}
+
+@keyframes rippleBurst{
+    from{transform:translate(-50%,-50%) scale(0);opacity:.45}
+    to{transform:translate(-50%,-50%) scale(7);opacity:0}
+}
+
+@keyframes modalPop{
+    from{opacity:0;transform:translateY(14px) scale(.965)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@media(max-width:768px){
+    .lower-vignette,
+    .hydrogen-bottom{
+        left:0;
+    }
+
+    .hydrogen-bottom{
+        height:34vh;
+        min-height:220px;
+    }
+
+    .aurora-borealis{
+        inset:-12% -30% 46% -30%;
+        opacity:.70;
+    }
+
+    .aurora-ribbon{
+        width:130%;
+    }
+
+    .cursor-ring{
+        display:none;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+    *,
+    *::before,
+    *::after{
+        animation-duration:.001ms!important;
+        animation-iteration-count:1!important;
+        scroll-behavior:auto!important;
+    }
+
+    .h-ion,
+    .cursor-trail-dot{
+        display:none!important;
+    }
+
+    .fx-reveal{
+        opacity:1;
+        transform:none;
+    }
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<!-- PREMIUM BACKGROUND EFFECTS -->
+<div class="animated-bg" aria-hidden="true">
+
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="aurora-borealis">
+        <div class="aurora-haze"></div>
+        <div class="aurora-ribbon ribbon-1"></div>
+        <div class="aurora-ribbon ribbon-2"></div>
+        <div class="aurora-ribbon ribbon-3"></div>
+        <div class="aurora-curtain"></div>
+    </div>
+
+    <div class="bg-grid"></div>
+
+</div>
+
+<div class="mouse-spotlight" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<div class="lower-vignette" aria-hidden="true"></div>
+
+<div class="hydrogen-bottom" aria-hidden="true">
+
+    <canvas id="hydrogenCanvas"></canvas>
+
+    <div class="plasma-wave wave-a"></div>
+    <div class="plasma-wave wave-b"></div>
+    <div class="plasma-wave wave-c"></div>
+
+    <div class="h-atom left">
+        <div class="h-orbit o1"><span class="h-electron"></span></div>
+        <div class="h-orbit o2"><span class="h-electron"></span></div>
+        <div class="h-orbit o3"><span class="h-electron"></span></div>
+        <div class="h-nucleus"></div>
+    </div>
+
+    <div class="h-atom right">
+        <div class="h-orbit o1"><span class="h-electron"></span></div>
+        <div class="h-orbit o2"><span class="h-electron"></span></div>
+        <div class="h-orbit o3"><span class="h-electron"></span></div>
+        <div class="h-nucleus"></div>
+    </div>
+
+    <div class="energy-horizon"></div>
+    <div id="ionField"></div>
+
+</div>
+
+
+
+<!-- ==================================================
+     SIDEBAR
+================================================== -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        🛺 TODA
+
+        <br>
+
+        <span class="logo-green">
+            SYSTEM
+        </span>
+
+    </div>
+
+
+    <ul class="menu">
+
+        <li>
+            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\DashboardTODA.html">
+                ⌂ Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\DBmanagement.html">
+                👤 Driver Management
+            </a>
+        </li>
+
+        <li>
+            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\Queueing.html" class="active">
+                🚦 Digital Queueing
+            </a>
+        </li>
+
+        <li>
+            <a href="C:\Users\ASUS\OneDrive\Documents\Toda\driver_verification.html">
+                ▦ QR Driver Verification
+            </a>
+        </li>
+
+        <li>
+            <a href="announcement.html">
+                📢 Announcement
+            </a>
+        </li>
+
+        <li>
+            <a href="financial_dashboard.html">
+                💹 Financial Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="settings.html">
+                ⚙ Settings
+            </a>
+        </li>
+
+    </ul>
+
+</aside>
+
+
+
+<!-- ==================================================
+     MAIN CONTENT
+================================================== -->
+
+<main class="main-content">
+
+
+    <!-- HEADER -->
+
+    <div class="top-bar">
+
+        <div class="page-title">
+
+            <h1>
+                Digital Queueing
+            </h1>
+
+            <p>
+                Manage driver dispatch and TODA terminal queue
+            </p>
+
+        </div>
+
+
+        <div class="admin-profile">
+
+            <div class="admin-avatar">
+                👨‍💼
+            </div>
+
+            <div>
+
+                <div class="admin-name">
+                    Administrator
+                </div>
+
+                <div class="online">
+                    ● Online
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         QUEUE STATISTICS
+    ================================================== -->
+
+    <section class="statistics">
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Drivers Waiting
+            </div>
+
+            <div
+                class="stat-number yellow-number"
+                id="waitingCount"
+            >
+                0
+            </div>
+
+            <div class="stat-description">
+                Currently in Queue
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Now Serving
+            </div>
+
+            <div
+                class="stat-number green-number"
+                id="servingCount"
+            >
+                0
+            </div>
+
+            <div class="stat-description">
+                Currently Dispatched
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Completed Today
+            </div>
+
+            <div
+                class="stat-number blue-number"
+                id="completedCount"
+            >
+                0
+            </div>
+
+            <div class="stat-description">
+                Completed Queue Turns
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Average Wait Time
+            </div>
+
+            <div
+                class="stat-number"
+                id="averageWait"
+            >
+                0
+            </div>
+
+            <div class="stat-description">
+                Minutes
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         CURRENT SERVING + CONTROLS
+    ================================================== -->
+
+    <section class="queue-overview">
+
+
+        <!-- NOW SERVING -->
+
+        <div class="now-serving">
+
+            <div class="now-label">
+                NOW SERVING
+            </div>
+
+            <div id="nowServingContent">
+
+                <div class="no-serving">
+                    No driver is currently being served.
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- QUEUE CONTROLS -->
+
+        <div class="queue-control">
+
+            <h2>
+                Queue Controls
+            </h2>
+
+            <p>
+                Use these controls to manage the current TODA dispatch queue.
+            </p>
+
+
+            <div class="control-buttons">
+
+                <button
+                    class="control-btn call-next"
+                    onclick="callNextDriver()"
+                >
+                    ▶ Call Next Driver
+                </button>
+
+
+                <button
+                    class="control-btn complete-btn"
+                    onclick="completeCurrentDriver()"
+                >
+                    ✓ Complete Current
+                </button>
+
+
+                <button
+                    class="control-btn clear-btn"
+                    onclick="clearWaitingQueue()"
+                >
+                    ✕ Clear Waiting Queue
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         QUEUE LIST HEADER
+    ================================================== -->
+
+    <div class="queue-header">
+
+        <h2>
+            Driver Queue
+        </h2>
+
+
+        <button
+            class="add-button"
+            onclick="openAddDriverModal()"
+        >
+            + Add Driver to Queue
+        </button>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         SEARCH / FILTER
+    ================================================== -->
+
+    <div class="filter-container">
+
+
+        <input
+            type="text"
+            id="searchDriver"
+            class="search-box"
+            placeholder="🔍 Search driver, ID or plate number..."
+        >
+
+
+        <select
+            id="statusFilter"
+            class="filter-select"
+        >
+
+            <option value="">
+                All Status
+            </option>
+
+            <option value="Waiting">
+                Waiting
+            </option>
+
+            <option value="Serving">
+                Serving
+            </option>
+
+            <option value="Completed">
+                Completed
+            </option>
+
+        </select>
+
+
+    </div>
+
+
+
+    <!-- ==================================================
+         QUEUE TABLE
+    ================================================== -->
+
+    <div class="table-container">
+
+
+        <table>
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Queue No.
+                    </th>
+
+                    <th>
+                        Driver
+                    </th>
+
+                    <th>
+                        Plate Number
+                    </th>
+
+                    <th>
+                        Time Joined
+                    </th>
+
+                    <th>
+                        Waiting Time
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="queueTable">
+
+            </tbody>
+
+
+        </table>
+
+
+    </div>
+
+
+</main>
+
+
+
+<!-- ==================================================
+     ADD DRIVER MODAL
+================================================== -->
+
+<div
+    class="modal"
+    id="driverModal"
+>
+
+
+    <div class="modal-content">
+
+
+        <h2 class="modal-title">
+            Add Driver to Queue
+        </h2>
+
+
+        <p class="modal-subtitle">
+            Enter the registered driver's information.
+        </p>
+
+
+
+        <form id="driverForm">
+
+
+            <div class="form-grid">
+
+
+                <!-- DRIVER ID -->
+
+                <div class="form-group">
+
+                    <label>
+                        Driver ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="driverID"
+                        placeholder="Example: DRV-025"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- DRIVER NAME -->
+
+                <div class="form-group">
+
+                    <label>
+                        Driver Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="driverName"
+                        placeholder="Full name"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- PLATE NUMBER -->
+
+                <div class="form-group">
+
+                    <label>
+                        Plate Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="plateNumber"
+                        placeholder="Example: 123 ABC"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- TERMINAL -->
+
+                <div class="form-group">
+
+                    <label>
+                        Terminal
+                    </label>
+
+                    <select id="terminal">
+
+                        <option value="Main TODA Terminal">
+                            Main TODA Terminal
+                        </option>
+
+                        <option value="Barangay Terminal">
+                            Barangay Terminal
+                        </option>
+
+                        <option value="Market Terminal">
+                            Market Terminal
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="modal-buttons">
+
+
+                <button
+                    type="button"
+                    class="cancel-button"
+                    onclick="closeDriverModal()"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="save-button"
+                >
+                    Add to Queue
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+<script>
+
+
+/* ==================================================
+   SAMPLE DIGITAL QUEUE DATA
+================================================== */
+
+let queue = [
+
+    {
+        id: 1,
+        queueNumber: 1,
+        driverID: "DRV-001",
+        driverName: "Juan Dela Cruz",
+        plateNumber: "123 ABC",
+        terminal: "Main TODA Terminal",
+        joinedTime: "2026-08-28T07:05:00",
+        status: "Serving",
+        completedTime: null
+    },
+
+    {
+        id: 2,
+        queueNumber: 2,
+        driverID: "DRV-014",
+        driverName: "Mark Santos",
+        plateNumber: "456 DEF",
+        terminal: "Main TODA Terminal",
+        joinedTime: "2026-08-28T07:12:00",
+        status: "Waiting",
+        completedTime: null
+    },
+
+    {
+        id: 3,
+        queueNumber: 3,
+        driverID: "DRV-021",
+        driverName: "Pedro Reyes",
+        plateNumber: "789 GHI",
+        terminal: "Main TODA Terminal",
+        joinedTime: "2026-08-28T07:18:00",
+        status: "Waiting",
+        completedTime: null
+    },
+
+    {
+        id: 4,
+        queueNumber: 4,
+        driverID: "DRV-008",
+        driverName: "Carlo Mendoza",
+        plateNumber: "321 JKL",
+        terminal: "Main TODA Terminal",
+        joinedTime: "2026-08-28T07:25:00",
+        status: "Waiting",
+        completedTime: null
+    },
+
+    {
+        id: 5,
+        queueNumber: 5,
+        driverID: "DRV-016",
+        driverName: "Jose Garcia",
+        plateNumber: "654 MNO",
+        terminal: "Main TODA Terminal",
+        joinedTime: "2026-08-28T07:31:00",
+        status: "Waiting",
+        completedTime: null
+    },
+
+    {
+        id: 6,
+        queueNumber: 6,
+        driverID: "DRV-032",
+        driverName: "Ramon Flores",
+        plateNumber: "987 PQR",
+        terminal: "Main TODA Terminal",
+        joinedTime: "2026-08-28T07:38:00",
+        status: "Waiting",
+        completedTime: null
+    },
+
+    {
+        id: 7,
+        queueNumber: 7,
+        driverID: "DRV-019",
+        driverName: "Miguel Torres",
+        plateNumber: "741 STU",
+        terminal: "Main TODA Terminal",
+        joinedTime: "2026-08-28T07:45:00",
+        status: "Waiting",
+        completedTime: null
+    }
+
+];
+
+
+
+/* ==================================================
+   LOAD SAVED DATA
+================================================== */
+
+function loadQueue() {
+
+    const savedQueue =
+        localStorage.getItem(
+            "todaDigitalQueue"
+        );
+
+
+    if (savedQueue) {
+
+        queue =
+            JSON.parse(savedQueue);
+
+    }
+
+}
+
+
+
+/* ==================================================
+   SAVE DATA
+================================================== */
+
+function saveQueue() {
+
+    localStorage.setItem(
+
+        "todaDigitalQueue",
+
+        JSON.stringify(queue)
+
+    );
+
+}
+
+
+
+/* ==================================================
+   DISPLAY QUEUE
+================================================== */
+
+function displayQueue() {
+
+
+    const table =
+        document.getElementById(
+            "queueTable"
+        );
+
+
+    const searchText =
+        document.getElementById(
+            "searchDriver"
+        )
+        .value
+        .toLowerCase();
+
+
+    const statusFilter =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+
+    let filteredQueue =
+
+        queue.filter(
+
+            function(driver) {
+
+
+                const searchMatch =
+
+                    driver.driverName
+                    .toLowerCase()
+                    .includes(searchText)
+
+                    ||
+
+                    driver.driverID
+                    .toLowerCase()
+                    .includes(searchText)
+
+                    ||
+
+                    driver.plateNumber
+                    .toLowerCase()
+                    .includes(searchText);
+
+
+
+                const statusMatch =
+
+                    statusFilter === ""
+
+                    ||
+
+                    driver.status === statusFilter;
+
+
+
+                return (
+                    searchMatch
+                    &&
+                    statusMatch
+                );
+
+
+            }
+
+        );
+
+
+
+    filteredQueue.sort(
+
+        function(a, b) {
+
+            return a.queueNumber - b.queueNumber;
+
+        }
+
+    );
+
+
+
+    table.innerHTML = "";
+
+
+
+    if (filteredQueue.length === 0) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="empty-row"
+                >
+                    No drivers found in the queue.
+                </td>
+
+            </tr>
+
+        `;
+
+        updateStatistics();
+
+        updateNowServing();
+
+        return;
+
+    }
+
+
+
+    filteredQueue.forEach(
+
+        function(driver) {
+
+
+            const row =
+                document.createElement("tr");
+
+
+
+            row.innerHTML = `
+
+
+                <td>
+
+                    <span class="queue-no">
+
+                        Q-${String(
+                            driver.queueNumber
+                        ).padStart(3, "0")}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <div class="driver-name">
+
+                        ${escapeHTML(
+                            driver.driverName
+                        )}
+
+                    </div>
+
+                    <div class="driver-id">
+
+                        ${escapeHTML(
+                            driver.driverID
+                        )}
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHTML(
+                        driver.plateNumber
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${formatTime(
+                        driver.joinedTime
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${getWaitingTime(
+                        driver
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    <span
+                        class="
+                            status
+                            ${getStatusClass(
+                                driver.status
+                            )}
+                        "
+                    >
+
+                        ${driver.status}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ${getActionButtons(driver)}
+
+                </td>
+
+
+            `;
+
+
+            table.appendChild(row);
+
+
+        }
+
+    );
+
+
+    updateStatistics();
+
+    updateNowServing();
+
+}
+
+
+
+/* ==================================================
+   ACTION BUTTONS
+================================================== */
+
+function getActionButtons(driver) {
+
+
+    if (driver.status === "Waiting") {
+
+        return `
+
+            <div class="action-buttons">
+
+                <button
+                    class="serve-button"
+                    onclick="
+                        serveDriver(
+                            ${driver.id}
+                        )
+                    "
+                >
+                    Serve
+                </button>
+
+                <button
+                    class="back-button"
+                    onclick="
+                        moveToBack(
+                            ${driver.id}
+                        )
+                    "
+                >
+                    Move Back
+                </button>
+
+                <button
+                    class="remove-button"
+                    onclick="
+                        removeDriver(
+                            ${driver.id}
+                        )
+                    "
+                >
+                    Remove
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    if (driver.status === "Serving") {
+
+        return `
+
+            <div class="action-buttons">
+
+                <button
+                    class="serve-button"
+                    onclick="
+                        completeDriver(
+                            ${driver.id}
+                        )
+                    "
+                >
+                    Complete
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    return `
+
+        <span style="color:#748b9a;">
+            Completed
+        </span>
+
+    `;
+
+}
+
+
+
+/* ==================================================
+   CALL NEXT DRIVER
+================================================== */
+
+function callNextDriver() {
+
+
+    const currentlyServing =
+
+        queue.find(
+
+            function(driver) {
+
+                return (
+                    driver.status === "Serving"
+                );
+
+            }
+
+        );
+
+
+
+    if (currentlyServing) {
+
+        alert(
+
+            "A driver is currently being served. Complete the current driver first."
+
+        );
+
+        return;
+
+    }
+
+
+
+    const waitingDrivers =
+
+        queue
+        .filter(
+
+            function(driver) {
+
+                return (
+                    driver.status === "Waiting"
+                );
+
+            }
+
+        )
+        .sort(
+
+            function(a, b) {
+
+                return (
+                    a.queueNumber
+                    -
+                    b.queueNumber
+                );
+
+            }
+
+        );
+
+
+
+    if (waitingDrivers.length === 0) {
+
+        alert(
+            "There are no waiting drivers."
+        );
+
+        return;
+
+    }
+
+
+
+    waitingDrivers[0].status =
+        "Serving";
+
+
+    saveQueue();
+
+    displayQueue();
+
+}
+
+
+
+/* ==================================================
+   SERVE SPECIFIC DRIVER
+================================================== */
+
+function serveDriver(id) {
+
+
+    const currentlyServing =
+
+        queue.find(
+
+            function(driver) {
+
+                return (
+                    driver.status === "Serving"
+                );
+
+            }
+
+        );
+
+
+
+    if (currentlyServing) {
+
+        alert(
+
+            "Please complete the current driver before serving another driver."
+
+        );
+
+        return;
+
+    }
+
+
+
+    const driver =
+
+        queue.find(
+
+            function(item) {
+
+                return item.id === id;
+
+            }
+
+        );
+
+
+
+    if (!driver) {
+
+        return;
+
+    }
+
+
+
+    driver.status =
+        "Serving";
+
+
+    saveQueue();
+
+    displayQueue();
+
+}
+
+
+
+/* ==================================================
+   COMPLETE CURRENT DRIVER
+================================================== */
+
+function completeCurrentDriver() {
+
+
+    const current =
+
+        queue.find(
+
+            function(driver) {
+
+                return (
+                    driver.status === "Serving"
+                );
+
+            }
+
+        );
+
+
+
+    if (!current) {
+
+        alert(
+            "There is no driver currently being served."
+        );
+
+        return;
+
+    }
+
+
+
+    completeDriver(
+        current.id
+    );
+
+}
+
+
+
+/* ==================================================
+   COMPLETE DRIVER
+================================================== */
+
+function completeDriver(id) {
+
+
+    const driver =
+
+        queue.find(
+
+            function(item) {
+
+                return item.id === id;
+
+            }
+
+        );
+
+
+
+    if (!driver) {
+
+        return;
+
+    }
+
+
+
+    driver.status =
+        "Completed";
+
+
+    driver.completedTime =
+        new Date().toISOString();
+
+
+    saveQueue();
+
+    displayQueue();
+
+}
+
+
+
+/* ==================================================
+   MOVE DRIVER TO BACK
+================================================== */
+
+function moveToBack(id) {
+
+
+    const driver =
+
+        queue.find(
+
+            function(item) {
+
+                return item.id === id;
+
+            }
+
+        );
+
+
+
+    if (!driver) {
+
+        return;
+
+    }
+
+
+
+    const waitingDrivers =
+
+        queue.filter(
+
+            function(item) {
+
+                return (
+                    item.status === "Waiting"
+                );
+
+            }
+
+        );
+
+
+
+    const highestNumber =
+
+        Math.max(
+
+            ...waitingDrivers.map(
+
+                function(item) {
+
+                    return item.queueNumber;
+
+                }
+
+            ),
+
+            0
+
+        );
+
+
+
+    driver.queueNumber =
+        highestNumber + 1;
+
+
+    normalizeWaitingQueue();
+
+
+    saveQueue();
+
+    displayQueue();
+
+}
+
+
+
+/* ==================================================
+   REMOVE DRIVER
+================================================== */
+
+function removeDriver(id) {
+
+
+    const confirmation =
+
+        confirm(
+
+            "Remove this driver from the queue?"
+
+        );
+
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+
+    queue =
+
+        queue.filter(
+
+            function(driver) {
+
+                return driver.id !== id;
+
+            }
+
+        );
+
+
+    normalizeWaitingQueue();
+
+    saveQueue();
+
+    displayQueue();
+
+}
+
+
+
+/* ==================================================
+   CLEAR WAITING QUEUE
+================================================== */
+
+function clearWaitingQueue() {
+
+
+    const confirmation =
+
+        confirm(
+
+            "Are you sure you want to remove all waiting drivers?"
+
+        );
+
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+
+    queue =
+
+        queue.filter(
+
+            function(driver) {
+
+                return (
+                    driver.status !== "Waiting"
+                );
+
+            }
+
+        );
+
+
+    saveQueue();
+
+    displayQueue();
+
+}
+
+
+
+/* ==================================================
+   NORMALIZE WAITING QUEUE
+================================================== */
+
+function normalizeWaitingQueue() {
+
+
+    const waitingDrivers =
+
+        queue
+        .filter(
+
+            function(driver) {
+
+                return (
+                    driver.status === "Waiting"
+                );
+
+            }
+
+        )
+        .sort(
+
+            function(a, b) {
+
+                return (
+                    a.queueNumber
+                    -
+                    b.queueNumber
+                );
+
+            }
+
+        );
+
+
+
+    waitingDrivers.forEach(
+
+        function(driver, index) {
+
+            driver.queueNumber =
+                index + 1;
+
+        }
+
+    );
+
+}
+
+
+
+/* ==================================================
+   UPDATE NOW SERVING
+================================================== */
+
+function updateNowServing() {
+
+
+    const container =
+
+        document.getElementById(
+            "nowServingContent"
+        );
+
+
+
+    const driver =
+
+        queue.find(
+
+            function(item) {
+
+                return (
+                    item.status === "Serving"
+                );
+
+            }
+
+        );
+
+
+
+    if (!driver) {
+
+        container.innerHTML = `
+
+            <div class="no-serving">
+
+                No driver is currently being served.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    container.innerHTML = `
+
+        <div class="queue-number">
+
+            Q-${String(
+                driver.queueNumber
+            ).padStart(3, "0")}
+
+        </div>
+
+
+        <div class="serving-driver">
+
+            ${escapeHTML(
+                driver.driverName
+            )}
+
+        </div>
+
+
+        <div class="serving-plate">
+
+            ${escapeHTML(
+                driver.plateNumber
+            )}
+
+            • ${escapeHTML(
+                driver.driverID
+            )}
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* ==================================================
+   UPDATE STATISTICS
+================================================== */
+
+function updateStatistics() {
+
+
+    const waiting =
+
+        queue.filter(
+
+            function(driver) {
+
+                return (
+                    driver.status === "Waiting"
+                );
+
+            }
+
+        );
+
+
+
+    const serving =
+
+        queue.filter(
+
+            function(driver) {
+
+                return (
+                    driver.status === "Serving"
+                );
+
+            }
+
+        );
+
+
+
+    const completed =
+
+        queue.filter(
+
+            function(driver) {
+
+                return (
+                    driver.status === "Completed"
+                );
+
+            }
+
+        );
+
+
+
+    document.getElementById(
+        "waitingCount"
+    ).textContent =
+        waiting.length;
+
+
+
+    document.getElementById(
+        "servingCount"
+    ).textContent =
+        serving.length;
+
+
+
+    document.getElementById(
+        "completedCount"
+    ).textContent =
+        completed.length;
+
+
+
+    let totalMinutes = 0;
+
+
+
+    waiting.forEach(
+
+        function(driver) {
+
+            totalMinutes +=
+                calculateWaitMinutes(
+                    driver.joinedTime
+                );
+
+        }
+
+    );
+
+
+
+    let average = 0;
+
+
+
+    if (waiting.length > 0) {
+
+        average =
+            Math.round(
+
+                totalMinutes
+                /
+                waiting.length
+
+            );
+
+    }
+
+
+
+    document.getElementById(
+        "averageWait"
+    ).textContent =
+        average;
+
+}
+
+
+
+/* ==================================================
+   OPEN ADD DRIVER MODAL
+================================================== */
+
+function openAddDriverModal() {
+
+
+    document.getElementById(
+        "driverForm"
+    ).reset();
+
+
+    document.getElementById(
+        "driverModal"
+    ).classList.add("show");
+
+}
+
+
+
+/* ==================================================
+   CLOSE DRIVER MODAL
+================================================== */
+
+function closeDriverModal() {
+
+
+    document.getElementById(
+        "driverModal"
+    ).classList.remove("show");
+
+}
+
+
+
+/* ==================================================
+   ADD DRIVER
+================================================== */
+
+document.getElementById(
+    "driverForm"
+)
+.addEventListener(
+
+    "submit",
+
+    function(event) {
+
+
+        event.preventDefault();
+
+
+
+        const driverID =
+
+            document.getElementById(
+                "driverID"
+            )
+            .value
+            .trim();
+
+
+
+        const driverName =
+
+            document.getElementById(
+                "driverName"
+            )
+            .value
+            .trim();
+
+
+
+        const plateNumber =
+
+            document.getElementById(
+                "plateNumber"
+            )
+            .value
+            .trim();
+
+
+
+        const terminal =
+
+            document.getElementById(
+                "terminal"
+            ).value;
+
+
+
+        const alreadyInQueue =
+
+            queue.some(
+
+                function(driver) {
+
+                    return (
+
+                        driver.driverID
+                        .toLowerCase()
+                        ===
+                        driverID
+                        .toLowerCase()
+
+                        &&
+
+                        driver.status !==
+                        "Completed"
+
+                    );
+
+                }
+
+            );
+
+
+
+        if (alreadyInQueue) {
+
+            alert(
+
+                "This driver is already in the queue."
+
+            );
+
+            return;
+
+        }
+
+
+
+        const activeDrivers =
+
+            queue.filter(
+
+                function(driver) {
+
+                    return (
+                        driver.status !== "Completed"
+                    );
+
+                }
+
+            );
+
+
+
+        const highestQueueNumber =
+
+            activeDrivers.length > 0
+
+            ?
+
+            Math.max(
+
+                ...activeDrivers.map(
+
+                    function(driver) {
+
+                        return (
+                            driver.queueNumber
+                        );
+
+                    }
+
+                )
+
+            )
+
+            :
+
+            0;
+
+
+
+        const newDriver = {
+
+
+            id:
+                Date.now(),
+
+
+            queueNumber:
+                highestQueueNumber + 1,
+
+
+            driverID:
+                driverID,
+
+
+            driverName:
+                driverName,
+
+
+            plateNumber:
+                plateNumber,
+
+
+            terminal:
+                terminal,
+
+
+            joinedTime:
+                new Date().toISOString(),
+
+
+            status:
+                "Waiting",
+
+
+            completedTime:
+                null
+
+        };
+
+
+
+        queue.push(
+            newDriver
+        );
+
+
+        saveQueue();
+
+
+        closeDriverModal();
+
+
+        displayQueue();
+
+
+    }
+
+);
+
+
+
+/* ==================================================
+   WAITING TIME
+================================================== */
+
+function calculateWaitMinutes(joinedTime) {
+
+
+    const joined =
+        new Date(joinedTime);
+
+
+    const now =
+        new Date();
+
+
+    const difference =
+        now - joined;
+
+
+    const minutes =
+        Math.floor(
+
+            difference
+            /
+            60000
+
+        );
+
+
+    return Math.max(
+        minutes,
+        0
+    );
+
+}
+
+
+
+function getWaitingTime(driver) {
+
+
+    if (driver.status === "Completed") {
+
+        return "Completed";
+
+    }
+
+
+
+    const minutes =
+
+        calculateWaitMinutes(
+            driver.joinedTime
+        );
+
+
+
+    if (minutes < 60) {
+
+        return minutes + " min";
+
+    }
+
+
+
+    const hours =
+
+        Math.floor(
+            minutes / 60
+        );
+
+
+    const remainingMinutes =
+
+        minutes % 60;
+
+
+
+    return (
+
+        hours
+        +
+        " hr "
+        +
+        remainingMinutes
+        +
+        " min"
+
+    );
+
+}
+
+
+
+/* ==================================================
+   TIME FORMAT
+================================================== */
+
+function formatTime(dateString) {
+
+
+    const date =
+        new Date(dateString);
+
+
+    return date.toLocaleTimeString(
+
+        "en-US",
+
+        {
+
+            hour:
+                "2-digit",
+
+            minute:
+                "2-digit"
+
+        }
+
+    );
+
+}
+
+
+
+/* ==================================================
+   STATUS CLASS
+================================================== */
+
+function getStatusClass(status) {
+
+
+    if (status === "Waiting") {
+
+        return "waiting-status";
+
+    }
+
+
+    if (status === "Serving") {
+
+        return "serving-status";
+
+    }
+
+
+    return "completed-status";
+
+}
+
+
+
+/* ==================================================
+   HTML SECURITY
+================================================== */
+
+function escapeHTML(text) {
+
+
+    return String(text).replace(
+
+        /[&<>"']/g,
+
+        function(character) {
+
+
+            const characters = {
+
+                "&": "&amp;",
+
+                "<": "&lt;",
+
+                ">": "&gt;",
+
+                '"': "&quot;",
+
+                "'": "&#039;"
+
+            };
+
+
+            return characters[
+                character
+            ];
+
+        }
+
+    );
+
+}
+
+
+
+/* ==================================================
+   SEARCH
+================================================== */
+
+document.getElementById(
+    "searchDriver"
+)
+.addEventListener(
+
+    "input",
+
+    displayQueue
+
+);
+
+
+
+/* ==================================================
+   FILTER
+================================================== */
+
+document.getElementById(
+    "statusFilter"
+)
+.addEventListener(
+
+    "change",
+
+    displayQueue
+
+);
+
+
+
+/* ==================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+================================================== */
+
+document.getElementById(
+    "driverModal"
+)
+.addEventListener(
+
+    "click",
+
+    function(event) {
+
+
+        if (
+            event.target === this
+        ) {
+
+            closeDriverModal();
+
+        }
+
+    }
+
+);
+
+
+
+/* ==================================================
+   UPDATE WAIT TIMES AUTOMATICALLY
+================================================== */
+
+setInterval(
+
+    function() {
+
+        displayQueue();
+
+    },
+
+    30000
+
+);
+
+
+
+/* ==================================================
+   INITIALIZE SYSTEM
+================================================== */
+
+loadQueue();
+
+displayQueue();
+
+
+
+
+/* =========================================================
+   PREMIUM DIGITAL QUEUE EFFECTS
+========================================================= */
+(function premiumQueueEffects(){
+
+    const reducedMotion =
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const pixelRatio =
+        Math.min(window.devicePixelRatio || 1, 2);
+
+    const mouse = {
+        x:-9999,
+        y:-9999,
+        active:false
+    };
+
+    document.documentElement.style.setProperty("--mouse-x","50%");
+    document.documentElement.style.setProperty("--mouse-y","50%");
+
+    /* PARTICLE NETWORK */
+    const canvas =
+        document.getElementById("particleCanvas");
+
+    if(canvas){
+
+        const ctx =
+            canvas.getContext("2d");
+
+        let width = 0;
+        let height = 0;
+
+        const particles = [];
+        const connectionDistance = 115;
+        const mouseRadius = 125;
+
+        function resizeParticles(){
+
+            width = window.innerWidth;
+            height = window.innerHeight;
+
+            canvas.width =
+                Math.floor(width * pixelRatio);
+
+            canvas.height =
+                Math.floor(height * pixelRatio);
+
+            canvas.style.width = width + "px";
+            canvas.style.height = height + "px";
+
+            ctx.setTransform(
+                pixelRatio,0,0,pixelRatio,0,0
+            );
+
+            const target =
+                Math.max(
+                    45,
+                    Math.min(
+                        110,
+                        Math.floor(width * height / 15000)
+                    )
+                );
+
+            while(particles.length > target){
+                particles.pop();
+            }
+
+            while(particles.length < target){
+
+                particles.push({
+                    x:Math.random() * width,
+                    y:Math.random() * height,
+                    vx:(Math.random()-.5) * .18,
+                    vy:(Math.random()-.5) * .18,
+                    radius:Math.random() * 1.5 + .7,
+                    pulse:Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        function updateParticle(p){
+
+            if(reducedMotion){
+                return;
+            }
+
+            p.x += p.vx;
+            p.y += p.vy;
+            p.pulse += .01;
+
+            if(p.x < -10) p.x = width + 10;
+            if(p.x > width + 10) p.x = -10;
+            if(p.y < -10) p.y = height + 10;
+            if(p.y > height + 10) p.y = -10;
+
+            if(mouse.active){
+
+                const dx = p.x - mouse.x;
+                const dy = p.y - mouse.y;
+                const distSq = dx*dx + dy*dy;
+
+                if(
+                    distSq < mouseRadius*mouseRadius &&
+                    distSq > 0
+                ){
+
+                    const dist = Math.sqrt(distSq);
+                    const force =
+                        (mouseRadius-dist)/mouseRadius;
+
+                    p.x += (dx/dist) * force * 2.7;
+                    p.y += (dy/dist) * force * 2.7;
+                }
+            }
+        }
+
+        function renderParticles(){
+
+            ctx.clearRect(0,0,width,height);
+
+            for(let i=0;i<particles.length;i++){
+
+                const a = particles[i];
+                updateParticle(a);
+
+                for(let j=i+1;j<particles.length;j++){
+
+                    const b = particles[j];
+                    const dx = a.x-b.x;
+                    const dy = a.y-b.y;
+                    const distanceSq = dx*dx+dy*dy;
+
+                    if(
+                        distanceSq <
+                        connectionDistance*connectionDistance
+                    ){
+
+                        const distance = Math.sqrt(distanceSq);
+                        const alpha =
+                            (1-distance/connectionDistance)*.10;
+
+                        ctx.beginPath();
+                        ctx.moveTo(a.x,a.y);
+                        ctx.lineTo(b.x,b.y);
+                        ctx.strokeStyle =
+                            "rgba(72,210,165,"+
+                            alpha.toFixed(3)+")";
+                        ctx.lineWidth=.55;
+                        ctx.stroke();
+                    }
+                }
+
+                if(mouse.active){
+
+                    const dx = a.x-mouse.x;
+                    const dy = a.y-mouse.y;
+                    const distSq = dx*dx+dy*dy;
+
+                    if(distSq < mouseRadius*mouseRadius){
+
+                        const distance = Math.sqrt(distSq);
+                        const alpha =
+                            (1-distance/mouseRadius)*.34;
+
+                        ctx.beginPath();
+                        ctx.moveTo(mouse.x,mouse.y);
+                        ctx.lineTo(a.x,a.y);
+                        ctx.strokeStyle =
+                            "rgba(0,230,148,"+
+                            alpha.toFixed(3)+")";
+                        ctx.lineWidth=.8;
+                        ctx.stroke();
+                    }
+                }
+
+                const pulse =
+                    .60 + Math.sin(a.pulse)*.18;
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    a.x,
+                    a.y,
+                    a.radius,
+                    0,
+                    Math.PI*2
+                );
+
+                ctx.fillStyle =
+                    "rgba(145,255,215,"+
+                    pulse.toFixed(3)+")";
+
+                ctx.fill();
+            }
+
+            if(!reducedMotion){
+                requestAnimationFrame(renderParticles);
+            }
+        }
+
+        window.addEventListener(
+            "resize",
+            resizeParticles
+        );
+
+        resizeParticles();
+        renderParticles();
+    }
+
+    /* CURSOR + TRAIL */
+    const cursorRing =
+        document.getElementById("cursorRing");
+
+    let lastTrail = 0;
+
+    window.addEventListener(
+        "pointermove",
+        function(event){
+
+            mouse.x = event.clientX;
+            mouse.y = event.clientY;
+            mouse.active = true;
+
+            document.documentElement.style.setProperty(
+                "--mouse-x",
+                event.clientX + "px"
+            );
+
+            document.documentElement.style.setProperty(
+                "--mouse-y",
+                event.clientY + "px"
+            );
+
+            if(cursorRing){
+                cursorRing.style.left =
+                    event.clientX + "px";
+                cursorRing.style.top =
+                    event.clientY + "px";
+                cursorRing.style.opacity = "1";
+            }
+
+            if(!reducedMotion){
+
+                const now = performance.now();
+
+                if(now-lastTrail > 42){
+
+                    lastTrail = now;
+
+                    const trail =
+                        document.createElement("span");
+
+                    trail.className =
+                        "cursor-trail-dot";
+
+                    trail.style.left =
+                        event.clientX + "px";
+
+                    trail.style.top =
+                        event.clientY + "px";
+
+                    document.body.appendChild(trail);
+
+                    setTimeout(
+                        ()=>trail.remove(),
+                        560
+                    );
+                }
+            }
+        }
+    );
+
+    document.documentElement.addEventListener(
+        "mouseleave",
+        function(){
+
+            mouse.active = false;
+
+            if(cursorRing){
+                cursorRing.style.opacity = "0";
+            }
+        }
+    );
+
+    if(cursorRing){
+
+        document.querySelectorAll(
+            "button,a,input,select,.stat-card,.queue-control,.filter-container,.table-container,.now-serving"
+        ).forEach(element=>{
+
+            element.addEventListener(
+                "mouseenter",
+                ()=>cursorRing.classList.add("active")
+            );
+
+            element.addEventListener(
+                "mouseleave",
+                ()=>cursorRing.classList.remove("active")
+            );
+        });
+    }
+
+    /* GREEN HYDROGEN PLASMA */
+    const hydrogenCanvas =
+        document.getElementById("hydrogenCanvas");
+
+    if(hydrogenCanvas){
+
+        const hctx =
+            hydrogenCanvas.getContext("2d");
+
+        let hWidth = 0;
+        let hHeight = 0;
+        let time = 0;
+
+        const points = [];
+
+        function resizeHydrogen(){
+
+            const rect =
+                hydrogenCanvas.getBoundingClientRect();
+
+            hWidth =
+                Math.max(rect.width,1);
+
+            hHeight =
+                Math.max(rect.height,1);
+
+            hydrogenCanvas.width =
+                Math.floor(hWidth * pixelRatio);
+
+            hydrogenCanvas.height =
+                Math.floor(hHeight * pixelRatio);
+
+            hctx.setTransform(
+                pixelRatio,0,0,pixelRatio,0,0
+            );
+
+            points.length = 0;
+
+            const count =
+                Math.max(
+                    22,
+                    Math.min(
+                        52,
+                        Math.floor(hWidth/25)
+                    )
+                );
+
+            for(let i=0;i<count;i++){
+
+                points.push({
+                    x:(i/(count-1))*hWidth,
+                    phase:i*.52,
+                    speed:.7+(i%4)*.13
+                });
+            }
+        }
+
+        function plasmaLine(
+            baseY,
+            amplitude,
+            alpha,
+            lineWidth
+        ){
+
+            hctx.beginPath();
+
+            points.forEach(
+                (p,index)=>{
+
+                    let y =
+                        baseY +
+                        Math.sin(
+                            time*p.speed+p.phase
+                        )*amplitude +
+                        Math.sin(
+                            time*.64+p.phase*.45
+                        )*5;
+
+                    if(mouse.active){
+
+                        const rect =
+                            hydrogenCanvas.getBoundingClientRect();
+
+                        const localX =
+                            mouse.x-rect.left;
+
+                        const dx =
+                            p.x-localX;
+
+                        if(Math.abs(dx)<150){
+
+                            const influence =
+                                1-Math.abs(dx)/150;
+
+                            y -= influence*14;
+                        }
+                    }
+
+                    if(index===0){
+                        hctx.moveTo(p.x,y);
+                    }else{
+                        hctx.lineTo(p.x,y);
+                    }
+                }
+            );
+
+            hctx.strokeStyle =
+                "rgba(95,255,198,"+
+                alpha+")";
+
+            hctx.lineWidth =
+                lineWidth;
+
+            hctx.stroke();
+        }
+
+        function energyNodes(){
+
+            points.forEach(
+                (p,index)=>{
+
+                    if(index%4!==0){
+                        return;
+                    }
+
+                    const y =
+                        hHeight*.72 +
+                        Math.sin(
+                            time*p.speed+p.phase
+                        )*20;
+
+                    hctx.beginPath();
+
+                    hctx.arc(
+                        p.x,
+                        y,
+                        1.7,
+                        0,
+                        Math.PI*2
+                    );
+
+                    hctx.fillStyle =
+                        "rgba(160,255,220,.50)";
+
+                    hctx.fill();
+                }
+            );
+        }
+
+        function renderHydrogen(){
+
+            hctx.clearRect(
+                0,0,hWidth,hHeight
+            );
+
+            time += .016;
+
+            plasmaLine(
+                hHeight*.67,
+                20,
+                .22,
+                1.05
+            );
+
+            plasmaLine(
+                hHeight*.76,
+                14,
+                .13,
+                .8
+            );
+
+            plasmaLine(
+                hHeight*.84,
+                10,
+                .08,
+                .65
+            );
+
+            energyNodes();
+
+            if(!reducedMotion){
+                requestAnimationFrame(renderHydrogen);
+            }
+        }
+
+        window.addEventListener(
+            "resize",
+            resizeHydrogen
+        );
+
+        resizeHydrogen();
+        renderHydrogen();
+    }
+
+    /* FLOATING IONS */
+    const ionField =
+        document.getElementById("ionField");
+
+    if(ionField && !reducedMotion){
+
+        for(let i=0;i<30;i++){
+
+            const ion =
+                document.createElement("span");
+
+            ion.className = "h-ion";
+
+            ion.style.left =
+                ((i*31+7)%100) + "%";
+
+            ion.style.setProperty(
+                "--ion-duration",
+                (6.5+(i%8)*.8)+"s"
+            );
+
+            ion.style.setProperty(
+                "--ion-delay",
+                (-1*((i*.57)%8)).toFixed(2)+"s"
+            );
+
+            ion.style.setProperty(
+                "--ion-drift",
+                (-34+((i*17)%68))+"px"
+            );
+
+            ionField.appendChild(ion);
+        }
+    }
+
+    /* BUTTON RIPPLE */
+    document.querySelectorAll(
+        "button,.control-btn,.add-button,.serve-button,.back-button,.remove-button,.save-button,.cancel-button"
+    ).forEach(button=>{
+
+        button.addEventListener(
+            "click",
+            function(event){
+
+                const rect =
+                    button.getBoundingClientRect();
+
+                const ripple =
+                    document.createElement("span");
+
+                ripple.className =
+                    "effect-ripple";
+
+                ripple.style.left =
+                    (event.clientX-rect.left)+"px";
+
+                ripple.style.top =
+                    (event.clientY-rect.top)+"px";
+
+                const size =
+                    Math.max(
+                        rect.width,
+                        rect.height
+                    )/2;
+
+                ripple.style.width =
+                    size+"px";
+
+                ripple.style.height =
+                    size+"px";
+
+                button.appendChild(ripple);
+
+                setTimeout(
+                    ()=>ripple.remove(),
+                    700
+                );
+            }
+        );
+    });
+
+    /* REVEAL */
+    const revealItems =
+        document.querySelectorAll(
+            ".stat-card,.queue-overview,.queue-header,.filter-container,.table-container"
+        );
+
+    revealItems.forEach(
+        item=>item.classList.add("fx-reveal")
+    );
+
+    if(
+        !reducedMotion &&
+        "IntersectionObserver" in window
+    ){
+
+        const observer =
+            new IntersectionObserver(
+                entries=>{
+
+                    entries.forEach(
+                        entry=>{
+
+                            if(entry.isIntersecting){
+
+                                entry.target.classList.add(
+                                    "fx-visible"
+                                );
+
+                                observer.unobserve(
+                                    entry.target
+                                );
+                            }
+                        }
+                    );
+                },
+                {threshold:.07}
+            );
+
+        revealItems.forEach(
+            item=>observer.observe(item)
+        );
+
+    }else{
+
+        revealItems.forEach(
+            item=>item.classList.add("fx-visible")
+        );
+    }
+
+})();
+
+</script>
+
+</body>
+</html>

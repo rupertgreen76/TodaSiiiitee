@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>TODA User Book Ride</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+
+body{
+
+background:#050b12;
+color:white;
+overflow-x:hidden;
+
+}
+
+
+
+/* HYDROGEN BACKGROUND */
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+width:700px;
+height:700px;
+
+left:50%;
+top:-300px;
+
+transform:translateX(-50%);
+
+background:
+
+radial-gradient(
+circle,
+rgba(0,255,150,.25),
+transparent 65%
+);
+
+filter:blur(40px);
+
+animation:hydrogenMove 8s infinite alternate;
+
+z-index:-2;
+
+}
+
+
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+inset:0;
+
+background-image:
+
+linear-gradient(
+rgba(0,255,150,.05) 1px,
+transparent 1px
+),
+
+linear-gradient(
+90deg,
+rgba(0,255,150,.05) 1px,
+transparent 1px
+);
+
+background-size:50px 50px;
+
+animation:gridMove 15s linear infinite;
+
+z-index:-3;
+
+}
+
+
+
+@keyframes hydrogenMove{
+
+from{
+
+transform:translateX(-50%) translateY(0);
+
+}
+
+to{
+
+transform:translateX(-50%) translateY(80px);
+
+}
+
+}
+
+
+@keyframes gridMove{
+
+from{
+
+background-position:0 0;
+
+}
+
+to{
+
+background-position:100px 100px;
+
+}
+
+}
+
+
+
+
+
+/* SIDEBAR */
+
+
+.sidebar{
+
+position:fixed;
+
+width:250px;
+
+height:100vh;
+
+background:#07111b;
+
+padding:25px;
+
+border-right:1px solid rgba(0,255,150,.2);
+
+}
+
+
+.logo{
+
+font-size:25px;
+
+font-weight:bold;
+
+margin-bottom:40px;
+
+}
+
+
+.logo span{
+
+color:#00e58b;
+
+}
+
+
+
+.menu button{
+
+width:100%;
+
+padding:15px;
+
+margin:8px 0;
+
+border:none;
+
+border-radius:15px;
+
+background:none;
+
+color:#aaa;
+
+cursor:pointer;
+
+text-align:left;
+
+transition:.3s;
+
+}
+
+
+
+.menu button:hover,
+.menu .active{
+
+background:#00a86b;
+
+color:white;
+
+transform:translateX(8px);
+
+}
+
+
+
+
+
+/* MAIN */
+
+
+.main{
+
+margin-left:250px;
+
+padding:30px;
+
+}
+
+
+
+.header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+.header h1{
+
+font-size:35px;
+
+}
+
+
+.header p{
+
+color:#8995a3;
+
+}
+
+
+.profile{
+
+background:#111b26;
+
+padding:15px 25px;
+
+border-radius:30px;
+
+animation:floating 4s infinite;
+
+}
+
+
+
+@keyframes floating{
+
+50%{
+
+transform:translateY(-8px);
+
+}
+
+}
+
+
+
+
+
+
+/* PANEL */
+
+
+.panel{
+
+background:#09131d;
+
+padding:25px;
+
+border-radius:25px;
+
+margin-top:25px;
+
+border:1px solid rgba(0,229,139,.15);
+
+transition:.35s;
+
+}
+
+
+.panel:hover{
+
+transform:translateY(-10px) scale(1.02);
+
+box-shadow:
+
+0 20px 50px rgba(0,229,139,.3);
+
+}
+
+
+
+
+
+input,
+select{
+
+width:100%;
+
+padding:14px;
+
+margin:8px 0 20px;
+
+background:#111b26;
+
+border:none;
+
+border-radius:12px;
+
+color:white;
+
+}
+
+
+
+input:focus,
+select:focus{
+
+outline:2px solid #00e58b;
+
+}
+
+
+
+
+.grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:20px;
+
+}
+
+
+
+
+
+.fare{
+
+background:#111b26;
+
+padding:20px;
+
+border-radius:20px;
+
+}
+
+
+
+.fare h1{
+
+color:#00e58b;
+
+margin-top:10px;
+
+}
+
+
+
+
+.btn{
+
+background:#00a86b;
+
+color:white;
+
+padding:15px 30px;
+
+border:none;
+
+border-radius:25px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+transition:.3s;
+
+}
+
+
+
+.btn:hover{
+
+background:#00e58b;
+
+transform:translateY(-5px);
+
+box-shadow:0 0 30px rgba(0,255,150,.5);
+
+}
+
+
+
+.message{
+
+display:none;
+
+margin-top:20px;
+
+color:#00e58b;
+
+}
+
+
+
+
+
+@media(max-width:900px){
+
+
+.sidebar{
+
+position:relative;
+
+width:100%;
+
+height:auto;
+
+}
+
+
+.main{
+
+margin-left:0;
+
+}
+
+
+.grid{
+
+grid-template-columns:1fr;
+
+}
+
+
+}
+
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+
+<div class="logo">
+
+🛺 TODA <span>USER</span>
+
+</div>
+
+
+
+<div class="menu">
+
+
+<button>
+⌂ Dashboard
+</button>
+
+
+<button class="active">
+🛺 Book Ride
+</button>
+
+
+<button>
+💰 Fare Calculator
+</button>
+
+
+<button>
+⛽ Fuel Price
+</button>
+
+
+<button>
+💳 Payment
+</button>
+
+
+<button>
+⭐ Rating
+</button>
+
+
+<button>
+👤 Profile
+</button>
+
+
+<button>
+⚙ Settings
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+
+
+<div class="header">
+
+
+<div>
+
+<h1>
+🛺 Book TODA Ride
+</h1>
+
+<p>
+Binangonan Rizal Passenger System
+</p>
+
+
+</div>
+
+
+
+<div class="profile">
+
+👤 Juan Dela Cruz
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="panel">
+
+
+<h2>
+📍 Ride Information
+</h2>
+
+
+<div class="grid">
+
+
+<div>
+
+<label>
+Pickup Location
+</label>
+
+<input id="pickup"
+placeholder="Example: Mambog">
+
+
+</div>
+
+
+
+<div>
+
+<label>
+Destination
+</label>
+
+<input id="destination"
+placeholder="Example: Tayuman">
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="panel">
+
+
+<h2>
+👥 Passenger Details
+</h2>
+
+
+<div class="grid">
+
+
+<div>
+
+<label>
+Number of Passenger
+</label>
+
+
+<select>
+
+<option>
+1 Passenger
+</option>
+
+<option>
+2 Passengers
+</option>
+
+<option>
+3 Passengers
+</option>
+
+</select>
+
+
+</div>
+
+
+
+
+<div>
+
+<label>
+Ride Type
+</label>
+
+
+<select>
+
+<option>
+Regular Ride
+</option>
+
+<option>
+Special Ride
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="panel">
+
+
+<h2>
+💳 Payment Method
+</h2>
+
+
+<select>
+
+<option>
+Cash
+</option>
+
+
+<option>
+GCash
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="panel">
+
+
+<h2>
+💰 Fare Estimate
+</h2>
+
+
+<label>
+Distance (KM)
+</label>
+
+
+<input id="distance"
+type="number"
+placeholder="Example: 10"
+oninput="calculateFare()">
+
+
+
+<div class="fare">
+
+
+<p>
+Minimum Fare: ₱20
+</p>
+
+
+<p>
+Additional: ₱5/km
+</p>
+
+
+<h1 id="fare">
+
+Estimated Fare: ₱20
+
+</h1>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="panel">
+
+
+<button class="btn"
+onclick="bookRide()">
+
+Confirm Ride
+
+</button>
+
+
+<p class="message" id="message">
+
+</p>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<script>
+
+
+function calculateFare(){
+
+
+let km=
+
+Number(document.getElementById("distance").value);
+
+
+let fare=20;
+
+
+if(km>0){
+
+fare=20+(km*5);
+
+}
+
+
+document.getElementById("fare").innerHTML=
+
+"Estimated Fare: ₱"+fare;
+
+
+}
+
+
+
+
+
+function bookRide(){
+
+
+let pickup=
+
+document.getElementById("pickup").value;
+
+
+let destination=
+
+document.getElementById("destination").value;
+
+
+
+let message=
+
+document.getElementById("message");
+
+
+
+if(pickup=="" || destination==""){
+
+
+alert("Please complete ride information");
+
+
+return;
+
+}
+
+
+
+message.style.display="block";
+
+
+message.innerHTML=
+
+`
+✅ Ride Request Submitted
+
+<br><br>
+
+📍 From:
+${pickup}
+
+<br>
+
+🏁 To:
+${destination}
+
+<br><br>
+
+Waiting for TODA driver assignment...
+
+`;
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>

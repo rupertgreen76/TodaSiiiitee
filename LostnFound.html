@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TODA Lost & Found</title>
+
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+
+body{
+
+background:#050b12;
+color:white;
+
+}
+
+
+/* SIDEBAR */
+
+.sidebar{
+
+position:fixed;
+width:250px;
+height:100vh;
+
+background:#07111b;
+
+padding:25px;
+
+border-right:1px solid #182531;
+
+}
+
+
+
+.logo{
+
+font-size:25px;
+
+font-weight:800;
+
+margin-bottom:40px;
+
+}
+
+
+.logo span{
+
+color:#00e58b;
+
+}
+
+
+
+
+.menu a{
+
+text-decoration:none;
+
+}
+
+
+
+.menu button{
+
+width:100%;
+
+padding:15px;
+
+margin-bottom:12px;
+
+border:none;
+
+border-radius:15px;
+
+background:none;
+
+color:#9da8b5;
+
+text-align:left;
+
+font-size:15px;
+
+cursor:pointer;
+
+}
+
+
+
+.menu button:hover,
+.menu .active{
+
+background:#00a86b;
+
+color:white;
+
+}
+
+
+
+
+
+.bottom-logo{
+
+position:absolute;
+
+bottom:30px;
+
+}
+
+
+
+.bottom-logo img{
+
+width:60px;
+
+height:60px;
+
+border-radius:50%;
+
+}
+
+
+
+.bottom-logo span{
+
+color:#00e58b;
+
+}
+
+
+
+
+
+
+/* MAIN */
+
+
+.main{
+
+margin-left:250px;
+
+padding:30px;
+
+}
+
+
+
+
+.header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+.header h1{
+
+font-size:35px;
+
+}
+
+
+
+.header p{
+
+color:#8995a3;
+
+}
+
+
+
+
+.profile{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+background:#111b26;
+
+padding:8px 18px;
+
+border-radius:30px;
+
+}
+
+
+
+.profile img{
+
+width:45px;
+
+height:45px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:2px solid #00e58b;
+
+}
+
+
+
+.profile span{
+
+color:#00e58b;
+
+font-size:12px;
+
+}
+
+
+
+
+
+
+
+/* CARDS */
+
+
+.cards{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:20px;
+
+margin-top:35px;
+
+}
+
+
+
+.card{
+
+background:#111b26;
+
+padding:25px;
+
+border-radius:25px;
+
+}
+
+
+
+.card h3{
+
+color:#9da8b5;
+
+}
+
+
+
+.card h1{
+
+font-size:40px;
+
+margin-top:15px;
+
+}
+
+
+
+.green{
+
+color:#00e58b;
+
+}
+
+
+
+.yellow{
+
+color:#ffc107;
+
+}
+
+
+
+.red{
+
+color:#ff6b6b;
+
+}
+
+
+
+
+
+
+/* CONTENT */
+
+
+.content{
+
+margin-top:25px;
+
+background:#09131d;
+
+padding:25px;
+
+border-radius:25px;
+
+}
+
+
+
+
+
+.add{
+
+background:#00a86b;
+
+padding:15px 25px;
+
+border-radius:20px;
+
+font-weight:bold;
+
+display:inline-block;
+
+margin-bottom:20px;
+
+}
+
+
+
+
+
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+
+th{
+
+background:#00a86b;
+
+padding:15px;
+
+}
+
+
+td{
+
+padding:15px;
+
+text-align:center;
+
+border-bottom:1px solid #1c2733;
+
+}
+
+
+
+
+.status{
+
+padding:8px 15px;
+
+border-radius:20px;
+
+}
+
+
+
+.pending{
+
+background:#4d3b00;
+
+color:#ffc107;
+
+}
+
+
+
+.returned{
+
+background:#064b38;
+
+color:#00e58b;
+
+}
+
+
+
+.search{
+
+width:100%;
+
+padding:15px;
+
+background:#111b26;
+
+border:none;
+
+border-radius:15px;
+
+color:white;
+
+margin-bottom:20px;
+
+}
+
+
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+
+
+
+<!-- SIDEBAR -->
+
+
+<div class="sidebar">
+
+
+<div class="logo">
+
+🛺 TODA <span>SYSTEM</span>
+
+</div>
+
+
+
+
+<div class="menu">
+
+
+<a href="dashboard.html">
+
+<button>
+⌂ Dashboard
+</button>
+
+</a>
+
+
+
+
+<a href="driver-management.html">
+
+<button>
+👤 Driver Management
+</button>
+
+</a>
+
+
+
+<a href="tricycle-management.html">
+
+<button>
+🛺 Tricycle Management
+</button>
+
+</a>
+
+
+
+<a href="queue-management.html">
+
+<button>
+🚦 Queue Management
+</button>
+
+</a>
+
+
+
+<a href="trip-monitoring.html">
+
+<button>
+📍 Trip Monitoring
+</button>
+
+</a>
+
+
+
+
+<a href="collection.html">
+
+<button>
+💰 Collection
+</button>
+
+</a>
+
+
+
+
+<a href="passenger-rating.html">
+
+<button>
+⭐ Passenger Rating
+</button>
+
+</a>
+
+
+
+
+<a href="lost-found.html">
+
+<button class="active">
+🔎 Lost & Found
+</button>
+
+</a>
+
+
+
+
+<a href="reports.html">
+
+<button>
+📄 Reports
+</button>
+
+</a>
+
+
+
+<a href="settings.html">
+
+<button>
+⚙ Settings
+</button>
+
+</a>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="bottom-logo">
+
+
+<img src="toda-logo.png">
+
+
+<h3>
+TODA <span>SYSTEM</span>
+</h3>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- MAIN -->
+
+
+<div class="main">
+
+
+
+<div class="header">
+
+
+<div>
+
+
+<h1>
+Lost & Found Management
+</h1>
+
+
+<p>
+Track lost items and recovered belongings
+</p>
+
+
+</div>
+
+
+
+
+<div class="profile">
+
+
+<img src="admin.jpg">
+
+
+<div>
+
+<b>
+Administrator
+</b>
+
+<br>
+
+<span>
+Online
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="cards">
+
+
+<div class="card">
+
+<h3>
+Reported Items
+</h3>
+
+<h1>
+35
+</h1>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>
+Found Items
+</h3>
+
+<h1 class="green">
+22
+</h1>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>
+Returned Items
+</h3>
+
+<h1 class="yellow">
+18
+</h1>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="content">
+
+
+<div class="add">
+
++ Report Lost Item
+
+</div>
+
+
+
+
+<input class="search"
+placeholder="🔍 Search Item, Passenger, Driver">
+
+
+
+
+
+<table>
+
+
+<tr>
+
+<th>Item ID</th>
+
+<th>Item Name</th>
+
+<th>Passenger</th>
+
+<th>Driver</th>
+
+<th>Location</th>
+
+<th>Status</th>
+
+</tr>
+
+
+
+
+<tr>
+
+<td>
+LF-001
+</td>
+
+
+<td>
+Mobile Phone
+</td>
+
+
+<td>
+Maria Santos
+</td>
+
+
+<td>
+Juan Dela Cruz
+</td>
+
+
+<td>
+Binangonan Terminal
+</td>
+
+
+<td>
+
+<span class="status returned">
+Returned
+</span>
+
+</td>
+
+
+</tr>
+
+
+
+
+
+
+<tr>
+
+<td>
+LF-002
+</td>
+
+
+<td>
+Wallet
+</td>
+
+
+<td>
+Pedro Reyes
+</td>
+
+
+<td>
+Oliver Garcia
+</td>
+
+
+<td>
+Route 3
+</td>
+
+
+<td>
+
+<span class="status pending">
+Pending
+</span>
+
+</td>
+
+
+</tr>
+
+
+
+
+
+
+<tr>
+
+<td>
+LF-003
+</td>
+
+
+<td>
+Umbrella
+</td>
+
+
+<td>
+Ana Cruz
+</td>
+
+
+<td>
+Mark Santos
+</td>
+
+
+<td>
+Public Market
+</td>
+
+
+<td>
+
+<span class="status returned">
+Returned
+</span>
+
+</td>
+
+
+</tr>
+
+
+
+
+</table>
+
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+</body>
+
+</html>

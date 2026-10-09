@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TODA Passenger Rating System</title>
+
+
+<style>
+
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+
+body{
+
+background:#050b12;
+
+color:white;
+
+}
+
+
+
+/* SIDEBAR */
+
+.sidebar{
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+width:250px;
+
+height:100vh;
+
+background:#07111b;
+
+padding:25px;
+
+border-right:1px solid #182531;
+
+}
+
+
+
+.logo{
+
+font-size:25px;
+
+font-weight:800;
+
+margin-bottom:40px;
+
+}
+
+
+.logo span{
+
+color:#00e58b;
+
+}
+
+
+
+
+.menu a{
+
+text-decoration:none;
+
+}
+
+
+
+.menu button{
+
+width:100%;
+
+padding:15px;
+
+margin-bottom:12px;
+
+border:none;
+
+border-radius:15px;
+
+background:none;
+
+color:#9da8b5;
+
+text-align:left;
+
+font-size:15px;
+
+cursor:pointer;
+
+}
+
+
+
+.menu button:hover,
+.menu .active{
+
+background:#00a86b;
+
+color:white;
+
+}
+
+
+
+
+.bottom-logo{
+
+position:absolute;
+
+bottom:30px;
+
+}
+
+
+
+.bottom-logo img{
+
+width:60px;
+
+height:60px;
+
+border-radius:50%;
+
+}
+
+
+
+.bottom-logo span{
+
+color:#00e58b;
+
+}
+
+
+
+
+
+/* MAIN */
+
+.main{
+
+margin-left:250px;
+
+padding:30px;
+
+}
+
+
+
+
+
+.header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+
+.header h1{
+
+font-size:35px;
+
+}
+
+
+.header p{
+
+color:#8995a3;
+
+}
+
+
+
+
+
+.profile{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+background:#111b26;
+
+padding:8px 18px;
+
+border-radius:30px;
+
+}
+
+
+
+.profile img{
+
+width:45px;
+
+height:45px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:2px solid #00e58b;
+
+}
+
+
+
+.profile span{
+
+color:#00e58b;
+
+font-size:12px;
+
+}
+
+
+
+
+
+
+
+
+/* RATING BOX */
+
+
+.rating-container{
+
+margin-top:35px;
+
+display:grid;
+
+grid-template-columns:1fr 2fr;
+
+gap:25px;
+
+}
+
+
+
+
+
+.driver-card{
+
+background:#09131d;
+
+padding:30px;
+
+border-radius:25px;
+
+text-align:center;
+
+}
+
+
+
+.driver-card img{
+
+width:120px;
+
+height:120px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:3px solid #00e58b;
+
+}
+
+
+
+.driver-card h2{
+
+margin-top:20px;
+
+}
+
+
+
+.info{
+
+margin-top:20px;
+
+background:#111b26;
+
+padding:15px;
+
+border-radius:15px;
+
+}
+
+
+
+
+
+.rating-box{
+
+background:#09131d;
+
+padding:35px;
+
+border-radius:25px;
+
+}
+
+
+
+.stars{
+
+font-size:45px;
+
+color:#555;
+
+cursor:pointer;
+
+margin:20px 0;
+
+}
+
+
+
+.stars span:hover{
+
+color:#00e58b;
+
+}
+
+
+
+
+
+textarea{
+
+width:100%;
+
+height:120px;
+
+background:#111b26;
+
+border:none;
+
+border-radius:15px;
+
+padding:15px;
+
+color:white;
+
+font-size:15px;
+
+resize:none;
+
+}
+
+
+
+
+.checkbox{
+
+margin-top:20px;
+
+}
+
+
+
+
+
+.submit{
+
+margin-top:25px;
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+border-radius:15px;
+
+background:#00a86b;
+
+color:white;
+
+font-weight:bold;
+
+font-size:16px;
+
+cursor:pointer;
+
+}
+
+
+
+.submit:hover{
+
+background:#00e58b;
+
+color:#050b12;
+
+}
+
+
+
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+
+
+<!-- SIDEBAR -->
+
+
+<div class="sidebar">
+
+
+<div class="logo">
+
+🛺 TODA <span>SYSTEM</span>
+
+</div>
+
+
+
+
+<div class="menu">
+
+
+<a href="dashboard.html">
+
+<button>
+
+⌂ Dashboard
+
+</button>
+
+</a>
+
+
+
+
+<a href="driver-management.html">
+
+<button>
+
+👤 Driver Management
+
+</button>
+
+</a>
+
+
+
+
+<a href="tricycle-management.html">
+
+<button>
+
+🛺 Tricycle Management
+
+</button>
+
+</a>
+
+
+
+
+<a href="queue-management.html">
+
+<button>
+
+🚦 Queue Management
+
+</button>
+
+</a>
+
+
+
+
+<a href="trip-monitoring.html">
+
+<button>
+
+📍 Trip Monitoring
+
+</button>
+
+</a>
+
+
+
+
+<a href="collection.html">
+
+<button>
+
+💰 Collection
+
+</button>
+
+</a>
+
+
+
+
+<a href="passenger-rating.html">
+
+<button class="active">
+
+⭐ Passenger Rating
+
+</button>
+
+</a>
+
+
+
+
+<a href="reports.html">
+
+<button>
+
+📄 Reports
+
+</button>
+
+</a>
+
+
+
+
+<a href="settings.html">
+
+<button>
+
+⚙ Settings
+
+</button>
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+<div class="bottom-logo">
+
+
+<img src="toda-logo.png">
+
+
+<h3>
+
+TODA <span>SYSTEM</span>
+
+</h3>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- MAIN -->
+
+
+<div class="main">
+
+
+
+<div class="header">
+
+
+<div>
+
+
+<h1>
+
+Passenger Rating System
+
+</h1>
+
+
+<p>
+
+Passenger feedback and driver evaluation
+
+</p>
+
+
+</div>
+
+
+
+
+<div class="profile">
+
+
+<img src="admin.jpg">
+
+
+<div>
+
+<b>
+Administrator
+</b>
+
+
+<br>
+
+
+<span>
+Online
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="rating-container">
+
+
+
+
+
+<div class="driver-card">
+
+
+<img src="driver1.jpg">
+
+
+<h2>
+
+Oliver Reyes
+
+</h2>
+
+
+<p>
+
+TODA Number: TODA-015
+
+</p>
+
+
+<p>
+
+Plate Number: ABC-1015
+
+</p>
+
+
+
+
+
+<div class="info">
+
+Trip ID:
+
+<br>
+
+TRIP-2026-00125
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="rating-box">
+
+
+<h2>
+
+How was your TODA ride?
+
+</h2>
+
+
+<p>
+
+Rate your driver after completing your trip
+
+</p>
+
+
+
+
+<div class="stars">
+
+
+<span onclick="rate(1)">★</span>
+
+<span onclick="rate(2)">★</span>
+
+<span onclick="rate(3)">★</span>
+
+<span onclick="rate(4)">★</span>
+
+<span onclick="rate(5)">★</span>
+
+
+</div>
+
+
+
+<h3 id="ratingText">
+
+No rating selected
+
+</h3>
+
+
+
+
+
+<textarea placeholder="Optional feedback or comments..."></textarea>
+
+
+
+
+
+<div class="checkbox">
+
+<input type="checkbox">
+
+Submit as Anonymous Passenger
+
+</div>
+
+
+
+
+
+
+<button class="submit" onclick="submitRating()">
+
+Submit Rating
+
+</button>
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<script>
+
+
+let rating=0;
+
+
+
+function rate(value){
+
+rating=value;
+
+
+document.getElementById("ratingText").innerHTML=
+
+"Your Rating: "+value+" Stars";
+
+
+}
+
+
+
+function submitRating(){
+
+
+if(rating==0){
+
+alert("Please select a rating first.");
+
+}
+
+else{
+
+alert("Thank you for your feedback!");
+
+}
+
+
+
+}
+
+
+
+</script>
+
+
+
+
+
+</body>
+
+</html>

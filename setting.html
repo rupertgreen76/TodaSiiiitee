@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>TODA System Settings</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+
+body{
+
+min-height:100vh;
+
+display:flex;
+
+background:
+linear-gradient(135deg,#06131c,#002d27);
+
+color:white;
+
+transition:.4s;
+
+}
+
+
+
+/* SIDEBAR */
+
+.sidebar{
+
+width:240px;
+
+background:#07131d;
+
+padding:25px;
+
+border-right:1px solid rgba(0,255,170,.2);
+
+}
+
+
+.logo{
+
+font-size:28px;
+
+font-weight:bold;
+
+margin-bottom:40px;
+
+}
+
+
+.logo b{
+
+color:#00e89d;
+
+}
+
+
+
+.menu{
+
+list-style:none;
+
+}
+
+
+.menu li{
+
+padding:15px;
+
+margin:10px 0;
+
+border-radius:12px;
+
+cursor:pointer;
+
+color:#aab6bd;
+
+transition:.3s;
+
+}
+
+
+.menu li:hover,
+.menu .active{
+
+background:#00c982;
+
+color:white;
+
+}
+
+
+
+
+
+/* MAIN */
+
+
+.main{
+
+flex:1;
+
+padding:35px;
+
+overflow:auto;
+
+}
+
+
+
+.header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:30px;
+
+}
+
+
+.header h1{
+
+font-size:35px;
+
+}
+
+
+
+.admin{
+
+background:#122534;
+
+padding:12px 20px;
+
+border-radius:30px;
+
+}
+
+
+
+
+/* SECTION */
+
+
+.section{
+
+
+background:
+
+rgba(15,28,40,.85);
+
+
+border-radius:20px;
+
+
+padding:25px;
+
+
+margin-bottom:25px;
+
+
+border:
+
+1px solid rgba(0,255,170,.2);
+
+
+}
+
+
+
+.section h2{
+
+color:#00e89d;
+
+margin-bottom:20px;
+
+}
+
+
+
+.item{
+
+
+display:flex;
+
+
+justify-content:space-between;
+
+
+align-items:center;
+
+
+padding:18px 0;
+
+
+border-bottom:
+
+1px solid rgba(255,255,255,.08);
+
+
+}
+
+
+.item:last-child{
+
+border:none;
+
+}
+
+
+.item p{
+
+color:#9daab5;
+
+font-size:14px;
+
+}
+
+
+
+
+input,
+select{
+
+
+background:#172633;
+
+
+color:white;
+
+
+border:none;
+
+
+padding:12px;
+
+
+border-radius:10px;
+
+
+}
+
+
+
+
+/* SWITCH */
+
+
+.switch{
+
+
+position:relative;
+
+width:60px;
+
+height:30px;
+
+}
+
+
+
+.switch input{
+
+display:none;
+
+}
+
+
+
+.slider{
+
+position:absolute;
+
+inset:0;
+
+background:#333;
+
+border-radius:30px;
+
+cursor:pointer;
+
+}
+
+
+
+.slider:before{
+
+
+content:"";
+
+
+position:absolute;
+
+
+width:24px;
+
+
+height:24px;
+
+
+left:3px;
+
+
+top:3px;
+
+
+background:white;
+
+
+border-radius:50%;
+
+
+transition:.3s;
+
+
+}
+
+
+
+input:checked + .slider{
+
+
+background:#00c982;
+
+}
+
+
+
+input:checked + .slider:before{
+
+
+transform:translateX(30px);
+
+}
+
+
+
+
+/* BUTTON */
+
+button{
+
+padding:13px 25px;
+
+border:none;
+
+border-radius:25px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+}
+
+
+
+.save{
+
+background:#00c982;
+
+color:white;
+
+}
+
+
+
+.reset{
+
+background:#ffb700;
+
+margin-left:10px;
+
+}
+
+
+
+
+/* MODAL */
+
+
+.modal{
+
+
+display:none;
+
+
+position:fixed;
+
+
+top:0;
+
+left:0;
+
+
+width:100%;
+
+height:100%;
+
+
+background:rgba(0,0,0,.7);
+
+
+align-items:center;
+
+
+justify-content:center;
+
+
+z-index:99;
+
+
+}
+
+
+
+.modal.active{
+
+display:flex;
+
+}
+
+
+
+
+.modal-box{
+
+
+width:400px;
+
+
+background:#101d29;
+
+
+padding:35px;
+
+
+border-radius:20px;
+
+
+border:1px solid #00e89d;
+
+
+}
+
+
+.modal-box h2{
+
+margin-bottom:20px;
+
+}
+
+
+.modal-box input{
+
+width:100%;
+
+margin:8px 0;
+
+}
+
+
+
+
+/* LIGHT MODE */
+
+
+.light{
+
+
+background:#edf3f5;
+
+color:#111;
+
+}
+
+
+
+.light .sidebar{
+
+background:white;
+
+}
+
+
+.light .section,
+.light .modal-box{
+
+background:white;
+
+color:#111;
+
+}
+
+
+
+.light .admin{
+
+background:#ddd;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+
+<div class="logo">
+
+🚖 TODA
+
+<br>
+
+<b>SYSTEM</b>
+
+</div>
+
+
+<ul class="menu">
+
+
+<li>
+⌂ Dashboard
+</li>
+
+
+<li>
+👤 Driver Management
+</li>
+
+
+<li>
+🚦 Queue Management
+</li>
+
+
+<li>
+📢 Announcement
+</li>
+
+
+<li class="active">
+⚙ Settings
+</li>
+
+
+</ul>
+
+
+</div>
+
+
+
+
+
+
+<div class="main">
+
+
+<div class="header">
+
+
+<h1>
+System Settings
+</h1>
+
+
+
+<div class="admin">
+
+👤 Administrator
+
+<br>
+
+🟢 Online
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- APPEARANCE -->
+
+
+<div class="section">
+
+
+<h2>
+🎨 Appearance
+</h2>
+
+
+
+<div class="item">
+
+<div>
+
+<h3>
+Theme Mode
+</h3>
+
+<p>
+Dark / Normal Mode
+</p>
+
+</div>
+
+
+
+<label class="switch">
+
+<input id="theme" onclick="changeTheme()" type="checkbox">
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+
+
+
+<div class="item">
+
+<div>
+
+<h3>
+Animation Effect
+</h3>
+
+<p>
+Enable system animations
+</p>
+
+
+</div>
+
+
+<label class="switch">
+
+<input checked type="checkbox">
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+
+<div class="item">
+
+
+<div>
+
+<h3>
+Language
+</h3>
+
+<p>
+System language
+
+</p>
+
+</div>
+
+
+<select>
+
+<option>English</option>
+
+<option>Filipino</option>
+
+</select>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- ACCOUNT -->
+
+
+<div class="section">
+
+
+<h2>
+👤 Account Management
+</h2>
+
+
+
+<div class="item">
+
+
+<div>
+
+<h3>
+Administrator Profile
+</h3>
+
+<p>
+Update admin information
+</p>
+
+</div>
+
+
+
+<button class="save"
+onclick="openModal('profile')">
+
+Edit
+
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="item">
+
+
+<div>
+
+<h3>
+Change Password
+</h3>
+
+<p>
+Update security password
+</p>
+
+</div>
+
+
+<button class="reset"
+onclick="openModal('password')">
+
+Change
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- NOTIFICATION -->
+
+
+<div class="section">
+
+
+<h2>
+🔔 Notifications
+</h2>
+
+
+
+<div class="item">
+
+<div>
+
+<h3>
+Driver Registration Alert
+</h3>
+
+<p>
+New driver notifications
+</p>
+
+</div>
+
+
+<label class="switch">
+
+<input checked type="checkbox">
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+
+<div class="item">
+
+<div>
+
+<h3>
+Queue Updates
+</h3>
+
+<p>
+Driver queue activity
+</p>
+
+</div>
+
+
+<label class="switch">
+
+<input checked type="checkbox">
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- SECURITY -->
+
+
+<div class="section">
+
+
+<h2>
+🔐 Security
+</h2>
+
+
+
+<div class="item">
+
+<div>
+
+<h3>
+Two Factor Authentication
+</h3>
+
+<p>
+Extra login protection
+</p>
+
+</div>
+
+
+
+<label class="switch">
+
+<input type="checkbox">
+
+<span class="slider"></span>
+
+</label>
+
+
+</div>
+
+
+
+
+<div class="item">
+
+<div>
+
+<h3>
+Session Timeout
+</h3>
+
+<p>
+Auto logout inactive account
+</p>
+
+</div>
+
+
+<select>
+
+<option>30 Minutes</option>
+
+<option>1 Hour</option>
+
+<option>Never</option>
+
+
+</select>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- MAINTENANCE -->
+
+
+<div class="section">
+
+
+<h2>
+💾 System Maintenance
+</h2>
+
+
+
+<div class="item">
+
+
+<div>
+
+<h3>
+Database Backup
+</h3>
+
+<p>
+Create backup file
+</p>
+
+
+</div>
+
+
+<button class="save"
+onclick="backup()">
+
+Backup
+
+</button>
+
+
+</div>
+
+
+
+
+
+<div class="item">
+
+
+<div>
+
+<h3>
+Export Reports
+</h3>
+
+<p>
+Download CSV report
+</p>
+
+
+</div>
+
+
+<button class="save"
+onclick="exportReport()">
+
+Export
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<button class="save"
+onclick="saveSettings()">
+
+Save Changes
+
+</button>
+
+
+<button class="reset"
+onclick="resetSettings()">
+
+Reset
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- PROFILE MODAL -->
+
+
+<div class="modal" id="profile">
+
+
+<div class="modal-box">
+
+
+<h2>
+👤 Admin Profile
+</h2>
+
+
+<input value="Administrator">
+
+
+<input value="admin@toda.com">
+
+
+<input value="System Administrator">
+
+
+<button class="save"
+onclick="closeModal('profile')">
+
+Save Profile
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- PASSWORD -->
+
+
+<div class="modal" id="password">
+
+
+<div class="modal-box">
+
+
+<h2>
+🔐 Change Password
+</h2>
+
+
+<input type="password" placeholder="Old Password">
+
+
+<input type="password" placeholder="New Password">
+
+
+<input type="password" placeholder="Confirm Password">
+
+
+<button class="save"
+onclick="closeModal('password')">
+
+Update Password
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<script>
+
+
+
+function openModal(id){
+
+document.getElementById(id)
+.classList.add("active");
+
+}
+
+
+
+function closeModal(id){
+
+document.getElementById(id)
+.classList.remove("active");
+
+}
+
+
+
+
+
+function changeTheme(){
+
+
+document.body.classList.toggle("light");
+
+
+localStorage.setItem(
+"theme",
+document.body.className
+);
+
+
+}
+
+
+
+
+window.onload=function(){
+
+
+let theme=
+localStorage.getItem("theme");
+
+
+if(theme){
+
+document.body.className=theme;
+
+}
+
+
+}
+
+
+
+
+
+
+
+function saveSettings(){
+
+alert(
+"✅ Settings Saved Successfully!"
+);
+
+}
+
+
+
+
+function resetSettings(){
+
+
+if(confirm("Reset all settings?")){
+
+
+location.reload();
+
+
+}
+
+
+}
+
+
+
+
+function backup(){
+
+
+let data=
+"TODA SYSTEM BACKUP\nDrivers:54\nTrips:187";
+
+
+let file=
+new Blob([data],
+{type:"text/plain"});
+
+
+let a=document.createElement("a");
+
+
+a.href=
+URL.createObjectURL(file);
+
+
+a.download="TODA_Backup.txt";
+
+
+a.click();
+
+
+alert("Backup Created!");
+
+}
+
+
+
+
+
+function exportReport(){
+
+
+let csv=
+"Driver,Trips\nJuan,20\nPedro,15";
+
+
+let file=
+new Blob([csv],
+{type:"text/csv"});
+
+
+let a=document.createElement("a");
+
+
+a.href=
+URL.createObjectURL(file);
+
+
+a.download="TODA_Report.csv";
+
+
+a.click();
+
+
+alert("Report Exported!");
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

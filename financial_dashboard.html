@@ -1,0 +1,6710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+TODA System | Financial Dashboard
+</title>
+
+
+<!-- CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<style>
+
+/* ==========================================================
+   GENERAL
+========================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+    font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+
+:root{
+
+    --background:#050b12;
+
+    --sidebar:#07111b;
+
+    --card:#111b26;
+
+    --card-dark:#0a1520;
+
+    --green:#00a86b;
+
+    --green-light:#00e58b;
+
+    --red:#ff6b6b;
+
+    --yellow:#ffc857;
+
+    --blue:#59a8ff;
+
+    --purple:#a98bff;
+
+    --gray:#8995a3;
+
+    --text:#ffffff;
+
+    --border:#1c2a36;
+
+}
+
+
+body{
+
+    background:
+    var(--background);
+
+    color:
+    var(--text);
+
+    min-height:100vh;
+
+}
+
+
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:250px;
+
+    height:100vh;
+
+    background:
+    var(--sidebar);
+
+    padding:25px;
+
+    border-right:
+    1px solid #182531;
+
+    overflow-y:auto;
+
+}
+
+
+.logo{
+
+    font-size:25px;
+
+    font-weight:800;
+
+    margin-bottom:40px;
+
+}
+
+
+.logo span{
+
+    color:
+    var(--green-light);
+
+}
+
+
+
+/* ==========================================================
+   MENU
+========================================================== */
+
+.menu a{
+
+    text-decoration:none;
+
+}
+
+
+.menu button{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-bottom:10px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:none;
+
+    color:#9da8b5;
+
+    text-align:left;
+
+    font-size:14px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+.menu button:hover,
+.menu button.active{
+
+    background:
+    var(--green);
+
+    color:white;
+
+}
+
+
+.bottom-logo{
+
+    margin-top:50px;
+
+}
+
+
+.bottom-logo span{
+
+    color:
+    var(--green-light);
+
+}
+
+
+
+/* ==========================================================
+   MAIN
+========================================================== */
+
+.main{
+
+    margin-left:250px;
+
+    padding:30px;
+
+}
+
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+}
+
+
+.title h1{
+
+    font-size:35px;
+
+}
+
+
+.title p{
+
+    color:
+    var(--gray);
+
+    margin-top:5px;
+
+}
+
+
+.header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+
+/* ==========================================================
+   YEAR
+========================================================== */
+
+.year-select{
+
+    background:
+    var(--card);
+
+    color:white;
+
+    border:
+    1px solid #263744;
+
+    border-radius:13px;
+
+    padding:12px 16px;
+
+    outline:none;
+
+}
+
+
+
+/* ==========================================================
+   PROFILE
+========================================================== */
+
+.profile{
+
+    background:
+    var(--card);
+
+    padding:9px 18px;
+
+    border-radius:30px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+}
+
+
+.profile-avatar{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    border:
+    2px solid
+    var(--green-light);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#172735;
+
+}
+
+
+.profile span{
+
+    color:
+    var(--green-light);
+
+    font-size:12px;
+
+}
+
+
+
+/* ==========================================================
+   MAIN STATISTICS
+========================================================== */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:20px;
+
+    margin-top:35px;
+
+}
+
+
+.stat-card{
+
+    background:
+    var(--card);
+
+    padding:24px;
+
+    border-radius:22px;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+
+.stat-card::after{
+
+    position:absolute;
+
+    right:18px;
+
+    top:17px;
+
+    font-size:28px;
+
+    opacity:.17;
+
+}
+
+
+.income-card::after{
+
+    content:"↗";
+
+}
+
+
+.expense-card::after{
+
+    content:"↘";
+
+}
+
+
+.balance-card::after{
+
+    content:"₱";
+
+}
+
+
+.receivable-card::after{
+
+    content:"◷";
+
+}
+
+
+.stat-label{
+
+    color:#a9b7c3;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+
+.stat-value{
+
+    font-size:36px;
+
+    font-weight:800;
+
+    margin-top:18px;
+
+}
+
+
+.stat-footer{
+
+    margin-top:8px;
+
+    color:#91a0ad;
+
+    font-size:12px;
+
+}
+
+
+.green{
+
+    color:
+    var(--green-light);
+
+}
+
+
+.red{
+
+    color:
+    var(--red);
+
+}
+
+
+.blue{
+
+    color:
+    var(--blue);
+
+}
+
+
+.yellow{
+
+    color:
+    var(--yellow);
+
+}
+
+
+
+/* ==========================================================
+   SMALL FINANCIAL METRICS
+========================================================== */
+
+.metrics{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:18px;
+
+    margin-top:20px;
+
+}
+
+
+.metric{
+
+    background:
+    var(--card);
+
+    padding:19px;
+
+    border-radius:18px;
+
+}
+
+
+.metric-label{
+
+    color:
+    var(--gray);
+
+    font-size:12px;
+
+}
+
+
+.metric-value{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    margin-top:8px;
+
+}
+
+
+
+/* ==========================================================
+   CONTENT GRID
+========================================================== */
+
+.content{
+
+    display:grid;
+
+    grid-template-columns:
+    2fr 1fr;
+
+    gap:22px;
+
+    margin-top:25px;
+
+}
+
+
+
+/* ==========================================================
+   PANEL
+========================================================== */
+
+.panel{
+
+    background:
+    var(--card-dark);
+
+    padding:24px;
+
+    border-radius:22px;
+
+    margin-bottom:22px;
+
+}
+
+
+.panel-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+}
+
+
+.panel-header h2{
+
+    font-size:21px;
+
+}
+
+
+.panel-subtitle{
+
+    color:
+    var(--gray);
+
+    font-size:12px;
+
+    margin-top:4px;
+
+}
+
+
+
+/* ==========================================================
+   CHARTS
+========================================================== */
+
+.chart-container{
+
+    position:relative;
+
+    height:310px;
+
+}
+
+
+
+/* ==========================================================
+   BUDGET
+========================================================== */
+
+.budget-card{
+
+    background:
+    linear-gradient(
+        135deg,
+        #073f2f,
+        #0a6149
+    );
+
+    border-radius:22px;
+
+    padding:24px;
+
+    margin-bottom:22px;
+
+}
+
+
+.budget-label{
+
+    color:#c0f1df;
+
+    font-size:13px;
+
+}
+
+
+.budget-amount{
+
+    font-size:34px;
+
+    font-weight:800;
+
+    margin-top:10px;
+
+}
+
+
+.budget-sub{
+
+    color:#c5ecdf;
+
+    font-size:12px;
+
+    margin-top:5px;
+
+}
+
+
+.progress{
+
+    height:10px;
+
+    background:
+    rgba(0,0,0,.25);
+
+    border-radius:20px;
+
+    margin-top:20px;
+
+    overflow:hidden;
+
+}
+
+
+.progress-bar{
+
+    height:100%;
+
+    background:
+    var(--green-light);
+
+    border-radius:20px;
+
+    transition:.3s;
+
+}
+
+
+.budget-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:12px;
+
+    color:#d0ede4;
+
+    font-size:12px;
+
+}
+
+
+
+/* ==========================================================
+   RECENT TRANSACTIONS
+========================================================== */
+
+.transaction-item{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:14px;
+
+    background:
+    var(--card);
+
+    border-radius:14px;
+
+    margin-bottom:10px;
+
+}
+
+
+.transaction-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+
+.transaction-icon{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:18px;
+
+}
+
+
+.icon-income{
+
+    background:#074b38;
+
+    color:
+    var(--green-light);
+
+}
+
+
+.icon-expense{
+
+    background:#482126;
+
+    color:
+    var(--red);
+
+}
+
+
+.transaction-title{
+
+    font-weight:600;
+
+    font-size:13px;
+
+}
+
+
+.transaction-date{
+
+    color:
+    var(--gray);
+
+    font-size:11px;
+
+    margin-top:4px;
+
+}
+
+
+.transaction-amount{
+
+    font-weight:700;
+
+    text-align:right;
+
+}
+
+
+.transaction-status{
+
+    margin-top:4px;
+
+    font-size:10px;
+
+}
+
+
+
+/* ==========================================================
+   STATUS
+========================================================== */
+
+.status{
+
+    padding:6px 11px;
+
+    border-radius:20px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    display:inline-block;
+
+}
+
+
+.status-paid{
+
+    background:#064b38;
+
+    color:
+    var(--green-light);
+
+}
+
+
+.status-pending{
+
+    background:#493d15;
+
+    color:
+    var(--yellow);
+
+}
+
+
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+.btn{
+
+    border:none;
+
+    border-radius:13px;
+
+    padding:12px 17px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    font-size:13px;
+
+}
+
+
+.btn-green{
+
+    background:
+    var(--green);
+
+    color:white;
+
+}
+
+
+.btn-dark{
+
+    background:#1b2a36;
+
+    color:#d7e2e9;
+
+}
+
+
+.btn-blue{
+
+    background:#174f7c;
+
+    color:#d4ecff;
+
+}
+
+
+.btn-red{
+
+    background:#4b2025;
+
+    color:#ffadb2;
+
+}
+
+
+.btn-small{
+
+    padding:7px 10px;
+
+    font-size:11px;
+
+}
+
+
+
+/* ==========================================================
+   TABLE HEADER
+========================================================== */
+
+.section-top{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:15px;
+
+    margin-top:30px;
+
+}
+
+
+.section-top h2{
+
+    font-size:24px;
+
+}
+
+
+.section-actions{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+
+
+/* ==========================================================
+   FILTER
+========================================================== */
+
+.filters{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 170px 170px;
+
+    gap:12px;
+
+    background:
+    var(--card);
+
+    padding:14px;
+
+    border-radius:16px;
+
+    margin-top:18px;
+
+}
+
+
+.search,
+.filter{
+
+    background:#0b1721;
+
+    border:
+    1px solid #273744;
+
+    border-radius:11px;
+
+    color:white;
+
+    padding:12px;
+
+    outline:none;
+
+}
+
+
+
+/* ==========================================================
+   TABLE
+========================================================== */
+
+.table-box{
+
+    margin-top:18px;
+
+    background:
+    var(--card-dark);
+
+    padding:20px;
+
+    border-radius:20px;
+
+    overflow:auto;
+
+}
+
+
+table{
+
+    width:100%;
+
+    min-width:1050px;
+
+    border-collapse:collapse;
+
+}
+
+
+th{
+
+    background:
+    var(--green);
+
+    padding:14px;
+
+    text-align:left;
+
+    font-size:13px;
+
+}
+
+
+td{
+
+    padding:14px;
+
+    border-bottom:
+    1px solid
+    var(--border);
+
+    font-size:13px;
+
+}
+
+
+tbody tr:hover{
+
+    background:#0e1a25;
+
+}
+
+
+.type-income{
+
+    color:
+    var(--green-light);
+
+    font-weight:700;
+
+}
+
+
+.type-expense{
+
+    color:
+    var(--red);
+
+    font-weight:700;
+
+}
+
+
+
+/* ==========================================================
+   MODAL
+========================================================== */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.75);
+
+    z-index:1000;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+
+}
+
+
+.modal.show{
+
+    display:flex;
+
+}
+
+
+.modal-content{
+
+    width:700px;
+
+    max-width:96%;
+
+    background:#0b1721;
+
+    border:
+    1px solid #253946;
+
+    border-radius:20px;
+
+    padding:25px;
+
+}
+
+
+.modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+
+.close{
+
+    border:none;
+
+    background:none;
+
+    color:#9da8b5;
+
+    font-size:27px;
+
+    cursor:pointer;
+
+}
+
+
+
+/* ==========================================================
+   FORM
+========================================================== */
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:15px;
+
+}
+
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:7px;
+
+}
+
+
+.full{
+
+    grid-column:
+    1 / -1;
+
+}
+
+
+label{
+
+    color:#b7c5d0;
+
+    font-size:12px;
+
+    font-weight:600;
+
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+
+    background:#101e29;
+
+    border:
+    1px solid #293d49;
+
+    border-radius:11px;
+
+    padding:12px;
+
+    color:white;
+
+    outline:none;
+
+}
+
+
+.form-group textarea{
+
+    min-height:90px;
+
+    resize:vertical;
+
+}
+
+
+.modal-buttons{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+    margin-top:22px;
+
+}
+
+
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media(max-width:1150px){
+
+    .stats,
+    .metrics{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+
+    .content{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+
+@media(max-width:760px){
+
+    .sidebar{
+
+        position:static;
+
+        width:100%;
+
+        height:auto;
+
+    }
+
+
+    .main{
+
+        margin-left:0;
+
+        padding:20px;
+
+    }
+
+
+    .header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+
+    .header-right{
+
+        flex-wrap:wrap;
+
+    }
+
+
+    .stats,
+    .metrics{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .filters{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .form-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .full{
+
+        grid-column:auto;
+
+    }
+
+
+    .section-top{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   PREMIUM AURORA + GREEN HYDROGEN DESIGN
+========================================================== */
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+.main{
+    position:relative;
+    z-index:5;
+}
+
+.sidebar{
+    z-index:50;
+    background:rgba(7,17,27,.95);
+    border-right:1px solid rgba(109,255,206,.08);
+}
+
+/* ==========================================================
+   FULL BACKGROUND
+========================================================== */
+
+.animated-bg{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    z-index:0;
+    pointer-events:none;
+    background:
+        linear-gradient(
+            180deg,
+            #02070b 0%,
+            #06111a 40%,
+            #071019 72%,
+            #050b12 100%
+        );
+}
+
+#particleCanvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+.aurora-borealis{
+    position:absolute;
+    inset:-8% -15% 37% -15%;
+    pointer-events:none;
+    opacity:.9;
+    mix-blend-mode:screen;
+}
+
+.aurora-haze{
+    position:absolute;
+    inset:0;
+    opacity:.34;
+    background:
+        radial-gradient(ellipse at 28% 18%,rgba(76,255,200,.12),rgba(76,255,200,.045) 28%,transparent 60%),
+        radial-gradient(ellipse at 58% 10%,rgba(86,208,255,.10),rgba(86,208,255,.035) 30%,transparent 62%),
+        radial-gradient(ellipse at 82% 25%,rgba(151,119,255,.07),rgba(151,119,255,.025) 28%,transparent 58%);
+    animation:auroraHazeShift 15s ease-in-out infinite alternate;
+}
+
+.aurora-ribbon{
+    position:absolute;
+    left:50%;
+    height:165px;
+    border-radius:48% 52% 42% 58% / 58% 46% 54% 42%;
+    border:1px solid rgba(145,255,223,.055);
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(130,255,238,.02) 8%,
+            rgba(102,255,199,.08) 18%,
+            rgba(0,229,139,.18) 31%,
+            rgba(90,255,202,.13) 43%,
+            rgba(91,189,255,.11) 58%,
+            rgba(154,132,255,.085) 72%,
+            rgba(88,255,224,.055) 84%,
+            transparent 100%
+        );
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+.ribbon-1{
+    top:3%;
+    width:94%;
+    height:190px;
+    transform:translateX(-50%) rotate(-8deg) skewX(-10deg);
+    animation:auroraRibbon1 18s ease-in-out infinite alternate;
+}
+
+.ribbon-2{
+    top:14%;
+    width:76%;
+    opacity:.75;
+    transform:translateX(-50%) rotate(6deg) skewX(10deg);
+    animation:auroraRibbon2 15s ease-in-out infinite alternate;
+}
+
+.ribbon-3{
+    top:25%;
+    width:69%;
+    height:138px;
+    opacity:.54;
+    transform:translateX(-50%) rotate(-3deg) skewX(-8deg);
+    animation:auroraRibbon3 20s ease-in-out infinite alternate;
+}
+
+.aurora-curtain{
+    position:absolute;
+    top:0;
+    left:50%;
+    width:72%;
+    height:64%;
+    transform:translateX(-50%);
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 20px,
+            rgba(96,255,214,.065) 23px,
+            rgba(89,168,255,.055) 27px,
+            transparent 44px
+        );
+    opacity:.12;
+    border-radius:0 0 45% 45%;
+    animation:auroraCurtain 21s linear infinite;
+}
+
+.bg-grid{
+    position:absolute;
+    inset:-30%;
+    opacity:.09;
+    background-image:
+        linear-gradient(rgba(0,229,139,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,229,139,.035) 1px,transparent 1px);
+    background-size:62px 62px;
+    transform:perspective(760px) rotateX(64deg) translateY(-8%);
+    transform-origin:center;
+    animation:gridDrift 20s linear infinite;
+}
+
+/* ==========================================================
+   LOWER GREEN HYDROGEN / PLASMA EFFECT
+========================================================== */
+
+.lower-vignette{
+    position:fixed;
+    left:250px;
+    right:0;
+    bottom:0;
+    height:34vh;
+    z-index:1;
+    pointer-events:none;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,229,139,.035),
+            rgba(0,229,139,.012) 34%,
+            transparent 78%
+        );
+}
+
+.hydrogen-bottom{
+    position:fixed;
+    left:250px;
+    right:0;
+    bottom:0;
+    height:42vh;
+    min-height:265px;
+    z-index:2;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+#hydrogenCanvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+.hydrogen-bottom::before{
+    content:"";
+    position:absolute;
+    left:-5%;
+    right:-5%;
+    bottom:-34%;
+    height:72%;
+    border-radius:50% 50% 0 0;
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(0,255,160,.13) 0%,
+            rgba(0,229,139,.07) 28%,
+            rgba(0,168,107,.025) 50%,
+            transparent 74%
+        );
+    animation:hydrogenBreath 5.5s ease-in-out infinite alternate;
+}
+
+.plasma-wave{
+    position:absolute;
+    left:-8%;
+    width:116%;
+    border-radius:50%;
+    border-top:1px solid rgba(95,255,198,.18);
+    transform-origin:center bottom;
+}
+
+.wave-a{
+    bottom:18px;
+    height:130px;
+    animation:plasmaWaveA 6s ease-in-out infinite alternate;
+}
+
+.wave-b{
+    bottom:-12px;
+    height:190px;
+    opacity:.62;
+    animation:plasmaWaveB 8s ease-in-out infinite alternate;
+}
+
+.wave-c{
+    bottom:-48px;
+    height:260px;
+    opacity:.34;
+    animation:plasmaWaveC 10s ease-in-out infinite alternate;
+}
+
+.h-atom{
+    position:absolute;
+    width:112px;
+    height:112px;
+    bottom:30px;
+    opacity:.27;
+    animation:atomFloat 7s ease-in-out infinite alternate;
+}
+
+.h-atom.left{left:4%}
+
+.h-atom.right{
+    right:5%;
+    width:88px;
+    height:88px;
+    bottom:60px;
+    opacity:.19;
+    animation-delay:-2.5s;
+}
+
+.h-nucleus{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:8px;
+    height:8px;
+    margin:-4px;
+    border-radius:50%;
+    background:#00f59b;
+    box-shadow:
+        0 0 10px rgba(0,245,155,.55),
+        0 0 24px rgba(0,229,139,.20);
+}
+
+.h-orbit{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:96px;
+    height:35px;
+    margin-left:-48px;
+    margin-top:-17.5px;
+    border:1px solid rgba(95,255,198,.22);
+    border-radius:50%;
+}
+
+.h-orbit.o1{animation:orbit1 6s linear infinite}
+.h-orbit.o2{transform:rotate(60deg);animation:orbit2 7.5s linear infinite reverse}
+.h-orbit.o3{transform:rotate(120deg);animation:orbit3 9s linear infinite}
+
+.h-electron{
+    position:absolute;
+    left:50%;
+    top:-3px;
+    width:5px;
+    height:5px;
+    margin-left:-2.5px;
+    border-radius:50%;
+    background:#b8ffe0;
+    box-shadow:0 0 8px rgba(184,255,224,.55);
+}
+
+.energy-horizon{
+    position:absolute;
+    left:6%;
+    right:6%;
+    bottom:12px;
+    height:1px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0,229,139,.11),
+            rgba(126,255,210,.48),
+            rgba(0,229,139,.13),
+            transparent
+        );
+    background-size:220% 100%;
+    animation:horizonFlow 4.5s linear infinite;
+}
+
+.h-ion{
+    position:absolute;
+    bottom:-10px;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:rgba(146,255,214,.72);
+    box-shadow:0 0 8px rgba(0,229,139,.24);
+    animation:ionRise var(--ion-duration) linear var(--ion-delay) infinite;
+}
+
+/* ==========================================================
+   INTERACTIVE DOTS + CURSOR
+========================================================== */
+
+.cursor-ring{
+    position:fixed;
+    width:34px;
+    height:34px;
+    border:1px solid rgba(0,229,139,.52);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9999;
+    transform:translate(-50%,-50%);
+    opacity:0;
+    transition:
+        width .18s ease,
+        height .18s ease,
+        border-color .18s ease,
+        opacity .18s ease;
+    box-shadow:
+        0 0 0 5px rgba(0,229,139,.025),
+        0 0 20px rgba(0,229,139,.09);
+}
+
+.cursor-ring.active{
+    width:52px;
+    height:52px;
+    border-color:rgba(89,168,255,.75);
+}
+
+.cursor-trail-dot{
+    position:fixed;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:9998;
+    background:rgba(0,229,139,.62);
+    box-shadow:0 0 9px rgba(0,229,139,.34);
+    transform:translate(-50%,-50%);
+    animation:trailFade .52s ease-out forwards;
+}
+
+.mouse-spotlight{
+    position:fixed;
+    inset:0;
+    z-index:3;
+    pointer-events:none;
+    background:
+        radial-gradient(
+            300px circle at var(--mouse-x,50%) var(--mouse-y,50%),
+            rgba(0,229,139,.032),
+            transparent 72%
+        );
+    mix-blend-mode:screen;
+}
+
+/* ==========================================================
+   PREMIUM FINANCIAL PANELS
+========================================================== */
+
+.stat-card,
+.metric,
+.panel,
+.filters,
+.table-box,
+.profile,
+.year-select,
+.modal-content,
+.transaction-item{
+    border:1px solid rgba(125,167,190,.08);
+    box-shadow:
+        0 16px 38px rgba(0,0,0,.17),
+        inset 0 1px 0 rgba(255,255,255,.018);
+}
+
+.stat-card,
+.metric,
+.panel,
+.filters,
+.table-box,
+.modal-content,
+.transaction-item{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(17,27,38,.95),
+            rgba(7,17,27,.95)
+        );
+}
+
+.stat-card,
+.metric,
+.panel,
+.filters,
+.table-box,
+.budget-card{
+    position:relative;
+    overflow:hidden;
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+.stat-card::before,
+.metric::before,
+.panel::before,
+.filters::before,
+.table-box::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    padding:1px;
+    background:
+        linear-gradient(
+            120deg,
+            transparent 0%,
+            rgba(0,229,139,.15) 24%,
+            rgba(89,168,255,.09) 47%,
+            transparent 73%
+        );
+    background-size:220% 220%;
+    animation:borderFlow 7s linear infinite;
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    pointer-events:none;
+}
+
+.stat-card:hover,
+.metric:hover,
+.panel:hover,
+.filters:hover,
+.budget-card:hover{
+    transform:translateY(-3px);
+    border-color:rgba(0,229,139,.14);
+    box-shadow:
+        0 22px 48px rgba(0,0,0,.21),
+        0 0 0 1px rgba(0,229,139,.03);
+}
+
+/* Card light sweep */
+.stat-card::after,
+.metric::after,
+.panel::after{
+    content:"";
+    position:absolute;
+    top:-150%;
+    left:-50%;
+    width:38%;
+    height:340%;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.036),
+            transparent
+        );
+    transform:rotate(18deg);
+    transition:left .85s ease;
+    pointer-events:none;
+}
+
+.stat-card:hover::after,
+.metric:hover::after,
+.panel:hover::after{
+    left:125%;
+}
+
+/* ==========================================================
+   PREMIUM BUDGET CARD
+========================================================== */
+
+.budget-card{
+    border:1px solid rgba(95,255,198,.12);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(5,62,46,.96),
+            rgba(7,91,68,.89)
+        );
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+.budget-card::before{
+    content:"";
+    position:absolute;
+    inset:-40%;
+    background:
+        conic-gradient(
+            from 0deg,
+            transparent,
+            rgba(0,229,139,.06),
+            transparent 30%,
+            rgba(89,168,255,.035),
+            transparent 60%
+        );
+    animation:budgetRotate 16s linear infinite;
+    pointer-events:none;
+}
+
+.progress-bar{
+    position:relative;
+    overflow:hidden;
+    background:
+        linear-gradient(
+            90deg,
+            #00a86b,
+            #00e58b,
+            #7affca
+        );
+}
+
+.progress-bar::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    transform:translateX(-120%);
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.35),
+            transparent
+        );
+    animation:progressShine 3.4s ease-in-out infinite;
+}
+
+/* ==========================================================
+   ANIMATED TITLE / LOGO
+========================================================== */
+
+.title h1{
+    position:relative;
+    display:inline-block;
+    background:
+        linear-gradient(
+            90deg,
+            #fff 0%,
+            #d7fff0 18%,
+            #00e58b 38%,
+            #7edbff 57%,
+            #fff 77%,
+            #fff 100%
+        );
+    background-size:240% auto;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:premiumTitleFlow 6s linear infinite;
+}
+
+.title h1::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-8px;
+    width:80px;
+    height:3px;
+    border-radius:20px;
+    background:
+        linear-gradient(
+            90deg,
+            var(--green-light),
+            var(--blue),
+            transparent
+        );
+    background-size:200% 100%;
+    animation:titleLineFlow 4s linear infinite;
+}
+
+.logo span{
+    display:inline-block;
+    background:linear-gradient(90deg,#00e58b,#9bffda,#00e58b);
+    background-size:200% 100%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:logoFlow 4s linear infinite;
+}
+
+.menu button.active{
+    position:relative;
+    box-shadow:
+        0 8px 24px rgba(0,168,107,.14),
+        inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.menu button.active::after{
+    content:"";
+    position:absolute;
+    right:10px;
+    top:50%;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:#c2ffe6;
+    transform:translateY(-50%);
+    box-shadow:0 0 12px rgba(194,255,230,.5);
+    animation:navPulse 1.7s ease-in-out infinite;
+}
+
+/* ==========================================================
+   NUMBERS / TRANSACTIONS / TABLE
+========================================================== */
+
+.stat-value,
+.metric-value,
+.budget-amount{
+    animation:numberEntrance .7s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.transaction-item{
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+.transaction-item:hover{
+    transform:translateX(4px);
+    border-color:rgba(0,229,139,.12);
+    box-shadow:
+        0 12px 26px rgba(0,0,0,.18),
+        inset 3px 0 0 rgba(0,229,139,.35);
+}
+
+tbody tr{
+    transition:
+        background .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+tbody tr:hover{
+    transform:translateX(4px);
+    box-shadow:inset 3px 0 0 rgba(0,229,139,.55);
+}
+
+/* ==========================================================
+   STATUS + BUTTONS
+========================================================== */
+
+.status{
+    position:relative;
+    overflow:hidden;
+}
+
+.status::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    transform:translateX(-130%);
+    background:
+        linear-gradient(
+            100deg,
+            transparent 25%,
+            rgba(255,255,255,.12) 50%,
+            transparent 75%
+        );
+    animation:badgeSheen 5s ease-in-out infinite;
+}
+
+.btn,
+.close{
+    position:relative;
+    overflow:hidden;
+    transition:
+        transform .18s ease,
+        filter .18s ease,
+        box-shadow .18s ease;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.05);
+}
+
+.btn-green:hover{
+    box-shadow:
+        0 10px 25px rgba(0,168,107,.18),
+        0 0 20px rgba(0,229,139,.07);
+}
+
+.effect-ripple{
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%) scale(0);
+    background:rgba(255,255,255,.20);
+    animation:rippleBurst .65s ease-out forwards;
+}
+
+/* ==========================================================
+   CHART WRAPPERS
+========================================================== */
+
+.chart-container{
+    z-index:2;
+}
+
+.chart-container canvas{
+    position:relative;
+    z-index:2;
+}
+
+/* ==========================================================
+   MODAL
+========================================================== */
+
+.modal.show .modal-content{
+    animation:modalPop .32s cubic-bezier(.2,.9,.25,1.12);
+}
+
+/* ==========================================================
+   REVEAL
+========================================================== */
+
+.fx-reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:
+        opacity .65s ease,
+        transform .65s ease;
+}
+
+.fx-reveal.fx-visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* ==========================================================
+   KEYFRAMES
+========================================================== */
+
+@keyframes auroraHazeShift{
+    from{transform:translate3d(-1%,0,0) scale(1)}
+    to{transform:translate3d(1.2%,18px,0) scale(1.05)}
+}
+
+@keyframes auroraRibbon1{
+    from{transform:translateX(-50%) translateY(0) rotate(-9deg) skewX(-10deg) scaleX(1)}
+    to{transform:translateX(-50%) translateY(34px) rotate(-12deg) skewX(-6deg) scaleX(.98)}
+}
+
+@keyframes auroraRibbon2{
+    from{transform:translateX(-50%) translateY(0) rotate(7deg) skewX(10deg)}
+    to{transform:translateX(-50%) translateY(24px) rotate(10deg) skewX(14deg) scaleX(1.04)}
+}
+
+@keyframes auroraRibbon3{
+    from{transform:translateX(-50%) rotate(-2deg) skewX(-7deg)}
+    to{transform:translateX(-50%) translateY(28px) rotate(-6deg) skewX(-9deg) scaleX(.95)}
+}
+
+@keyframes auroraCurtain{
+    from{background-position:0 0;transform:translateX(-50%) translateY(-6px)}
+    to{background-position:320px 0;transform:translateX(-50%) translateY(25px)}
+}
+
+@keyframes gridDrift{
+    from{background-position:0 0,0 0}
+    to{background-position:0 124px,124px 0}
+}
+
+@keyframes hydrogenBreath{
+    from{transform:scaleX(1.02) scaleY(.92);opacity:.60}
+    to{transform:scaleX(1.16) scaleY(1.06);opacity:1}
+}
+
+@keyframes plasmaWaveA{
+    from{transform:translateY(0) scaleX(1)}
+    to{transform:translateY(-12px) scaleX(1.03)}
+}
+
+@keyframes plasmaWaveB{
+    from{transform:translateY(0) scaleX(.96)}
+    to{transform:translateY(-18px) scaleX(1.07)}
+}
+
+@keyframes plasmaWaveC{
+    from{transform:translateY(6px) scaleX(1.02)}
+    to{transform:translateY(-10px) scaleX(.94)}
+}
+
+@keyframes atomFloat{
+    from{transform:translateY(0) rotate(-3deg)}
+    to{transform:translateY(-14px) rotate(4deg)}
+}
+
+@keyframes orbit1{
+    from{transform:rotate(0deg)}
+    to{transform:rotate(360deg)}
+}
+
+@keyframes orbit2{
+    from{transform:rotate(60deg)}
+    to{transform:rotate(420deg)}
+}
+
+@keyframes orbit3{
+    from{transform:rotate(120deg)}
+    to{transform:rotate(480deg)}
+}
+
+@keyframes horizonFlow{
+    from{background-position:0% 50%}
+    to{background-position:220% 50%}
+}
+
+@keyframes ionRise{
+    0%{transform:translate3d(0,0,0) scale(.7);opacity:0}
+    12%{opacity:.7}
+    60%{transform:translate3d(var(--ion-drift),-135px,0) scale(1)}
+    100%{transform:translate3d(0,-270px,0) scale(.4);opacity:0}
+}
+
+@keyframes borderFlow{
+    from{background-position:0% 50%}
+    to{background-position:200% 50%}
+}
+
+@keyframes premiumTitleFlow{
+    from{background-position:0% 50%}
+    to{background-position:240% 50%}
+}
+
+@keyframes titleLineFlow{
+    from{background-position:0 50%}
+    to{background-position:200% 50%}
+}
+
+@keyframes logoFlow{
+    from{background-position:0 50%}
+    to{background-position:200% 50%}
+}
+
+@keyframes navPulse{
+    0%,100%{opacity:.35;transform:translateY(-50%) scale(.8)}
+    50%{opacity:1;transform:translateY(-50%) scale(1.35)}
+}
+
+@keyframes numberEntrance{
+    from{opacity:0;transform:translateY(10px) scale(.96)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@keyframes badgeSheen{
+    0%,72%{transform:translateX(-130%)}
+    88%,100%{transform:translateX(130%)}
+}
+
+@keyframes budgetRotate{
+    from{transform:rotate(0deg)}
+    to{transform:rotate(360deg)}
+}
+
+@keyframes progressShine{
+    0%,45%{transform:translateX(-120%)}
+    80%,100%{transform:translateX(120%)}
+}
+
+@keyframes trailFade{
+    from{opacity:.65;transform:translate(-50%,-50%) scale(1)}
+    to{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+}
+
+@keyframes rippleBurst{
+    from{transform:translate(-50%,-50%) scale(0);opacity:.45}
+    to{transform:translate(-50%,-50%) scale(7);opacity:0}
+}
+
+@keyframes modalPop{
+    from{opacity:0;transform:translateY(14px) scale(.965)}
+    to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@media(max-width:760px){
+    .lower-vignette,
+    .hydrogen-bottom{
+        left:0;
+    }
+
+    .hydrogen-bottom{
+        height:34vh;
+        min-height:220px;
+    }
+
+    .aurora-borealis{
+        inset:-12% -30% 46% -30%;
+        opacity:.70;
+    }
+
+    .aurora-ribbon{
+        width:130%;
+    }
+
+    .cursor-ring{
+        display:none;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+    *,
+    *::before,
+    *::after{
+        animation-duration:.001ms!important;
+        animation-iteration-count:1!important;
+        scroll-behavior:auto!important;
+    }
+
+    .h-ion,
+    .cursor-trail-dot{
+        display:none!important;
+    }
+
+    .fx-reveal{
+        opacity:1;
+        transform:none;
+    }
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+<!-- PREMIUM BACKGROUND EFFECTS -->
+<div class="animated-bg" aria-hidden="true">
+
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="aurora-borealis">
+        <div class="aurora-haze"></div>
+        <div class="aurora-ribbon ribbon-1"></div>
+        <div class="aurora-ribbon ribbon-2"></div>
+        <div class="aurora-ribbon ribbon-3"></div>
+        <div class="aurora-curtain"></div>
+    </div>
+
+    <div class="bg-grid"></div>
+
+</div>
+
+<div class="mouse-spotlight" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+<div class="lower-vignette" aria-hidden="true"></div>
+
+<div class="hydrogen-bottom" aria-hidden="true">
+
+    <canvas id="hydrogenCanvas"></canvas>
+
+    <div class="plasma-wave wave-a"></div>
+    <div class="plasma-wave wave-b"></div>
+    <div class="plasma-wave wave-c"></div>
+
+    <div class="h-atom left">
+        <div class="h-orbit o1"><span class="h-electron"></span></div>
+        <div class="h-orbit o2"><span class="h-electron"></span></div>
+        <div class="h-orbit o3"><span class="h-electron"></span></div>
+        <div class="h-nucleus"></div>
+    </div>
+
+    <div class="h-atom right">
+        <div class="h-orbit o1"><span class="h-electron"></span></div>
+        <div class="h-orbit o2"><span class="h-electron"></span></div>
+        <div class="h-orbit o3"><span class="h-electron"></span></div>
+        <div class="h-nucleus"></div>
+    </div>
+
+    <div class="energy-horizon"></div>
+    <div id="ionField"></div>
+
+</div>
+
+
+
+<!-- ==========================================================
+     SIDEBAR
+========================================================== -->
+
+<aside class="sidebar">
+
+
+<div class="logo">
+
+🛺 TODA <span>SYSTEM</span>
+
+</div>
+
+
+<div class="menu">
+
+
+<a href="C:\Users\ASUS\OneDrive\Documents\Toda\DashboardTODA.html">
+
+<button>
+
+⌂ Dashboard
+
+</button>
+
+</a>
+
+
+<a href="C:\Users\ASUS\OneDrive\Documents\Toda\DBmanagement.html">
+
+<button>
+
+👤 Driver Management
+
+</button>
+
+</a>
+
+
+<a href="C:\Users\ASUS\OneDrive\Documents\Toda\Queueing.html">
+
+<button>
+
+🚦 Digital Queueing
+
+</button>
+
+</a>
+
+
+
+
+
+<a href="C:\Users\ASUS\OneDrive\Documents\Toda\driver_verification.html">
+
+<button>
+
+▦ QR Driver Verification
+
+</button>
+
+</a>
+
+
+<a href="C:\Users\ASUS\OneDrive\Documents\Toda\Announcement.html">
+
+<button>
+
+📢 Announcement
+
+</button>
+
+</a>
+
+
+<a href="financial_dashboard.html">
+
+<button class="active">
+
+💹 Financial Dashboard
+
+</button>
+
+</a>
+
+
+
+
+
+<a href="settings.html">
+
+<button>
+
+⚙ Settings
+
+</button>
+
+</a>
+
+
+</div>
+
+
+<div class="bottom-logo">
+
+<h3>
+
+TODA <span>SYSTEM</span>
+
+</h3>
+
+</div>
+
+
+</aside>
+
+
+
+
+
+<!-- ==========================================================
+     MAIN
+========================================================== -->
+
+<main class="main">
+
+
+
+<!-- ==========================================================
+     HEADER
+========================================================== -->
+
+<div class="header">
+
+
+<div class="title">
+
+<h1>
+
+Financial Dashboard
+
+</h1>
+
+<p>
+
+Monitor TODA income, expenses, cash flow and financial performance
+
+</p>
+
+</div>
+
+
+<div class="header-right">
+
+
+<select
+id="yearFilter"
+class="year-select"
+>
+
+<option value="2026">
+
+2026
+
+</option>
+
+</select>
+
+
+<div class="profile">
+
+
+<div class="profile-avatar">
+
+👨‍💼
+
+</div>
+
+
+<div>
+
+<b>
+
+Administrator
+
+</b>
+
+<br>
+
+<span>
+
+● Online
+
+</span>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- ==========================================================
+     MAIN STAT CARDS
+========================================================== -->
+
+<section class="stats">
+
+
+<div class="stat-card income-card">
+
+<div class="stat-label">
+
+Total Income
+
+</div>
+
+<div
+class="stat-value green"
+id="totalIncome"
+>
+
+₱0
+
+</div>
+
+<div class="stat-footer">
+
+Paid income for selected period
+
+</div>
+
+</div>
+
+
+
+<div class="stat-card expense-card">
+
+<div class="stat-label">
+
+Total Expenses
+
+</div>
+
+<div
+class="stat-value red"
+id="totalExpenses"
+>
+
+₱0
+
+</div>
+
+<div class="stat-footer">
+
+Paid operating expenses
+
+</div>
+
+</div>
+
+
+
+<div class="stat-card balance-card">
+
+<div class="stat-label">
+
+Net Balance
+
+</div>
+
+<div
+class="stat-value blue"
+id="netBalance"
+>
+
+₱0
+
+</div>
+
+<div class="stat-footer">
+
+Income minus expenses
+
+</div>
+
+</div>
+
+
+
+<div class="stat-card receivable-card">
+
+<div class="stat-label">
+
+Pending Receivables
+
+</div>
+
+<div
+class="stat-value yellow"
+id="pendingReceivables"
+>
+
+₱0
+
+</div>
+
+<div class="stat-footer">
+
+Unpaid member obligations
+
+</div>
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ==========================================================
+     SECOND METRICS
+========================================================== -->
+
+<section class="metrics">
+
+
+<div class="metric">
+
+<div class="metric-label">
+
+Transactions
+
+</div>
+
+<div
+class="metric-value"
+id="transactionCount"
+>
+
+0
+
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+
+Income Transactions
+
+</div>
+
+<div
+class="metric-value green"
+id="incomeTransactionCount"
+>
+
+0
+
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+
+Expense Transactions
+
+</div>
+
+<div
+class="metric-value red"
+id="expenseTransactionCount"
+>
+
+0
+
+</div>
+
+</div>
+
+
+<div class="metric">
+
+<div class="metric-label">
+
+Expense Ratio
+
+</div>
+
+<div
+class="metric-value yellow"
+id="expenseRatio"
+>
+
+0%
+
+</div>
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ==========================================================
+     CHART CONTENT
+========================================================== -->
+
+<section class="content">
+
+
+
+<!-- LEFT -->
+
+<div>
+
+
+<!-- CASH FLOW -->
+
+<div class="panel">
+
+
+<div class="panel-header">
+
+
+<div>
+
+<h2>
+
+Cash Flow Overview
+
+</h2>
+
+<div class="panel-subtitle">
+
+Monthly income versus expenses
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="chart-container">
+
+<canvas id="cashFlowChart">
+
+</canvas>
+
+</div>
+
+
+</div>
+
+
+
+<!-- TRANSACTION TREND -->
+
+<div class="panel">
+
+
+<div class="panel-header">
+
+
+<div>
+
+<h2>
+
+Financial Trend
+
+</h2>
+
+<div class="panel-subtitle">
+
+Net financial performance by month
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="chart-container">
+
+<canvas id="netTrendChart">
+
+</canvas>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- RIGHT -->
+
+<div>
+
+
+
+<!-- BUDGET -->
+
+<div class="budget-card">
+
+
+<div class="budget-label">
+
+MONTHLY OPERATING BUDGET
+
+</div>
+
+
+<div
+class="budget-amount"
+id="budgetRemaining"
+>
+
+₱0
+
+</div>
+
+
+<div class="budget-sub">
+
+Remaining budget for August 2026
+
+</div>
+
+
+<div class="progress">
+
+<div
+class="progress-bar"
+id="budgetProgress"
+>
+
+</div>
+
+</div>
+
+
+<div class="budget-row">
+
+<span>
+
+Used
+
+</span>
+
+<strong id="budgetUsed">
+
+₱0
+
+</strong>
+
+</div>
+
+
+<div class="budget-row">
+
+<span>
+
+Monthly Budget
+
+</span>
+
+<strong>
+
+₱25,000
+
+</strong>
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- EXPENSE DISTRIBUTION -->
+
+<div class="panel">
+
+
+<div class="panel-header">
+
+
+<div>
+
+<h2>
+
+Expense Distribution
+
+</h2>
+
+<div class="panel-subtitle">
+
+Where TODA funds are being spent
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div
+class="chart-container"
+style="height:260px;"
+>
+
+<canvas id="expenseChart">
+
+</canvas>
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- RECENT TRANSACTIONS -->
+
+<div class="panel">
+
+
+<div class="panel-header">
+
+<h2>
+
+Recent Transactions
+
+</h2>
+
+</div>
+
+
+<div id="recentTransactions">
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- ==========================================================
+     TRANSACTIONS HEADER
+========================================================== -->
+
+<div class="section-top">
+
+
+<div>
+
+<h2>
+
+Financial Transactions
+
+</h2>
+
+<p
+style="
+color:#8995a3;
+font-size:13px;
+margin-top:5px;
+"
+>
+
+Record and manage association financial transactions
+
+</p>
+
+</div>
+
+
+<div class="section-actions">
+
+
+<button
+class="btn btn-dark"
+onclick="exportCSV()"
+>
+
+↓ Export CSV
+
+</button>
+
+
+<button
+class="btn btn-green"
+onclick="openTransactionModal()"
+>
+
++ Add Transaction
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- ==========================================================
+     FILTERS
+========================================================== -->
+
+<div class="filters">
+
+
+<input
+type="text"
+id="searchTransaction"
+class="search"
+placeholder="🔍 Search transaction or category..."
+>
+
+
+<select
+id="typeFilter"
+class="filter"
+>
+
+<option value="">
+
+All Types
+
+</option>
+
+<option value="Income">
+
+Income
+
+</option>
+
+<option value="Expense">
+
+Expense
+
+</option>
+
+</select>
+
+
+<select
+id="statusFilter"
+class="filter"
+>
+
+<option value="">
+
+All Status
+
+</option>
+
+<option value="Paid">
+
+Paid
+
+</option>
+
+<option value="Pending">
+
+Pending
+
+</option>
+
+</select>
+
+
+</div>
+
+
+
+
+
+<!-- ==========================================================
+     TRANSACTION TABLE
+========================================================== -->
+
+<div class="table-box">
+
+
+<table>
+
+
+<thead>
+
+
+<tr>
+
+<th>
+
+Date
+
+</th>
+
+<th>
+
+Reference
+
+</th>
+
+<th>
+
+Description
+
+</th>
+
+<th>
+
+Category
+
+</th>
+
+<th>
+
+Type
+
+</th>
+
+<th>
+
+Amount
+
+</th>
+
+<th>
+
+Status
+
+</th>
+
+<th>
+
+Actions
+
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+<tbody id="transactionTable">
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</main>
+
+
+
+
+
+<!-- ==========================================================
+     ADD TRANSACTION MODAL
+========================================================== -->
+
+<div
+class="modal"
+id="transactionModal"
+>
+
+
+<div class="modal-content">
+
+
+<div class="modal-header">
+
+
+<div>
+
+<h2>
+
+Add Financial Transaction
+
+</h2>
+
+<p
+style="
+color:#8995a3;
+font-size:13px;
+margin-top:5px;
+"
+>
+
+Record income or expense transaction
+
+</p>
+
+</div>
+
+
+<button
+class="close"
+onclick="closeTransactionModal()"
+>
+
+×
+
+</button>
+
+
+</div>
+
+
+
+<form id="transactionForm">
+
+
+<div class="form-grid">
+
+
+<div class="form-group">
+
+<label>
+
+Transaction Type
+
+</label>
+
+<select
+id="transactionType"
+required
+>
+
+<option value="Income">
+
+Income
+
+</option>
+
+<option value="Expense">
+
+Expense
+
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+
+Status
+
+</label>
+
+<select
+id="transactionStatus"
+required
+>
+
+<option value="Paid">
+
+Paid
+
+</option>
+
+<option value="Pending">
+
+Pending
+
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+
+Category
+
+</label>
+
+<select
+id="transactionCategory"
+required
+>
+
+</select>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+
+Amount
+
+</label>
+
+<input
+type="number"
+id="transactionAmount"
+min="1"
+step="0.01"
+placeholder="0.00"
+required
+>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+
+Transaction Date
+
+</label>
+
+<input
+type="date"
+id="transactionDate"
+required
+>
+
+</div>
+
+
+
+<div class="form-group">
+
+<label>
+
+Reference Number
+
+</label>
+
+<input
+type="text"
+id="transactionReference"
+placeholder="Example: FIN-2026-001"
+required
+>
+
+</div>
+
+
+
+<div class="form-group full">
+
+<label>
+
+Description
+
+</label>
+
+<textarea
+id="transactionDescription"
+placeholder="Enter transaction description..."
+required
+></textarea>
+
+</div>
+
+
+</div>
+
+
+
+<div class="modal-buttons">
+
+
+<button
+type="button"
+class="btn btn-dark"
+onclick="closeTransactionModal()"
+>
+
+Cancel
+
+</button>
+
+
+<button
+type="submit"
+class="btn btn-green"
+>
+
+Save Transaction
+
+</button>
+
+
+</div>
+
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<script>
+
+/* ==========================================================
+   SAMPLE FINANCIAL DATA
+========================================================== */
+
+const defaultTransactions = [
+
+
+{
+id:1,
+reference:"FIN-2026-001",
+date:"2026-01-10",
+description:"January membership dues",
+category:"Membership Dues",
+type:"Income",
+amount:12500,
+status:"Paid"
+},
+
+
+{
+id:2,
+reference:"FIN-2026-002",
+date:"2026-01-18",
+description:"Terminal minor repairs",
+category:"Terminal Maintenance",
+type:"Expense",
+amount:4200,
+status:"Paid"
+},
+
+
+{
+id:3,
+reference:"FIN-2026-003",
+date:"2026-02-08",
+description:"February membership dues",
+category:"Membership Dues",
+type:"Income",
+amount:14800,
+status:"Paid"
+},
+
+
+{
+id:4,
+reference:"FIN-2026-004",
+date:"2026-02-19",
+description:"Electricity and water expenses",
+category:"Utilities",
+type:"Expense",
+amount:5100,
+status:"Paid"
+},
+
+
+{
+id:5,
+reference:"FIN-2026-005",
+date:"2026-03-07",
+description:"Membership and registration payments",
+category:"Registration Fees",
+type:"Income",
+amount:16300,
+status:"Paid"
+},
+
+
+{
+id:6,
+reference:"FIN-2026-006",
+date:"2026-03-21",
+description:"Terminal maintenance",
+category:"Terminal Maintenance",
+type:"Expense",
+amount:6200,
+status:"Paid"
+},
+
+
+{
+id:7,
+reference:"FIN-2026-007",
+date:"2026-04-09",
+description:"April association income",
+category:"Membership Dues",
+type:"Income",
+amount:17150,
+status:"Paid"
+},
+
+
+{
+id:8,
+reference:"FIN-2026-008",
+date:"2026-04-22",
+description:"Office and administrative supplies",
+category:"Office Supplies",
+type:"Expense",
+amount:6750,
+status:"Paid"
+},
+
+
+{
+id:9,
+reference:"FIN-2026-009",
+date:"2026-05-08",
+description:"May membership dues",
+category:"Membership Dues",
+type:"Income",
+amount:18600,
+status:"Paid"
+},
+
+
+{
+id:10,
+reference:"FIN-2026-010",
+date:"2026-05-19",
+description:"Utilities and terminal operations",
+category:"Utilities",
+type:"Expense",
+amount:7200,
+status:"Paid"
+},
+
+
+{
+id:11,
+reference:"FIN-2026-011",
+date:"2026-06-10",
+description:"June association income",
+category:"Membership Dues",
+type:"Income",
+amount:19500,
+status:"Paid"
+},
+
+
+{
+id:12,
+reference:"FIN-2026-012",
+date:"2026-06-22",
+description:"General terminal maintenance",
+category:"Terminal Maintenance",
+type:"Expense",
+amount:7600,
+status:"Paid"
+},
+
+
+{
+id:13,
+reference:"FIN-2026-013",
+date:"2026-07-09",
+description:"July TODA income",
+category:"Membership Dues",
+type:"Income",
+amount:21200,
+status:"Paid"
+},
+
+
+{
+id:14,
+reference:"FIN-2026-014",
+date:"2026-07-20",
+description:"Monthly operational expenses",
+category:"Utilities",
+type:"Expense",
+amount:8100,
+status:"Paid"
+},
+
+
+{
+id:15,
+reference:"FIN-2026-015",
+date:"2026-08-02",
+description:"August membership dues",
+category:"Membership Dues",
+type:"Income",
+amount:9800,
+status:"Paid"
+},
+
+
+{
+id:16,
+reference:"FIN-2026-016",
+date:"2026-08-05",
+description:"New driver registration fees",
+category:"Registration Fees",
+type:"Income",
+amount:7200,
+status:"Paid"
+},
+
+
+{
+id:17,
+reference:"FIN-2026-017",
+date:"2026-08-07",
+description:"Terminal electricity and water",
+category:"Utilities",
+type:"Expense",
+amount:3200,
+status:"Paid"
+},
+
+
+{
+id:18,
+reference:"FIN-2026-018",
+date:"2026-08-10",
+description:"Terminal repairs and maintenance",
+category:"Terminal Maintenance",
+type:"Expense",
+amount:4500,
+status:"Paid"
+},
+
+
+{
+id:19,
+reference:"FIN-2026-019",
+date:"2026-08-12",
+description:"Traffic and policy penalties collected",
+category:"Penalties",
+type:"Income",
+amount:2100,
+status:"Paid"
+},
+
+
+{
+id:20,
+reference:"FIN-2026-020",
+date:"2026-08-15",
+description:"Office documentation supplies",
+category:"Office Supplies",
+type:"Expense",
+amount:1850,
+status:"Paid"
+},
+
+
+{
+id:21,
+reference:"FIN-2026-021",
+date:"2026-08-18",
+description:"Community support donation",
+category:"Donations",
+type:"Income",
+amount:5000,
+status:"Paid"
+},
+
+
+{
+id:22,
+reference:"FIN-2026-022",
+date:"2026-08-20",
+description:"Monthly TODA meeting expenses",
+category:"Meetings",
+type:"Expense",
+amount:2600,
+status:"Paid"
+},
+
+
+{
+id:23,
+reference:"FIN-2026-023",
+date:"2026-08-23",
+description:"Outstanding membership dues",
+category:"Membership Dues",
+type:"Income",
+amount:4200,
+status:"Pending"
+},
+
+
+{
+id:24,
+reference:"FIN-2026-024",
+date:"2026-08-25",
+description:"Pending registration fees",
+category:"Registration Fees",
+type:"Income",
+amount:3000,
+status:"Pending"
+},
+
+
+{
+id:25,
+reference:"FIN-2026-025",
+date:"2026-08-26",
+description:"Reflective vests and safety materials",
+category:"Safety Equipment",
+type:"Expense",
+amount:5400,
+status:"Paid"
+},
+
+
+{
+id:26,
+reference:"FIN-2026-026",
+date:"2026-08-28",
+description:"Additional August membership payments",
+category:"Membership Dues",
+type:"Income",
+amount:6400,
+status:"Paid"
+}
+
+
+];
+
+
+
+/* ==========================================================
+   LOAD STORAGE
+========================================================== */
+
+let transactions =
+
+JSON.parse(
+
+localStorage.getItem(
+"todaFinancialTransactions"
+)
+
+);
+
+
+
+if(
+!transactions
+||
+transactions.length === 0
+){
+
+transactions =
+defaultTransactions;
+
+saveTransactions();
+
+}
+
+
+
+function saveTransactions(){
+
+
+localStorage.setItem(
+
+"todaFinancialTransactions",
+
+JSON.stringify(
+transactions
+)
+
+);
+
+
+}
+
+
+
+/* ==========================================================
+   CATEGORY OPTIONS
+========================================================== */
+
+const incomeCategories = [
+
+"Membership Dues",
+"Registration Fees",
+"Penalties",
+"Donations",
+"Other Income"
+
+];
+
+
+const expenseCategories = [
+
+"Terminal Maintenance",
+"Utilities",
+"Office Supplies",
+"Meetings",
+"Safety Equipment",
+"Other Expense"
+
+];
+
+
+
+function updateCategoryOptions(){
+
+
+const type =
+
+document.getElementById(
+"transactionType"
+).value;
+
+
+const category =
+
+document.getElementById(
+"transactionCategory"
+);
+
+
+const list =
+
+type === "Income"
+
+?
+
+incomeCategories
+
+:
+
+expenseCategories;
+
+
+category.innerHTML = "";
+
+
+list.forEach(
+
+item => {
+
+
+const option =
+
+document.createElement(
+"option"
+);
+
+
+option.value =
+item;
+
+
+option.textContent =
+item;
+
+
+category.appendChild(
+option
+);
+
+
+}
+
+);
+
+
+}
+
+
+
+/* ==========================================================
+   CURRENCY FORMAT
+========================================================== */
+
+function money(value){
+
+
+return new Intl.NumberFormat(
+
+"en-PH",
+
+{
+
+style:"currency",
+
+currency:"PHP",
+
+maximumFractionDigits:0
+
+}
+
+).format(
+value
+);
+
+
+}
+
+
+
+/* ==========================================================
+   SUMMARY
+========================================================== */
+
+function getSelectedYear(){
+
+
+return Number(
+
+document.getElementById(
+"yearFilter"
+).value
+
+);
+
+
+}
+
+
+
+function getYearTransactions(){
+
+
+const year =
+getSelectedYear();
+
+
+return transactions.filter(
+
+item =>
+
+new Date(
+item.date +
+"T00:00:00"
+)
+.getFullYear()
+===
+year
+
+);
+
+
+}
+
+
+
+/* ==========================================================
+   UPDATE DASHBOARD
+========================================================== */
+
+function updateDashboard(){
+
+
+const data =
+getYearTransactions();
+
+
+const paidIncome =
+
+data
+.filter(
+
+item =>
+
+item.type === "Income"
+
+&&
+
+item.status === "Paid"
+
+)
+.reduce(
+
+(total,item) =>
+
+total + Number(item.amount),
+
+0
+
+);
+
+
+const paidExpense =
+
+data
+.filter(
+
+item =>
+
+item.type === "Expense"
+
+&&
+
+item.status === "Paid"
+
+)
+.reduce(
+
+(total,item) =>
+
+total + Number(item.amount),
+
+0
+
+);
+
+
+const pending =
+
+data
+.filter(
+
+item =>
+
+item.type === "Income"
+
+&&
+
+item.status === "Pending"
+
+)
+.reduce(
+
+(total,item) =>
+
+total + Number(item.amount),
+
+0
+
+);
+
+
+const net =
+
+paidIncome -
+paidExpense;
+
+
+document.getElementById(
+"totalIncome"
+).textContent =
+money(paidIncome);
+
+
+document.getElementById(
+"totalExpenses"
+).textContent =
+money(paidExpense);
+
+
+document.getElementById(
+"netBalance"
+).textContent =
+money(net);
+
+
+document.getElementById(
+"pendingReceivables"
+).textContent =
+money(pending);
+
+
+document.getElementById(
+"transactionCount"
+).textContent =
+data.length;
+
+
+document.getElementById(
+"incomeTransactionCount"
+).textContent =
+
+data.filter(
+
+item =>
+item.type === "Income"
+
+).length;
+
+
+document.getElementById(
+"expenseTransactionCount"
+).textContent =
+
+data.filter(
+
+item =>
+item.type === "Expense"
+
+).length;
+
+
+
+const expenseRatio =
+
+paidIncome > 0
+
+?
+
+Math.round(
+
+paidExpense /
+paidIncome *
+100
+
+)
+
+:
+
+0;
+
+
+document.getElementById(
+"expenseRatio"
+).textContent =
+
+expenseRatio + "%";
+
+
+updateBudget();
+
+renderCharts();
+
+renderRecentTransactions();
+
+renderTransactionTable();
+
+
+}
+
+
+
+/* ==========================================================
+   AUGUST BUDGET
+========================================================== */
+
+function updateBudget(){
+
+
+const monthlyBudget =
+25000;
+
+
+const augustExpenses =
+
+transactions
+.filter(
+
+item =>
+
+item.type === "Expense"
+
+&&
+
+item.status === "Paid"
+
+&&
+
+item.date.startsWith(
+"2026-08"
+)
+
+)
+.reduce(
+
+(total,item) =>
+
+total + Number(item.amount),
+
+0
+
+);
+
+
+const remaining =
+
+Math.max(
+
+monthlyBudget -
+augustExpenses,
+
+0
+
+);
+
+
+const percentage =
+
+Math.min(
+
+augustExpenses /
+monthlyBudget *
+100,
+
+100
+
+);
+
+
+document.getElementById(
+"budgetRemaining"
+).textContent =
+money(remaining);
+
+
+document.getElementById(
+"budgetUsed"
+).textContent =
+money(augustExpenses);
+
+
+document.getElementById(
+"budgetProgress"
+).style.width =
+
+percentage + "%";
+
+
+}
+
+
+
+/* ==========================================================
+   CHART DATA
+========================================================== */
+
+let cashFlowChart = null;
+
+let expenseChart = null;
+
+let netTrendChart = null;
+
+
+
+function getMonthlyFinancialData(){
+
+
+const data =
+getYearTransactions();
+
+
+const income =
+
+Array(12).fill(0);
+
+
+const expenses =
+
+Array(12).fill(0);
+
+
+data.forEach(
+
+item => {
+
+
+if(item.status !== "Paid"){
+
+return;
+
+}
+
+
+const month =
+
+new Date(
+
+item.date +
+"T00:00:00"
+
+).getMonth();
+
+
+if(item.type === "Income"){
+
+income[month] +=
+
+Number(
+item.amount
+);
+
+}
+
+else{
+
+expenses[month] +=
+
+Number(
+item.amount
+);
+
+}
+
+
+}
+
+);
+
+
+return {
+
+income,
+
+expenses
+
+};
+
+
+}
+
+
+
+/* ==========================================================
+   CHARTS
+========================================================== */
+
+function renderCharts(){
+
+
+const monthly =
+getMonthlyFinancialData();
+
+
+const labels = [
+
+"Jan",
+"Feb",
+"Mar",
+"Apr",
+"May",
+"Jun",
+"Jul",
+"Aug",
+"Sep",
+"Oct",
+"Nov",
+"Dec"
+
+];
+
+
+if(cashFlowChart){
+
+cashFlowChart.destroy();
+
+}
+
+
+cashFlowChart =
+
+new Chart(
+
+document.getElementById(
+"cashFlowChart"
+),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:labels,
+
+datasets:[
+
+{
+
+label:"Income",
+
+data:
+monthly.income,
+
+backgroundColor:
+"#00a86b",
+
+borderRadius:7
+
+},
+
+{
+
+label:"Expenses",
+
+data:
+monthly.expenses,
+
+backgroundColor:
+"#ff6b6b",
+
+borderRadius:7
+
+}
+
+]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+
+labels:{
+
+color:"#dce6ed"
+
+}
+
+}
+
+},
+
+scales:{
+
+x:{
+
+ticks:{
+
+color:"#8795a2"
+
+},
+
+grid:{
+
+display:false
+
+}
+
+},
+
+y:{
+
+beginAtZero:true,
+
+ticks:{
+
+color:"#8795a2",
+
+callback:
+
+value =>
+"₱" +
+Number(value)
+.toLocaleString()
+
+},
+
+grid:{
+
+color:"#1c2a36"
+
+}
+
+}
+
+}
+
+}
+
+}
+
+);
+
+
+
+/* NET TREND */
+
+const net =
+
+monthly.income.map(
+
+(value,index) =>
+
+value -
+monthly.expenses[index]
+
+);
+
+
+if(netTrendChart){
+
+netTrendChart.destroy();
+
+}
+
+
+netTrendChart =
+
+new Chart(
+
+document.getElementById(
+"netTrendChart"
+),
+
+{
+
+type:"line",
+
+data:{
+
+labels:labels,
+
+datasets:[
+
+{
+
+label:"Net Balance",
+
+data:net,
+
+borderColor:
+"#59a8ff",
+
+backgroundColor:
+"rgba(89,168,255,.12)",
+
+fill:true,
+
+tension:.35,
+
+pointRadius:4
+
+}
+
+]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+
+labels:{
+
+color:"#dce6ed"
+
+}
+
+}
+
+},
+
+scales:{
+
+x:{
+
+ticks:{
+
+color:"#8795a2"
+
+},
+
+grid:{
+
+display:false
+
+}
+
+},
+
+y:{
+
+ticks:{
+
+color:"#8795a2",
+
+callback:
+
+value =>
+"₱" +
+Number(value)
+.toLocaleString()
+
+},
+
+grid:{
+
+color:"#1c2a36"
+
+}
+
+}
+
+}
+
+}
+
+}
+
+);
+
+
+
+/* EXPENSE BREAKDOWN */
+
+const expenseData = {};
+
+
+getYearTransactions()
+
+.filter(
+
+item =>
+
+item.type === "Expense"
+
+&&
+
+item.status === "Paid"
+
+)
+
+.forEach(
+
+item => {
+
+
+if(!expenseData[item.category]){
+
+expenseData[item.category] = 0;
+
+}
+
+
+expenseData[item.category] +=
+
+Number(
+item.amount
+);
+
+
+}
+
+);
+
+
+
+if(expenseChart){
+
+expenseChart.destroy();
+
+}
+
+
+expenseChart =
+
+new Chart(
+
+document.getElementById(
+"expenseChart"
+),
+
+{
+
+type:"doughnut",
+
+data:{
+
+labels:
+
+Object.keys(
+expenseData
+),
+
+datasets:[
+
+{
+
+data:
+
+Object.values(
+expenseData
+),
+
+backgroundColor:[
+
+"#00a86b",
+
+"#59a8ff",
+
+"#ffc857",
+
+"#ff6b6b",
+
+"#a98bff",
+
+"#3bd3d3"
+
+],
+
+borderWidth:0
+
+}
+
+]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+cutout:"68%",
+
+plugins:{
+
+legend:{
+
+position:"bottom",
+
+labels:{
+
+color:"#cdd7df",
+
+boxWidth:12,
+
+padding:13
+
+}
+
+}
+
+}
+
+}
+
+}
+
+);
+
+
+}
+
+
+
+/* ==========================================================
+   RECENT TRANSACTIONS
+========================================================== */
+
+function renderRecentTransactions(){
+
+
+const container =
+
+document.getElementById(
+"recentTransactions"
+);
+
+
+const data =
+
+[...transactions]
+
+.sort(
+
+(a,b) =>
+
+new Date(b.date) -
+new Date(a.date)
+
+)
+
+.slice(
+0,
+5
+);
+
+
+container.innerHTML =
+
+data.map(
+
+item => `
+
+
+<div class="transaction-item">
+
+
+<div class="transaction-left">
+
+
+<div
+class="
+transaction-icon
+${
+
+item.type === "Income"
+
+?
+
+"icon-income"
+
+:
+
+"icon-expense"
+
+}
+"
+>
+
+${
+
+item.type === "Income"
+
+?
+
+"↗"
+
+:
+
+"↘"
+
+}
+
+</div>
+
+
+<div>
+
+<div class="transaction-title">
+
+${escapeHTML(
+item.description
+)}
+
+</div>
+
+
+<div class="transaction-date">
+
+${formatDate(
+item.date
+)}
+
+•
+
+${escapeHTML(
+item.category
+)}
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<div>
+
+
+<div
+class="transaction-amount
+${
+
+item.type === "Income"
+
+?
+
+"green"
+
+:
+
+"red"
+
+}"
+>
+
+${
+
+item.type === "Income"
+
+?
+
+"+"
+
+:
+
+"-"
+
+}
+
+${money(
+item.amount
+)}
+
+</div>
+
+
+<div class="transaction-status">
+
+<span
+class="
+status
+${
+
+item.status === "Paid"
+
+?
+
+"status-paid"
+
+:
+
+"status-pending"
+
+}
+"
+>
+
+${item.status}
+
+</span>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+`
+
+).join("");
+
+
+}
+
+
+
+/* ==========================================================
+   TRANSACTION TABLE
+========================================================== */
+
+function renderTransactionTable(){
+
+
+const table =
+
+document.getElementById(
+"transactionTable"
+);
+
+
+const search =
+
+document.getElementById(
+"searchTransaction"
+)
+.value
+.toLowerCase();
+
+
+const typeFilter =
+
+document.getElementById(
+"typeFilter"
+).value;
+
+
+const statusFilter =
+
+document.getElementById(
+"statusFilter"
+).value;
+
+
+let data =
+
+getYearTransactions()
+
+.filter(
+
+item => {
+
+
+const searchMatch =
+
+item.description
+.toLowerCase()
+.includes(search)
+
+||
+
+item.category
+.toLowerCase()
+.includes(search)
+
+||
+
+item.reference
+.toLowerCase()
+.includes(search);
+
+
+const typeMatch =
+
+!typeFilter
+
+||
+
+item.type ===
+typeFilter;
+
+
+const statusMatch =
+
+!statusFilter
+
+||
+
+item.status ===
+statusFilter;
+
+
+return(
+
+searchMatch
+
+&&
+
+typeMatch
+
+&&
+
+statusMatch
+
+);
+
+
+}
+
+);
+
+
+data.sort(
+
+(a,b) =>
+
+new Date(b.date) -
+new Date(a.date)
+
+);
+
+
+table.innerHTML = "";
+
+
+
+if(data.length === 0){
+
+
+table.innerHTML = `
+
+<tr>
+
+<td
+colspan="8"
+style="
+text-align:center;
+padding:35px;
+color:#7f909e;
+"
+>
+
+No financial transactions found.
+
+</td>
+
+</tr>
+
+`;
+
+
+return;
+
+}
+
+
+
+data.forEach(
+
+item => {
+
+
+const row =
+
+document.createElement(
+"tr"
+);
+
+
+row.innerHTML = `
+
+
+<td>
+
+${formatDate(
+item.date
+)}
+
+</td>
+
+
+<td>
+
+${escapeHTML(
+item.reference
+)}
+
+</td>
+
+
+<td>
+
+${escapeHTML(
+item.description
+)}
+
+</td>
+
+
+<td>
+
+${escapeHTML(
+item.category
+)}
+
+</td>
+
+
+<td
+class="
+${
+
+item.type === "Income"
+
+?
+
+"type-income"
+
+:
+
+"type-expense"
+
+}
+"
+>
+
+${item.type}
+
+</td>
+
+
+<td>
+
+<strong>
+
+${money(
+item.amount
+)}
+
+</strong>
+
+</td>
+
+
+<td>
+
+<span
+class="
+status
+${
+
+item.status === "Paid"
+
+?
+
+"status-paid"
+
+:
+
+"status-pending"
+
+}
+"
+>
+
+${item.status}
+
+</span>
+
+</td>
+
+
+<td>
+
+
+<div
+style="
+display:flex;
+gap:6px;
+"
+>
+
+
+${
+
+item.status === "Pending"
+
+?
+
+`
+
+<button
+class="btn btn-green btn-small"
+onclick="markPaid(${item.id})"
+>
+
+Mark Paid
+
+</button>
+
+`
+
+:
+
+""
+
+}
+
+
+<button
+class="btn btn-red btn-small"
+onclick="deleteTransaction(${item.id})"
+>
+
+Delete
+
+</button>
+
+
+</div>
+
+
+</td>
+
+
+`;
+
+
+table.appendChild(
+row
+);
+
+
+}
+
+);
+
+
+}
+
+
+
+/* ==========================================================
+   ADD TRANSACTION MODAL
+========================================================== */
+
+function openTransactionModal(){
+
+
+document.getElementById(
+"transactionForm"
+).reset();
+
+
+document.getElementById(
+"transactionType"
+).value =
+"Income";
+
+
+document.getElementById(
+"transactionStatus"
+).value =
+"Paid";
+
+
+document.getElementById(
+"transactionDate"
+).value =
+"2026-08-28";
+
+
+document.getElementById(
+"transactionReference"
+).value =
+
+"FIN-2026-" +
+
+String(
+transactions.length + 1
+)
+.padStart(
+3,
+"0"
+);
+
+
+updateCategoryOptions();
+
+
+document.getElementById(
+"transactionModal"
+)
+.classList.add(
+"show"
+);
+
+
+}
+
+
+
+function closeTransactionModal(){
+
+
+document.getElementById(
+"transactionModal"
+)
+.classList.remove(
+"show"
+);
+
+
+}
+
+
+
+/* ==========================================================
+   SAVE TRANSACTION
+========================================================== */
+
+document.getElementById(
+"transactionForm"
+)
+.addEventListener(
+
+"submit",
+
+function(event){
+
+
+event.preventDefault();
+
+
+const transaction = {
+
+
+id:
+Date.now(),
+
+
+reference:
+
+document.getElementById(
+"transactionReference"
+)
+.value
+.trim(),
+
+
+date:
+
+document.getElementById(
+"transactionDate"
+)
+.value,
+
+
+description:
+
+document.getElementById(
+"transactionDescription"
+)
+.value
+.trim(),
+
+
+category:
+
+document.getElementById(
+"transactionCategory"
+)
+.value,
+
+
+type:
+
+document.getElementById(
+"transactionType"
+)
+.value,
+
+
+amount:
+
+Number(
+
+document.getElementById(
+"transactionAmount"
+)
+.value
+
+),
+
+
+status:
+
+document.getElementById(
+"transactionStatus"
+)
+.value
+
+
+};
+
+
+transactions.push(
+transaction
+);
+
+
+saveTransactions();
+
+
+closeTransactionModal();
+
+
+updateDashboard();
+
+
+}
+
+);
+
+
+
+/* ==========================================================
+   MARK PAID
+========================================================== */
+
+function markPaid(id){
+
+
+const transaction =
+
+transactions.find(
+
+item =>
+item.id === id
+
+);
+
+
+if(!transaction){
+
+return;
+
+}
+
+
+transaction.status =
+"Paid";
+
+
+saveTransactions();
+
+
+updateDashboard();
+
+
+}
+
+
+
+/* ==========================================================
+   DELETE
+========================================================== */
+
+function deleteTransaction(id){
+
+
+const transaction =
+
+transactions.find(
+
+item =>
+item.id === id
+
+);
+
+
+if(!transaction){
+
+return;
+
+}
+
+
+if(
+
+!confirm(
+
+"Delete transaction " +
+
+transaction.reference +
+
+"?"
+
+)
+
+){
+
+return;
+
+}
+
+
+transactions =
+
+transactions.filter(
+
+item =>
+item.id !== id
+
+);
+
+
+saveTransactions();
+
+
+updateDashboard();
+
+
+}
+
+
+
+/* ==========================================================
+   EXPORT CSV
+========================================================== */
+
+function exportCSV(){
+
+
+const rows = [
+
+[
+
+"Reference",
+
+"Date",
+
+"Description",
+
+"Category",
+
+"Type",
+
+"Amount",
+
+"Status"
+
+]
+
+];
+
+
+getYearTransactions()
+
+.forEach(
+
+item => {
+
+
+rows.push(
+
+[
+
+item.reference,
+
+item.date,
+
+item.description,
+
+item.category,
+
+item.type,
+
+item.amount,
+
+item.status
+
+]
+
+);
+
+
+}
+
+);
+
+
+const csv =
+
+rows
+.map(
+
+row =>
+
+row
+.map(
+
+value =>
+
+'"' +
+
+String(value)
+.replace(
+/"/g,
+'""'
+)
+
++ '"'
+
+)
+.join(",")
+
+)
+.join("\n");
+
+
+const blob =
+
+new Blob(
+
+[csv],
+
+{
+
+type:
+"text/csv"
+
+}
+
+);
+
+
+const url =
+
+URL.createObjectURL(
+blob
+);
+
+
+const link =
+
+document.createElement(
+"a"
+);
+
+
+link.href =
+url;
+
+
+link.download =
+"TODA_Financial_Report_2026.csv";
+
+
+link.click();
+
+
+URL.revokeObjectURL(
+url
+);
+
+
+}
+
+
+
+/* ==========================================================
+   DATE
+========================================================== */
+
+function formatDate(dateString){
+
+
+return new Date(
+
+dateString +
+"T00:00:00"
+
+)
+.toLocaleDateString(
+
+"en-US",
+
+{
+
+month:"short",
+
+day:"2-digit",
+
+year:"numeric"
+
+}
+
+);
+
+
+}
+
+
+
+/* ==========================================================
+   SECURITY
+========================================================== */
+
+function escapeHTML(text){
+
+
+return String(
+text || ""
+)
+.replace(
+
+/[&<>"']/g,
+
+character => ({
+
+"&":"&amp;",
+
+"<":"&lt;",
+
+">":"&gt;",
+
+'"':"&quot;",
+
+"'":"&#039;"
+
+}[character])
+
+);
+
+
+}
+
+
+
+/* ==========================================================
+   EVENTS
+========================================================== */
+
+document.getElementById(
+"transactionType"
+)
+.addEventListener(
+
+"change",
+
+updateCategoryOptions
+
+);
+
+
+document.getElementById(
+"searchTransaction"
+)
+.addEventListener(
+
+"input",
+
+renderTransactionTable
+
+);
+
+
+document.getElementById(
+"typeFilter"
+)
+.addEventListener(
+
+"change",
+
+renderTransactionTable
+
+);
+
+
+document.getElementById(
+"statusFilter"
+)
+.addEventListener(
+
+"change",
+
+renderTransactionTable
+
+);
+
+
+document.getElementById(
+"yearFilter"
+)
+.addEventListener(
+
+"change",
+
+updateDashboard
+
+);
+
+
+
+document.getElementById(
+"transactionModal"
+)
+.addEventListener(
+
+"click",
+
+function(event){
+
+
+if(
+event.target === this
+){
+
+closeTransactionModal();
+
+}
+
+
+}
+
+);
+
+
+
+/* ==========================================================
+   INITIALIZE
+========================================================== */
+
+updateCategoryOptions();
+
+updateDashboard();
+
+
+
+
+/* ==========================================================
+   PREMIUM FINANCIAL DASHBOARD EFFECTS
+========================================================== */
+(function premiumFinancialEffects(){
+
+    const reducedMotion =
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const pixelRatio =
+        Math.min(window.devicePixelRatio || 1, 2);
+
+    const mouse = {
+        x:-9999,
+        y:-9999,
+        active:false
+    };
+
+    document.documentElement.style.setProperty("--mouse-x","50%");
+    document.documentElement.style.setProperty("--mouse-y","50%");
+
+    /* -----------------------------
+       PARTICLE NETWORK
+    ----------------------------- */
+
+    const canvas =
+        document.getElementById("particleCanvas");
+
+    if(canvas){
+
+        const ctx =
+            canvas.getContext("2d");
+
+        let width = 0;
+        let height = 0;
+
+        const particles = [];
+        const connectionDistance = 115;
+        const mouseRadius = 125;
+
+        function resizeParticles(){
+
+            width = window.innerWidth;
+            height = window.innerHeight;
+
+            canvas.width =
+                Math.floor(width * pixelRatio);
+
+            canvas.height =
+                Math.floor(height * pixelRatio);
+
+            canvas.style.width =
+                width + "px";
+
+            canvas.style.height =
+                height + "px";
+
+            ctx.setTransform(
+                pixelRatio,0,0,pixelRatio,0,0
+            );
+
+            const target =
+                Math.max(
+                    45,
+                    Math.min(
+                        110,
+                        Math.floor(width * height / 15000)
+                    )
+                );
+
+            while(particles.length > target){
+                particles.pop();
+            }
+
+            while(particles.length < target){
+
+                particles.push({
+                    x:Math.random() * width,
+                    y:Math.random() * height,
+                    vx:(Math.random()-.5) * .18,
+                    vy:(Math.random()-.5) * .18,
+                    radius:Math.random() * 1.5 + .7,
+                    pulse:Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        function updateParticle(p){
+
+            if(reducedMotion){
+                return;
+            }
+
+            p.x += p.vx;
+            p.y += p.vy;
+            p.pulse += .01;
+
+            if(p.x < -10) p.x = width + 10;
+            if(p.x > width + 10) p.x = -10;
+            if(p.y < -10) p.y = height + 10;
+            if(p.y > height + 10) p.y = -10;
+
+            if(mouse.active){
+
+                const dx = p.x - mouse.x;
+                const dy = p.y - mouse.y;
+                const distSq = dx*dx + dy*dy;
+
+                if(
+                    distSq < mouseRadius*mouseRadius &&
+                    distSq > 0
+                ){
+
+                    const dist = Math.sqrt(distSq);
+                    const force =
+                        (mouseRadius-dist)/mouseRadius;
+
+                    p.x += (dx/dist) * force * 2.7;
+                    p.y += (dy/dist) * force * 2.7;
+                }
+            }
+        }
+
+        function renderParticles(){
+
+            ctx.clearRect(
+                0,0,width,height
+            );
+
+            for(let i=0;i<particles.length;i++){
+
+                const a = particles[i];
+
+                updateParticle(a);
+
+                for(let j=i+1;j<particles.length;j++){
+
+                    const b = particles[j];
+                    const dx = a.x-b.x;
+                    const dy = a.y-b.y;
+                    const distanceSq = dx*dx+dy*dy;
+
+                    if(
+                        distanceSq <
+                        connectionDistance*connectionDistance
+                    ){
+
+                        const distance =
+                            Math.sqrt(distanceSq);
+
+                        const alpha =
+                            (1-distance/connectionDistance)*.10;
+
+                        ctx.beginPath();
+                        ctx.moveTo(a.x,a.y);
+                        ctx.lineTo(b.x,b.y);
+
+                        ctx.strokeStyle =
+                            "rgba(72,210,165,"+
+                            alpha.toFixed(3)+")";
+
+                        ctx.lineWidth=.55;
+                        ctx.stroke();
+                    }
+                }
+
+                if(mouse.active){
+
+                    const dx = a.x-mouse.x;
+                    const dy = a.y-mouse.y;
+                    const distSq = dx*dx+dy*dy;
+
+                    if(distSq < mouseRadius*mouseRadius){
+
+                        const distance =
+                            Math.sqrt(distSq);
+
+                        const alpha =
+                            (1-distance/mouseRadius)*.34;
+
+                        ctx.beginPath();
+                        ctx.moveTo(mouse.x,mouse.y);
+                        ctx.lineTo(a.x,a.y);
+
+                        ctx.strokeStyle =
+                            "rgba(0,229,139,"+
+                            alpha.toFixed(3)+")";
+
+                        ctx.lineWidth=.8;
+                        ctx.stroke();
+                    }
+                }
+
+                const pulse =
+                    .60 + Math.sin(a.pulse)*.18;
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    a.x,
+                    a.y,
+                    a.radius,
+                    0,
+                    Math.PI*2
+                );
+
+                ctx.fillStyle =
+                    "rgba(145,255,215,"+
+                    pulse.toFixed(3)+")";
+
+                ctx.fill();
+            }
+
+            if(!reducedMotion){
+                requestAnimationFrame(renderParticles);
+            }
+        }
+
+        window.addEventListener(
+            "resize",
+            resizeParticles
+        );
+
+        resizeParticles();
+        renderParticles();
+    }
+
+    /* -----------------------------
+       CURSOR / TRAIL
+    ----------------------------- */
+
+    const cursorRing =
+        document.getElementById("cursorRing");
+
+    let lastTrail = 0;
+
+    window.addEventListener(
+        "pointermove",
+        function(event){
+
+            mouse.x = event.clientX;
+            mouse.y = event.clientY;
+            mouse.active = true;
+
+            document.documentElement.style.setProperty(
+                "--mouse-x",
+                event.clientX + "px"
+            );
+
+            document.documentElement.style.setProperty(
+                "--mouse-y",
+                event.clientY + "px"
+            );
+
+            if(cursorRing){
+                cursorRing.style.left =
+                    event.clientX + "px";
+                cursorRing.style.top =
+                    event.clientY + "px";
+                cursorRing.style.opacity = "1";
+            }
+
+            if(!reducedMotion){
+
+                const now = performance.now();
+
+                if(now-lastTrail > 42){
+
+                    lastTrail = now;
+
+                    const trail =
+                        document.createElement("span");
+
+                    trail.className =
+                        "cursor-trail-dot";
+
+                    trail.style.left =
+                        event.clientX + "px";
+
+                    trail.style.top =
+                        event.clientY + "px";
+
+                    document.body.appendChild(trail);
+
+                    setTimeout(
+                        ()=>trail.remove(),
+                        560
+                    );
+                }
+            }
+        }
+    );
+
+    document.documentElement.addEventListener(
+        "mouseleave",
+        function(){
+
+            mouse.active = false;
+
+            if(cursorRing){
+                cursorRing.style.opacity = "0";
+            }
+        }
+    );
+
+    if(cursorRing){
+
+        document.querySelectorAll(
+            "button,a,input,select,textarea,.stat-card,.metric,.panel,.budget-card,.transaction-item"
+        ).forEach(element=>{
+
+            element.addEventListener(
+                "mouseenter",
+                ()=>cursorRing.classList.add("active")
+            );
+
+            element.addEventListener(
+                "mouseleave",
+                ()=>cursorRing.classList.remove("active")
+            );
+        });
+    }
+
+    /* -----------------------------
+       HYDROGEN PLASMA
+    ----------------------------- */
+
+    const hydrogenCanvas =
+        document.getElementById("hydrogenCanvas");
+
+    if(hydrogenCanvas){
+
+        const hctx =
+            hydrogenCanvas.getContext("2d");
+
+        let hWidth = 0;
+        let hHeight = 0;
+        let time = 0;
+
+        const points = [];
+
+        function resizeHydrogen(){
+
+            const rect =
+                hydrogenCanvas.getBoundingClientRect();
+
+            hWidth =
+                Math.max(rect.width,1);
+
+            hHeight =
+                Math.max(rect.height,1);
+
+            hydrogenCanvas.width =
+                Math.floor(hWidth * pixelRatio);
+
+            hydrogenCanvas.height =
+                Math.floor(hHeight * pixelRatio);
+
+            hctx.setTransform(
+                pixelRatio,0,0,pixelRatio,0,0
+            );
+
+            points.length = 0;
+
+            const count =
+                Math.max(
+                    22,
+                    Math.min(
+                        52,
+                        Math.floor(hWidth/25)
+                    )
+                );
+
+            for(let i=0;i<count;i++){
+
+                points.push({
+                    x:(i/(count-1))*hWidth,
+                    phase:i*.52,
+                    speed:.7+(i%4)*.13
+                });
+            }
+        }
+
+        function plasmaLine(
+            baseY,
+            amplitude,
+            alpha,
+            lineWidth
+        ){
+
+            hctx.beginPath();
+
+            points.forEach(
+                (p,index)=>{
+
+                    let y =
+                        baseY +
+                        Math.sin(
+                            time*p.speed+p.phase
+                        )*amplitude +
+                        Math.sin(
+                            time*.64+p.phase*.45
+                        )*5;
+
+                    if(mouse.active){
+
+                        const rect =
+                            hydrogenCanvas.getBoundingClientRect();
+
+                        const localX =
+                            mouse.x-rect.left;
+
+                        const dx =
+                            p.x-localX;
+
+                        if(Math.abs(dx)<150){
+
+                            const influence =
+                                1-Math.abs(dx)/150;
+
+                            y -= influence*14;
+                        }
+                    }
+
+                    if(index===0){
+                        hctx.moveTo(p.x,y);
+                    }else{
+                        hctx.lineTo(p.x,y);
+                    }
+                }
+            );
+
+            hctx.strokeStyle =
+                "rgba(95,255,198,"+
+                alpha+")";
+
+            hctx.lineWidth =
+                lineWidth;
+
+            hctx.stroke();
+        }
+
+        function energyNodes(){
+
+            points.forEach(
+                (p,index)=>{
+
+                    if(index%4!==0){
+                        return;
+                    }
+
+                    const y =
+                        hHeight*.72 +
+                        Math.sin(
+                            time*p.speed+p.phase
+                        )*20;
+
+                    hctx.beginPath();
+
+                    hctx.arc(
+                        p.x,
+                        y,
+                        1.7,
+                        0,
+                        Math.PI*2
+                    );
+
+                    hctx.fillStyle =
+                        "rgba(160,255,220,.50)";
+
+                    hctx.fill();
+                }
+            );
+        }
+
+        function renderHydrogen(){
+
+            hctx.clearRect(
+                0,0,hWidth,hHeight
+            );
+
+            time += .016;
+
+            plasmaLine(
+                hHeight*.67,
+                20,
+                .22,
+                1.05
+            );
+
+            plasmaLine(
+                hHeight*.76,
+                14,
+                .13,
+                .8
+            );
+
+            plasmaLine(
+                hHeight*.84,
+                10,
+                .08,
+                .65
+            );
+
+            energyNodes();
+
+            if(!reducedMotion){
+                requestAnimationFrame(renderHydrogen);
+            }
+        }
+
+        window.addEventListener(
+            "resize",
+            resizeHydrogen
+        );
+
+        resizeHydrogen();
+        renderHydrogen();
+    }
+
+    /* -----------------------------
+       FLOATING IONS
+    ----------------------------- */
+
+    const ionField =
+        document.getElementById("ionField");
+
+    if(ionField && !reducedMotion){
+
+        for(let i=0;i<30;i++){
+
+            const ion =
+                document.createElement("span");
+
+            ion.className = "h-ion";
+
+            ion.style.left =
+                ((i*31+7)%100) + "%";
+
+            ion.style.setProperty(
+                "--ion-duration",
+                (6.5+(i%8)*.8)+"s"
+            );
+
+            ion.style.setProperty(
+                "--ion-delay",
+                (-1*((i*.57)%8)).toFixed(2)+"s"
+            );
+
+            ion.style.setProperty(
+                "--ion-drift",
+                (-34+((i*17)%68))+"px"
+            );
+
+            ionField.appendChild(ion);
+        }
+    }
+
+    /* -----------------------------
+       BUTTON RIPPLE
+    ----------------------------- */
+
+    document.querySelectorAll(
+        "button,.btn"
+    ).forEach(button=>{
+
+        button.addEventListener(
+            "click",
+            function(event){
+
+                const rect =
+                    button.getBoundingClientRect();
+
+                const ripple =
+                    document.createElement("span");
+
+                ripple.className =
+                    "effect-ripple";
+
+                ripple.style.left =
+                    (event.clientX-rect.left)+"px";
+
+                ripple.style.top =
+                    (event.clientY-rect.top)+"px";
+
+                const size =
+                    Math.max(
+                        rect.width,
+                        rect.height
+                    )/2;
+
+                ripple.style.width =
+                    size+"px";
+
+                ripple.style.height =
+                    size+"px";
+
+                button.appendChild(ripple);
+
+                setTimeout(
+                    ()=>ripple.remove(),
+                    700
+                );
+            }
+        );
+    });
+
+    /* -----------------------------
+       REVEAL ANIMATION
+    ----------------------------- */
+
+    const revealItems =
+        document.querySelectorAll(
+            ".stat-card,.metric,.panel,.budget-card,.filters,.table-box,.section-top"
+        );
+
+    revealItems.forEach(
+        item=>item.classList.add("fx-reveal")
+    );
+
+    if(
+        !reducedMotion &&
+        "IntersectionObserver" in window
+    ){
+
+        const observer =
+            new IntersectionObserver(
+                entries=>{
+
+                    entries.forEach(
+                        entry=>{
+
+                            if(entry.isIntersecting){
+
+                                entry.target.classList.add(
+                                    "fx-visible"
+                                );
+
+                                observer.unobserve(
+                                    entry.target
+                                );
+                            }
+                        }
+                    );
+                },
+                {threshold:.07}
+            );
+
+        revealItems.forEach(
+            item=>observer.observe(item)
+        );
+
+    }else{
+
+        revealItems.forEach(
+            item=>item.classList.add("fx-visible")
+        );
+    }
+
+})();
+
+</script>
+
+
+</body>
+
+</html>
